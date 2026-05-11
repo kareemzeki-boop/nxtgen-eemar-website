@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowUpRight } from "lucide-react";
 import { services } from "@/lib/content";
+import SpinningCube from "./SpinningCube";
 
 export default function Services() {
   const [hovered, setHovered] = useState<number | null>(null);
@@ -91,19 +92,21 @@ export default function Services() {
                   transition: "opacity 0.25s",
                   pointerEvents: active ? "none" : "auto",
                 }}>
-                  {/* Desktop/tablet: title only, rotated */}
+                  {/* Desktop/tablet: spinning cube + bold title */}
                   <div
                     className="hidden md:flex"
-                    style={{
-                      flexDirection: "column",
-                      alignItems: "center",
-                      transform: "rotate(-90deg)",
-                      whiteSpace: "nowrap",
-                    }}
+                    style={{ flexDirection: "column", alignItems: "center", gap: 14 }}
                   >
+                    <SpinningCube
+                      label={svc.title.split(" ")[0]}
+                      color={svc.accentColor}
+                      size={58}
+                      dark={false}
+                    />
                     <span style={{
-                      fontSize: 17, fontWeight: 900, letterSpacing: "-0.01em",
-                      color: "#18181b",
+                      fontSize: 13, fontWeight: 900, color: "#18181b",
+                      letterSpacing: "-0.01em", transform: "rotate(-90deg)",
+                      whiteSpace: "nowrap",
                     }}>
                       {svc.title}
                     </span>

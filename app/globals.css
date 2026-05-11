@@ -28,6 +28,12 @@
 
 * { box-sizing: border-box; }
 
+@keyframes cube-spin {
+  0%   { transform: rotateX(0)      rotateY(0)      rotateZ(0);      }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+}
+.cube-spin { animation: cube-spin 8s infinite linear; }
+
 @media (max-width: 767px) {
   .inno-label,
   .svc-label {

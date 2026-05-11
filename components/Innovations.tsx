@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Cpu, Layers3, Leaf, Atom } from "lucide-react";
+import SpinningCube from "./SpinningCube";
 import { innovations as innovationsData } from "@/lib/content";
 
 const ICONS = [Cpu, Layers3, Leaf, Atom] as const;
@@ -100,20 +101,21 @@ export default function Innovations() {
                     pointerEvents: active ? "none" : "auto",
                   }}
                 >
-                  {/* Desktop/tablet: title only, rotated */}
+                  {/* Desktop/tablet: spinning cube + bold title */}
                   <div
                     className="hidden md:flex"
-                    style={{
-                      flexDirection: "column",
-                      alignItems:    "center",
-                      gap:           12,
-                      transform:     "rotate(-90deg)",
-                      whiteSpace:    "nowrap",
-                    }}
+                    style={{ flexDirection: "column", alignItems: "center", gap: 14 }}
                   >
+                    <SpinningCube
+                      label={item.title.split(" ")[0]}
+                      color={item.color}
+                      size={58}
+                      dark={true}
+                    />
                     <span style={{
-                      fontSize: 17, fontWeight: 900, color: "rgba(255,255,255,0.88)",
-                      letterSpacing: "-0.01em",
+                      fontSize: 13, fontWeight: 900, color: "rgba(255,255,255,0.85)",
+                      letterSpacing: "-0.01em", transform: "rotate(-90deg)",
+                      whiteSpace: "nowrap",
                     }}>
                       {item.title}
                     </span>
