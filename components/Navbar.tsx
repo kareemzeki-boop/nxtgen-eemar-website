@@ -2,14 +2,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-
-const links = [
-  { label: "Services",    href: "#services" },
-  { label: "Innovations", href: "#innovations" },
-  { label: "Process",     href: "#process" },
-  { label: "Pricing",     href: "#pricing" },
-  { label: "Contact",     href: "#contact" },
-];
+import { navLinks as links, company } from "@/lib/content";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -68,10 +61,10 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
-            <a href="mailto:kareem@cladwise.ae"
+            <a href={`mailto:${company.email}`}
               className="text-white/60 hover:text-white text-xs lg:text-sm font-medium transition-colors hidden lg:block"
             >
-              kareem@cladwise.ae
+              {company.email}
             </a>
             <a href="#contact" className="btn-primary px-4 lg:px-5 py-2.5 text-sm">
               Get a Quote
@@ -148,11 +141,11 @@ export default function Navbar() {
                   Get a Quote
                 </a>
                 <a
-                  href="mailto:kareem@cladwise.ae"
+                  href={`mailto:${company.email}`}
                   className="btn-outline-dark px-8 py-3.5 text-base text-center"
                   onClick={() => setOpen(false)}
                 >
-                  kareem@cladwise.ae
+                  {company.email}
                 </a>
               </motion.div>
             </div>

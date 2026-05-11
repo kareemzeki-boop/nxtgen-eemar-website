@@ -1,53 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
 import { Cpu, Layers3, Leaf, Atom } from "lucide-react";
+import { innovations as innovationsData } from "@/lib/content";
 
-const innovations = [
-  {
-    icon: Cpu,
-    title: "IoT Smart Panels",
-    subtitle: "Facades that sense and respond",
-    description:
-      "Embedded sensor arrays within GFRC panels monitor structural stress, thermal expansion, moisture ingress, and surface temperature in real time. Live dashboards alert facility managers before defects become costly.",
-    tag: "Structural Intelligence",
-    color: "#6366f1",
-    metric: "24/7",
-    metricLabel: "Live Monitoring",
-  },
-  {
-    icon: Layers3,
-    title: "3D Parametric Elements",
-    subtitle: "Computational form, manufactured precision",
-    description:
-      "We take architect-authored parametric geometries directly from Rhino / Grasshopper and translate them into production-ready moulds. Complex undulating surfaces and algorithmic patterns delivered at 1mm tolerances.",
-    tag: "Digital Fabrication",
-    color: "#8b5cf6",
-    metric: "±1mm",
-    metricLabel: "Tolerance Achieved",
-  },
-  {
-    icon: Leaf,
-    title: "Bio-Hybrid Cladding",
-    subtitle: "Panels that support living ecosystems",
-    description:
-      "Textured GFRC surfaces engineered with micro-retention pockets and embedded nutrient matrices support moss, lichen, and climbing plant systems. LEED credits, reduced heat-island effect, and iconic aesthetics in one system.",
-    tag: "Biophilic Design",
-    color: "#10b981",
-    metric: "LEED",
-    metricLabel: "Credit Eligible",
-  },
-  {
-    icon: Atom,
-    title: "Nano-Reinforced GFRC",
-    subtitle: "Material science at the molecular level",
-    description:
-      "Carbon nanotube and graphene-oxide admixtures increase tensile strength by up to 60% and dramatically improve crack resistance — enabling thinner, lighter, and longer-spanning GFRC panels than any standard formulation.",
-    tag: "Next-Gen Materials",
-    color: "#f59e0b",
-    metric: "+60%",
-    metricLabel: "Tensile Strength",
-  },
-];
+// Icons stay here; text/metrics live in lib/content.ts — edit there.
+const ICONS = [Cpu, Layers3, Leaf, Atom];
+const innovations = innovationsData.map((item, i) => ({ ...item, icon: ICONS[i] }));
 
 export default function Innovations() {
   return (

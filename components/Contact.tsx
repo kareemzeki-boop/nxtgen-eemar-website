@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { company } from "@/lib/content";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
@@ -39,9 +40,9 @@ export default function Contact() {
 
             <div className="mt-8 sm:mt-10 flex flex-col gap-4 sm:gap-5">
               {[
-                { icon: Mail, label: "Email", value: "kareem@cladwise.ae", href: "mailto:kareem@cladwise.ae", isLink: true },
-                { icon: MapPin, label: "Factory & HQ", value: "Sharjah Industrial District 17, UAE", isLink: false },
-                { icon: Phone, label: "Phone", value: "+971 6 XXX XXXX", sub: "Sun-Thu, 8am-6pm GST", isLink: false },
+                { icon: Mail,  label: "Email",       value: company.email,     href: `mailto:${company.email}`, isLink: true  },
+                { icon: MapPin, label: "Factory & HQ", value: company.address,   isLink: false },
+                { icon: Phone, label: "Phone",       value: company.phone,     sub: company.phoneHours, isLink: false },
               ].map(({ icon: Icon, label, value, href, sub, isLink }) => (
                 <div key={label} className="flex items-start gap-3 sm:gap-4">
                   <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-indigo-500/15 flex items-center justify-center shrink-0">

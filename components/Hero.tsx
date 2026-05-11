@@ -1,8 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Award, Zap } from "lucide-react";
-
-const MATERIALS = ["GFRC", "GFRP", "UHPC", "LTGRC", "GFRG"];
+import { hero, company } from "@/lib/content";
 
 function FadeUp({ delay = 0, children, className }: { delay?: number; children: React.ReactNode; className?: string }) {
   return (
@@ -20,10 +19,10 @@ function FadeUp({ delay = 0, children, className }: { delay?: number; children: 
 export default function Hero() {
   return (
     <section className="section-dark relative min-h-screen flex flex-col overflow-hidden">
-      {/* Background facade photo — geometric angled-panel building, Osaka */}
+      {/* Background facade photo */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1772232141617-a19025ad997e?auto=format&fit=crop&w=1920&q=85"
+          src={hero.backgroundImage}
           alt=""
           className="w-full h-full object-cover object-center"
           aria-hidden="true"
@@ -63,32 +62,31 @@ export default function Hero() {
         <FadeUp delay={0} className="mb-7 sm:mb-10">
           <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs">
             <Award size={11} />
-            Trusted across the GCC &middot; 80+ Projects Delivered
+            {hero.badge}
           </span>
         </FadeUp>
 
         {/* Headline — 4 sizes: mobile / sm / md / lg */}
         <FadeUp delay={0.12}>
           <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.93] max-w-5xl">
-            <span className="gradient-text">We Engineer</span>
+            <span className="gradient-text">{hero.headlinePart1}</span>
             <br />
-            <span className="text-white">Living Facades</span>
+            <span className="text-white">{hero.headlinePart2}</span>
             <br />
-            <span className="text-white/40">For The Middle East</span>
+            <span className="text-white/40">{hero.headlinePart3}</span>
           </h1>
         </FadeUp>
 
         {/* Sub headline */}
         <FadeUp delay={0.24} className="mt-6 sm:mt-8">
           <p className="text-base sm:text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed">
-            Precision-manufactured architectural cladding systems built for extreme climates,
-            iconic structures, and generational durability. From Sharjah to the entire GCC.
+            {hero.subheadline}
           </p>
         </FadeUp>
 
         {/* Material pills */}
         <FadeUp delay={0.36} className="mt-6 sm:mt-8 flex flex-wrap gap-2">
-          {MATERIALS.map((m) => (
+          {hero.materials.map((m) => (
             <span
               key={m}
               className="px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold tracking-widest text-white/80 border border-white/10 bg-white/5"
@@ -100,34 +98,29 @@ export default function Hero() {
 
         {/* CTAs */}
         <FadeUp delay={0.48} className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-          <a href="#contact" className="btn-primary px-6 sm:px-7 py-3.5 text-sm sm:text-base flex items-center justify-center sm:justify-start gap-2">
-            Start Your Project <ArrowRight size={16} />
+          <a href={hero.ctaPrimary.href} className="btn-primary px-6 sm:px-7 py-3.5 text-sm sm:text-base flex items-center justify-center sm:justify-start gap-2">
+            {hero.ctaPrimary.label} <ArrowRight size={16} />
           </a>
-          <a href="#services" className="btn-outline-dark px-6 sm:px-7 py-3.5 text-sm sm:text-base text-center">
-            Explore Materials
+          <a href={hero.ctaSecondary.href} className="btn-outline-dark px-6 sm:px-7 py-3.5 text-sm sm:text-base text-center">
+            {hero.ctaSecondary.label}
           </a>
         </FadeUp>
 
         {/* Location */}
         <FadeUp delay={0.60} className="mt-10 sm:mt-14 flex flex-wrap items-center gap-2 text-white/40 text-xs sm:text-sm">
           <MapPin size={13} className="text-indigo-400" />
-          <span>Sharjah Industrial District 17, UAE</span>
+          <span>{company.address}</span>
           <span className="hidden sm:inline">&nbsp;&middot;&nbsp;</span>
           <span className="flex items-center gap-1">
             <Zap size={12} className="text-indigo-400" />
-            ISO 9001 Certified
+            {company.certification}
           </span>
         </FadeUp>
 
         {/* Stats strip — 2-col on mobile, 4-col on md+ */}
         <FadeUp delay={0.72} className="mt-12 sm:mt-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px border border-white/[0.06] rounded-2xl overflow-hidden">
-            {[
-              { num: "80+",  label: "Projects Delivered" },
-              { num: "15+",  label: "Years Experience" },
-              { num: "6",    label: "GCC Countries" },
-              { num: "100%", label: "Custom Engineered" },
-            ].map((s) => (
+            {hero.stats.map((s) => (
               <div key={s.label} className="bg-white/[0.06] backdrop-blur-sm px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-1">
                 <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">{s.num}</div>
                 <div className="text-[10px] sm:text-xs text-white/40 font-medium tracking-wide uppercase leading-tight">{s.label}</div>

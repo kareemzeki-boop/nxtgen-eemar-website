@@ -1,18 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
 import { Mail, MapPin, ArrowUpRight } from "lucide-react";
+import { company, footerNavLinks as navLinks, footerMaterials as materials, footerInnovations as innovations } from "@/lib/content";
 
-const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Innovations", href: "#innovations" },
-  { label: "Process", href: "#process" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
-];
-
-const materials = ["GFRC", "GFRP", "UHPC", "Veloce LTGRC", "GFRG"];
-const innovations = ["IoT Smart Panels", "3D Parametric", "Bio-Hybrid Cladding", "Nano-Reinforced GFRC"];
+// All footer data lives in lib/content.ts — edit there.
 
 export default function Footer() {
   return (
@@ -40,15 +31,15 @@ export default function Footer() {
               Engineering living facades for the Middle East. Precision-manufactured architectural cladding from our Sharjah factory.
             </p>
             <div className="flex flex-col gap-2.5">
-              <a href="mailto:kareem@cladwise.ae"
+              <a href={`mailto:${company.email}`}
                 className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
               >
                 <Mail size={13} className="text-indigo-400 shrink-0" />
-                kareem@cladwise.ae
+                {company.email}
               </a>
               <div className="flex items-start gap-2 text-sm text-white/50">
                 <MapPin size={13} className="text-indigo-400 mt-0.5 shrink-0" />
-                Sharjah Industrial District 17, UAE
+                {company.address}
               </div>
             </div>
           </div>
@@ -105,8 +96,8 @@ export default function Footer() {
               <a href="#contact" className="btn-primary py-3 text-sm flex items-center justify-center gap-2">
                 Start a Project <ArrowUpRight size={14} />
               </a>
-              <a href="mailto:kareem@cladwise.ae" className="btn-outline-dark py-3 text-sm flex items-center justify-center gap-2">
-                Email Directly <Mail size={13} />
+              <a href={`mailto:${company.email}`} className="btn-outline-dark py-3 text-sm flex items-center justify-center gap-2">
+                {company.email} <Mail size={13} />
               </a>
             </div>
           </div>
@@ -117,7 +108,7 @@ export default function Footer() {
       <div className="border-t border-white/[0.05]">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           <div className="text-white/20 text-xs text-center sm:text-left">
-            &copy; 2025 Eemar Al Madina LLC. All rights reserved. &middot; Sharjah, UAE
+            {company.copyright}
           </div>
           <div className="flex flex-wrap justify-center sm:justify-end items-center gap-4 sm:gap-6 text-white/20 text-xs">
             <a href="#" className="hover:text-white/50 transition-colors">Privacy Policy</a>

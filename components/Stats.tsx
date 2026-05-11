@@ -1,6 +1,9 @@
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import { statsNumbers as stats, statsBarData as BAR_DATA, statsCallout, statsBackgroundImage } from "@/lib/content";
+
+// All stats data lives in lib/content.ts — edit there.
 
 function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
   const [count, setCount] = useState(0);
@@ -24,23 +27,6 @@ function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-const stats = [
-  { value: 80,  suffix: "+",  label: "Projects Delivered",  sub: "Across the GCC" },
-  { value: 15,  suffix: "+",  label: "Years of Excellence",  sub: "In facade engineering" },
-  { value: 6,   suffix: "",   label: "Countries Served",     sub: "UAE, KSA, Qatar & more" },
-  { value: 100, suffix: "K+", label: "m2 Manufactured",     sub: "Annual capacity" },
-  { value: 98,  suffix: "%",  label: "On-Time Delivery",     sub: "Verified by clients" },
-  { value: 4,   suffix: ".9/5", label: "Client Rating",      sub: "120+ reviews" },
-];
-
-const BAR_DATA = [
-  { label: "2020", value: 35, color: "#312e81" },
-  { label: "2021", value: 52, color: "#4338ca" },
-  { label: "2022", value: 68, color: "#4f46e5" },
-  { label: "2023", value: 84, color: "#6366f1" },
-  { label: "2024", value: 100, color: "#818cf8" },
-];
-
 export default function Stats() {
   const barRef = useRef(null);
   const barsInView = useInView(barRef, { once: true });
@@ -50,7 +36,7 @@ export default function Stats() {
       {/* Subtle concrete texture background */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1569258592171-357ea26da4df?auto=format&fit=crop&w=1920&q=80"
+          src={statsBackgroundImage}
           alt=""
           className="w-full h-full object-cover opacity-[0.07]"
           aria-hidden="true"
@@ -138,17 +124,16 @@ export default function Stats() {
             className="card-dark rounded-2xl p-6 sm:p-8"
           >
             <div className="text-4xl sm:text-5xl font-black mb-2" style={{ color: "#6366f1" }}>
-              Landmark
+              {statsCallout.headline}
             </div>
             <div className="text-white text-xl sm:text-2xl font-bold mb-3 sm:mb-4 leading-tight">
-              Projects delivered across
-              <br />six GCC nations
+              {statsCallout.subheadline}
             </div>
             <p className="text-white/50 text-xs sm:text-sm leading-relaxed mb-5 sm:mb-6">
-              From Expo 2020 pavilion cladding in Dubai to heritage restoration in Diriyah, KSA — our panels grace some of the region's most iconic structures.
+              {statsCallout.body}
             </p>
             <div className="flex flex-wrap gap-2">
-              {["UAE", "Saudi Arabia", "Qatar", "Bahrain", "Kuwait", "Oman"].map((c) => (
+              {statsCallout.countries.map((c) => (
                 <span key={c} className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold text-indigo-300 bg-indigo-500/10 border border-indigo-500/20">
                   {c}
                 </span>

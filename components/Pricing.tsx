@@ -1,62 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight } from "lucide-react";
+import { pricing as plans } from "@/lib/content";
 
-const plans = [
-  {
-    name: "Specification Support",
-    price: "Free",
-    per: "",
-    badge: "",
-    description: "For architects and consultants in early design stages who need material guidance and outline specifications.",
-    features: [
-      "Material suitability consultation (1 hr)",
-      "Preliminary facade specification",
-      "Indicative budget schedule",
-      "Sample panel dispatch",
-      "Outline engineering commentary",
-    ],
-    cta: "Start Consultation",
-    ctaHref: "#contact",
-    highlight: false,
-  },
-  {
-    name: "Design & Supply",
-    price: "Project-based",
-    per: "Fixed-price contract",
-    badge: "Most Popular",
-    description: "Full engineering, production, and supply of your cladding system — from mock-up approval through certified delivery.",
-    features: [
-      "Full shop drawing & engineering package",
-      "CNC mould fabrication",
-      "Quality-certified panel production",
-      "Factory acceptance testing",
-      "Logistics & delivery to site",
-      "5-year material warranty",
-    ],
-    cta: "Request a Proposal",
-    ctaHref: "#contact",
-    highlight: true,
-  },
-  {
-    name: "Full Facade Partnership",
-    price: "Custom",
-    per: "EPC & Design-Build",
-    badge: "",
-    description: "Turnkey facade solution — design, supply, and certified installation by NXTGEN teams. Single-point accountability.",
-    features: [
-      "Everything in Design & Supply",
-      "NXTGEN installation crew",
-      "On-site QC supervision",
-      "As-built survey & handover",
-      "10-year product warranty",
-      "Dedicated project manager",
-    ],
-    cta: "Enquire Now",
-    ctaHref: "#contact",
-    highlight: false,
-  },
-];
+// All plan data lives in lib/content.ts — edit there.
 
 export default function Pricing() {
   return (

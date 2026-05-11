@@ -1,51 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import { testimonials, testimonialsHeader } from "@/lib/content";
 
-const testimonials = [
-  {
-    name: "Mohammed Al Rashidi",
-    role: "Lead Architect",
-    company: "Dar Al-Handasah, Dubai",
-    text: "NXTGEN delivered 4,200 GFRC panels for a 52-storey tower in under 14 weeks. Texture and color consistency across every single unit was extraordinary. No other regional manufacturer comes close.",
-    rating: 5, initials: "MR", color: "#6366f1",
-  },
-  {
-    name: "Sarah Thompson",
-    role: "Project Director",
-    company: "Arup, Abu Dhabi",
-    text: "Their engineering support during the specification phase was invaluable. The thermal calculations and connection details were submitted before we even asked — and they passed our third-party review without a single comment.",
-    rating: 5, initials: "ST", color: "#8b5cf6",
-  },
-  {
-    name: "Khalid Al-Dosari",
-    role: "Deputy CEO",
-    company: "Gulf Contracting Co., Doha",
-    text: "We have used NXTGEN on seven projects. They have never missed a delivery milestone. Their factory tracking system means our procurement team always knows exactly where each batch is in the production queue.",
-    rating: 5, initials: "KD", color: "#06b6d4",
-  },
-  {
-    name: "Priya Mehta",
-    role: "Interior Design Lead",
-    company: "Woods Bagot, Riyadh",
-    text: "The GFRG column casings for our hospitality project were manufactured to 0.5mm tolerance. Our installation crew said it was the cleanest fit-out they had ever worked with. NXTGEN is our go-to for ornamental work.",
-    rating: 5, initials: "PM", color: "#10b981",
-  },
-  {
-    name: "Faisal Al-Muhairi",
-    role: "Head of Construction",
-    company: "Emaar Properties, Dubai",
-    text: "The IoT smart panel system on our flagship retail development gives us real-time facade health data we had never had before. One alert already saved us from what would have been a very expensive remediation job.",
-    rating: 5, initials: "FM", color: "#f59e0b",
-  },
-  {
-    name: "Yuki Tanaka",
-    role: "Associate Principal",
-    company: "AECOM, Dubai",
-    text: "We brought NXTGEN in on a parametric screen project that 3 other manufacturers had already declined as too complex. They solved it in 2 weeks, produced the moulds, and delivered on schedule. Genuinely impressive.",
-    rating: 5, initials: "YT", color: "#ec4899",
-  },
-];
+// All testimonial data lives in lib/content.ts — edit there.
 
 export default function Testimonials() {
   return (
@@ -71,12 +29,12 @@ export default function Testimonials() {
           {/* Rating summary — stacks below heading on mobile */}
           <div className="flex items-center gap-4 sm:gap-5 shrink-0">
             <div className="text-center">
-              <div className="text-4xl sm:text-5xl font-black text-zinc-900">4.9</div>
+              <div className="text-4xl sm:text-5xl font-black text-zinc-900">{testimonialsHeader.avgRating}</div>
               <div className="text-zinc-400 text-xs sm:text-sm mt-1">Avg rating</div>
             </div>
             <div className="w-px h-10 bg-zinc-200" />
             <div className="text-center">
-              <div className="text-4xl sm:text-5xl font-black text-zinc-900">120+</div>
+              <div className="text-4xl sm:text-5xl font-black text-zinc-900">{testimonialsHeader.reviewCount}</div>
               <div className="text-zinc-400 text-xs sm:text-sm mt-1">Reviews</div>
             </div>
           </div>
