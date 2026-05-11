@@ -91,14 +91,31 @@ export default function Services() {
                   transition: "opacity 0.25s",
                   pointerEvents: active ? "none" : "auto",
                 }}>
+                  {/* Desktop/tablet: title only, rotated */}
                   <div
-                    className="svc-label"
+                    className="hidden md:flex"
                     style={{
-                      display: "flex", flexDirection: "column",
-                      alignItems: "center", gap: 12,
+                      flexDirection: "column",
+                      alignItems: "center",
                       transform: "rotate(-90deg)",
                       whiteSpace: "nowrap",
-                      transition: "transform 0.5s",
+                    }}
+                  >
+                    <span style={{
+                      fontSize: 17, fontWeight: 900, letterSpacing: "-0.01em",
+                      color: "#18181b",
+                    }}>
+                      {svc.title}
+                    </span>
+                  </div>
+
+                  {/* Mobile: horizontal, all elements */}
+                  <div
+                    className="flex md:hidden"
+                    style={{
+                      flexDirection: "column",
+                      alignItems: "center", gap: 12,
+                      whiteSpace: "nowrap",
                     }}
                   >
                     <span style={{
@@ -115,12 +132,9 @@ export default function Services() {
                     </span>
                     <span style={{
                       fontSize: 9, fontWeight: 700, letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                      color: svc.accentColor,
-                      padding: "3px 8px",
-                      background: `${svc.accentColor}15`,
-                      borderRadius: 999,
-                      border: `1px solid ${svc.accentColor}30`,
+                      textTransform: "uppercase", color: svc.accentColor,
+                      padding: "3px 8px", background: `${svc.accentColor}15`,
+                      borderRadius: 999, border: `1px solid ${svc.accentColor}30`,
                     }}>
                       {svc.full.split(" ").slice(0, 3).join(" ")}
                     </span>

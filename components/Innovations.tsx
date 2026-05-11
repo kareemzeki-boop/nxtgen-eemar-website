@@ -100,42 +100,53 @@ export default function Innovations() {
                     pointerEvents: active ? "none" : "auto",
                   }}
                 >
+                  {/* Desktop/tablet: title only, rotated */}
                   <div
-                    className="inno-label"
+                    className="hidden md:flex"
                     style={{
-                      display:       "flex",
                       flexDirection: "column",
                       alignItems:    "center",
-                      gap:           16,
+                      gap:           12,
                       transform:     "rotate(-90deg)",
                       whiteSpace:    "nowrap",
-                      transition:    "transform 0.5s",
                     }}
                   >
-                    <div
-                      style={{
-                        width: 28, height: 28, borderRadius: 6,
-                        background: `${item.color}18`,
-                        border: `1px solid ${item.color}35`,
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                      }}
-                    >
+                    <span style={{
+                      fontSize: 17, fontWeight: 900, color: "rgba(255,255,255,0.88)",
+                      letterSpacing: "-0.01em",
+                    }}>
+                      {item.title}
+                    </span>
+                  </div>
+
+                  {/* Mobile: horizontal, all elements */}
+                  <div
+                    className="flex md:hidden"
+                    style={{
+                      flexDirection: "column",
+                      alignItems:    "center",
+                      gap:           14,
+                      whiteSpace:    "nowrap",
+                    }}
+                  >
+                    <div style={{
+                      width: 28, height: 28, borderRadius: 6,
+                      background: `${item.color}18`,
+                      border: `1px solid ${item.color}35`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
                       <Icon size={13} style={{ color: item.color }} />
                     </div>
-                    <span
-                      style={{
-                        fontSize: 11, fontWeight: 700, letterSpacing: "0.13em",
-                        textTransform: "uppercase", color: item.color,
-                      }}
-                    >
+                    <span style={{
+                      fontSize: 11, fontWeight: 700, letterSpacing: "0.13em",
+                      textTransform: "uppercase", color: item.color,
+                    }}>
                       {item.tag}
                     </span>
-                    <span
-                      style={{
-                        fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.75)",
-                        letterSpacing: "0.02em",
-                      }}
-                    >
+                    <span style={{
+                      fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.75)",
+                      letterSpacing: "0.02em",
+                    }}>
                       {item.title}
                     </span>
                   </div>
