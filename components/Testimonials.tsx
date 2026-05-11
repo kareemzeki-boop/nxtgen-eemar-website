@@ -47,9 +47,10 @@ export default function Testimonials() {
               key={t.name}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5, transition: { type: "spring", stiffness: 300, damping: 22 } }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.5, ease: "easeOut" }}
-              className="card-light rounded-2xl p-5 sm:p-7 flex flex-col gap-4 sm:gap-5"
+              className="card-light rounded-2xl p-5 sm:p-7 flex flex-col gap-4 sm:gap-5 transition-shadow duration-300 hover:shadow-md"
             >
               <div className="flex gap-0.5 sm:gap-1">
                 {Array.from({ length: t.rating }).map((_, j) => (

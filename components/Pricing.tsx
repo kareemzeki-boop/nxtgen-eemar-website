@@ -9,7 +9,7 @@ export default function Pricing() {
   return (
     <section id="pricing" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 50% 40% at 50% 100%, rgba(99,102,241,0.1) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 50% 40% at 50% 100%, rgba(93,195,155,0.08) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -43,6 +43,7 @@ export default function Pricing() {
               key={plan.name}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -6, transition: { type: "spring", stiffness: 300, damping: 22 } }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
               className={`relative rounded-2xl p-6 sm:p-8 flex flex-col gap-5 sm:gap-6 ${

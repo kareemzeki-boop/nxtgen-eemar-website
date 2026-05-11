@@ -27,14 +27,14 @@ export default function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-black/90 backdrop-blur-md border-b border-white/10" : "bg-transparent"
+          scrolled ? "bg-[#1e1e1e]/95 backdrop-blur-md border-b border-white/[0.07]" : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between" style={{ height: 68 }}>
 
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center pulse-glow" style={{ background: "#6366f1" }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center pulse-glow" style={{ background: "#5DC39B" }}>
               <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
                 <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                 <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
@@ -90,12 +90,12 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-black/96 backdrop-blur-xl flex flex-col"
+            className="fixed inset-0 z-40 bg-[#1e1e1e]/98 backdrop-blur-xl flex flex-col"
           >
             {/* Close button area matches navbar height */}
             <div className="flex items-center justify-between px-5 sm:px-6" style={{ height: 68 }}>
               <a href="#" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#6366f1" }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#5DC39B" }}>
                   <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
                     <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                     <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />

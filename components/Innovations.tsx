@@ -11,10 +11,10 @@ export default function Innovations() {
   return (
     <section id="innovations" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)", transform: "translate(30%, -30%)" }}
+        style={{ background: "radial-gradient(circle, rgba(93,195,155,0.08) 0%, transparent 70%)", transform: "translate(30%, -30%)" }}
       />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)", transform: "translate(-30%, 30%)" }}
+        style={{ background: "radial-gradient(circle, rgba(93,195,155,0.05) 0%, transparent 70%)", transform: "translate(-30%, 30%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -51,9 +51,10 @@ export default function Innovations() {
                 key={item.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -5, transition: { type: "spring", stiffness: 300, damping: 20 } }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
-                className="card-dark rounded-2xl p-6 sm:p-8 flex flex-col gap-5 sm:gap-6 group hover:border-white/20 transition-all duration-300"
+                className="card-dark rounded-2xl p-6 sm:p-8 flex flex-col gap-5 sm:gap-6 group hover:border-white/20 transition-colors duration-300"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div

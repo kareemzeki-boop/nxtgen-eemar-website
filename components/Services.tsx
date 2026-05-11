@@ -82,7 +82,7 @@ export default function Services() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
                     className="overflow-hidden"
                   >
                     <div className="pb-8 sm:pb-10 pl-0 sm:pl-10 md:pl-14 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">

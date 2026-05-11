@@ -44,7 +44,7 @@ export default function Stats() {
         />
       </div>
       <div className="absolute inset-0 pointer-events-none opacity-30"
-        style={{ background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(99,102,241,0.12) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(93,195,155,0.10) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -76,7 +76,7 @@ export default function Stats() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="bg-[#080808] px-5 sm:px-6 md:px-8 py-6 sm:py-7 md:py-8 group hover:bg-indigo-500/5 transition-colors duration-300"
+              className="bg-[#242424] px-5 sm:px-6 md:px-8 py-6 sm:py-7 md:py-8 group hover:bg-indigo-500/5 transition-colors duration-300"
             >
               <div className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight mb-1.5">
                 {typeof s.value === "number" ? (
@@ -123,7 +123,7 @@ export default function Stats() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="card-dark rounded-2xl p-6 sm:p-8"
           >
-            <div className="text-4xl sm:text-5xl font-black mb-2" style={{ color: "#6366f1" }}>
+            <div className="text-4xl sm:text-5xl font-black mb-2" style={{ color: "#5DC39B" }}>
               {statsCallout.headline}
             </div>
             <div className="text-white text-xl sm:text-2xl font-bold mb-3 sm:mb-4 leading-tight">

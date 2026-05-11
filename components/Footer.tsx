@@ -16,7 +16,7 @@ export default function Footer() {
           {/* Brand — full width on mobile, spans left col on sm */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center pulse-glow" style={{ background: "#6366f1" }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center pulse-glow" style={{ background: "#5DC39B" }}>
                 <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
                   <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                   <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
@@ -85,7 +85,7 @@ export default function Footer() {
           {/* CTA box — spans right col on sm, own col on lg */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="rounded-2xl p-5 sm:p-6 flex flex-col gap-4"
-              style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.2)" }}
+              style={{ background: "rgba(93,195,155,0.10)", border: "1px solid rgba(93,195,155,0.22)" }}
             >
               <div className="text-lg sm:text-xl font-black text-white leading-tight">
                 Ready to specify your facade?

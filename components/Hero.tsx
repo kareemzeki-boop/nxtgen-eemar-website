@@ -31,7 +31,7 @@ export default function Hero() {
         {/* Overlay: near-opaque on left for legibility, lighter on right so facade shows */}
         <div
           className="absolute inset-0"
-          style={{ background: "linear-gradient(110deg, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.90) 42%, rgba(8,8,8,0.60) 100%)" }}
+          style={{ background: "linear-gradient(110deg, rgba(24,24,24,0.97) 0%, rgba(24,24,24,0.90) 42%, rgba(24,24,24,0.55) 100%)" }}
         />
       </div>
       {/* Radial glow on top of photo */}
@@ -39,20 +39,20 @@ export default function Hero() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.18) 0%, transparent 70%)",
+            "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(93,195,155,0.12) 0%, transparent 70%)",
         }}
       />
       {/* Floating shapes — hidden on mobile to avoid overflow clutter */}
       <div className="absolute top-1/4 right-12 w-48 h-48 sm:w-64 sm:h-64 opacity-10 float-anim hidden sm:block" style={{ animationDelay: "0s" }}>
         <svg viewBox="0 0 200 200" fill="none">
-          <polygon points="100,10 190,55 190,145 100,190 10,145 10,55" stroke="#6366f1" strokeWidth="1" />
-          <polygon points="100,40 160,70 160,130 100,160 40,130 40,70" stroke="#6366f1" strokeWidth="0.5" />
+          <polygon points="100,10 190,55 190,145 100,190 10,145 10,55" stroke="#5DC39B" strokeWidth="1" />
+          <polygon points="100,40 160,70 160,130 100,160 40,130 40,70" stroke="#5DC39B" strokeWidth="0.5" />
         </svg>
       </div>
       <div className="absolute bottom-1/3 left-4 sm:left-8 w-32 h-32 sm:w-40 sm:h-40 opacity-10 float-anim hidden sm:block" style={{ animationDelay: "2s" }}>
         <svg viewBox="0 0 200 200" fill="none">
-          <rect x="20" y="20" width="160" height="160" stroke="#a5b4fc" strokeWidth="1" transform="rotate(15 100 100)" />
-          <rect x="50" y="50" width="100" height="100" stroke="#a5b4fc" strokeWidth="0.5" transform="rotate(30 100 100)" />
+          <rect x="20" y="20" width="160" height="160" stroke="#a3f0d0" strokeWidth="1" transform="rotate(15 100 100)" />
+          <rect x="50" y="50" width="100" height="100" stroke="#a3f0d0" strokeWidth="0.5" transform="rotate(30 100 100)" />
         </svg>
       </div>
 
@@ -132,7 +132,7 @@ export default function Hero() {
 
       {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, transparent, #080808)" }}
+        style={{ background: "linear-gradient(to bottom, transparent, #242424)" }}
       />
     </section>
   );

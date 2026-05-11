@@ -42,10 +42,10 @@ export default function Process() {
             {phases.map((phase, i) => (
               <motion.div
                 key={phase.number}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
+                transition={{ delay: i * 0.1, duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 {/* Mobile: horizontal pill header + card below
                     md+:  2-col grid with bubble column */}
