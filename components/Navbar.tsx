@@ -34,11 +34,12 @@ export default function Navbar() {
 
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <img
-              src="/nxtgen-eemar-website/logo.jpg"
-              alt={company.name}
-              className="w-10 h-10 rounded-lg object-cover shrink-0"
-            />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center pulse-glow shrink-0" style={{ background: "#5DC39B" }}>
+              <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
+                <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
+                <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
+              </svg>
+            </div>
             <div>
               <div className="text-white font-bold text-sm sm:text-base tracking-tight leading-none">{company.name}</div>
               <div className="text-white/50 text-[10px] sm:text-xs tracking-wider leading-none mt-0.5">{company.taglineBy}</div>
@@ -94,11 +95,12 @@ export default function Navbar() {
             {/* Close button area matches navbar height */}
             <div className="flex items-center justify-between px-5 sm:px-6" style={{ height: 68 }}>
               <a href="#" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-                <img
-                  src="/nxtgen-eemar-website/logo.jpg"
-                  alt={company.name}
-                  className="w-9 h-9 rounded-lg object-cover shrink-0"
-                />
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#5DC39B" }}>
+                  <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
+                    <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
+                    <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
+                  </svg>
+                </div>
                 <div className="text-white font-bold text-sm tracking-tight">{company.name}</div>
               </a>
               <button

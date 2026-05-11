@@ -9,8 +9,8 @@
 // Used in: Navbar, Footer, Contact
 // ----------------------------------------------------------------
 export const company = {
-  name: "EMAAR AL MADINA",
-  taglineBy: "NXT-GEN FACADE TECH",
+  name: "ELM EMAAR FACADES",
+  taglineBy: "EMAAR ALMADINA GFRC - GFRP - UHPC - GRG",
   email: "kareem@cladwise.ae",
   phone: "+971 6 XXX XXXX",
   phoneHours: "Sun-Thu, 8am-6pm GST",

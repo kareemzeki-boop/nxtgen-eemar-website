@@ -16,11 +16,12 @@ export default function Footer() {
           {/* Brand — full width on mobile, spans left col on sm */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
-              <img
-                src="/nxtgen-eemar-website/logo.jpg"
-                alt={company.name}
-                className="w-9 h-9 rounded-xl object-cover shrink-0"
-              />
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center pulse-glow shrink-0" style={{ background: "#5DC39B" }}>
+                <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
+                  <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
+                  <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
+                </svg>
+              </div>
               <div>
                 <div className="text-white font-black text-base tracking-tight leading-none">{company.name}</div>
                 <div className="text-white/40 text-xs mt-0.5">{company.taglineBy}</div>
