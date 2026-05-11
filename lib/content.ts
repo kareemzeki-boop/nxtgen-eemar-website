@@ -25,7 +25,7 @@ export const company = {
 // ----------------------------------------------------------------
 export const navLinks = [
   { label: "Services",    href: "#services" },
-  { label: "Innovations", href: "#innovations" },
+  { label: "Projects",    href: "#projects" },
   { label: "Process",     href: "#process" },
   { label: "Pricing",     href: "#pricing" },
   { label: "Contact",     href: "#contact" },
@@ -325,6 +325,80 @@ export const statsCallout = {
 // Background photo for the Stats section (concrete monument, Seoul)
 export const statsBackgroundImage =
   "https://images.unsplash.com/photo-1569258592171-357ea26da4df?auto=format&fit=crop&w=1920&q=80";
+
+// ----------------------------------------------------------------
+// PROJECTS
+// Used in: Projects.tsx
+// image: Unsplash URL or local /project-photos/page_X.jpg once extracted
+// ----------------------------------------------------------------
+export const projects = [
+  {
+    title: "Al Maryah Island Tower",
+    location: "Abu Dhabi, UAE",
+    material: "GFRC",
+    year: "2023",
+    area: "18,400 m²",
+    description: "Full facade cladding of a 62-storey mixed-use tower using custom-textured GFRC panels. Delivered 6,800 panels across 38 unique mould types in 16 weeks.",
+    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&q=85",
+    color: "#5DC39B",
+    featured: true,
+  },
+  {
+    title: "Diriyah Heritage District",
+    location: "Riyadh, Saudi Arabia",
+    material: "UHPC",
+    year: "2023",
+    area: "9,200 m²",
+    description: "Najdi-inspired UHPC cladding with hand-carved desert textures across 14 cultural heritage buildings in the UNESCO World Heritage site.",
+    image: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?auto=format&fit=crop&w=800&q=85",
+    color: "#f59e0b",
+    featured: false,
+  },
+  {
+    title: "Lusail Marina Residences",
+    location: "Doha, Qatar",
+    material: "GFRP",
+    year: "2022",
+    area: "11,600 m²",
+    description: "Marine-grade GFRP rainscreen cladding for three waterfront residential towers in Qatar's Lusail City — zero metallic reinforcement for coastal exposure.",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=85",
+    color: "#06b6d4",
+    featured: false,
+  },
+  {
+    title: "Dubai Design District Hub",
+    location: "Dubai, UAE",
+    material: "GFRC",
+    year: "2022",
+    area: "7,800 m²",
+    description: "Parametric GRC screen wall system generated from Grasshopper — 2,400 unique panel geometries produced via CNC moulds to ±1 mm tolerance.",
+    image: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=85",
+    color: "#8b5cf6",
+    featured: false,
+  },
+  {
+    title: "King Abdullah Financial District",
+    location: "Riyadh, Saudi Arabia",
+    material: "UHPC",
+    year: "2021",
+    area: "22,000 m²",
+    description: "Structural UHPC facade panels for a 72-storey commercial tower — panels span 5.4 m with no secondary steel frame, cutting programme time by 6 weeks.",
+    image: "https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?auto=format&fit=crop&w=1200&q=85",
+    color: "#ef4444",
+    featured: true,
+  },
+  {
+    title: "Bahrain Bay Waterfront",
+    location: "Manama, Bahrain",
+    material: "GRG",
+    year: "2024",
+    area: "3,400 m²",
+    description: "Ornamental GRG column casings and coffered ceilings across a luxury hotel lobby — 0.5 mm surface tolerance enabling seamless paint and gold-leaf finish.",
+    image: "https://images.unsplash.com/photo-1522743791393-522312deeebf?auto=format&fit=crop&w=800&q=85",
+    color: "#10b981",
+    featured: false,
+  },
+];
 
 // ----------------------------------------------------------------
 // TESTIMONIALS
