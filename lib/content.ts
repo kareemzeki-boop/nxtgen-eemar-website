@@ -11,8 +11,8 @@
 export const company = {
   name: "ELM EMAAR FACADES",
   taglineBy: "EMAAR ALMADINA GFRC - GFRP - UHPC - GRG",
-  email: "kareem@cladwise.ae",
-  phone: "+971 6 XXX XXXX",
+  email: "Emaaralmadinagrc@gmail.com",
+  phone: "+971 6 534 1184",
   phoneHours: "Sun-Thu, 8am-6pm GST",
   address: "Sharjah Industrial District 17, UAE",
   certification: "ISO 9001 Certified",
