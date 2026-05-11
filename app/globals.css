@@ -28,6 +28,12 @@
 
 * { box-sizing: border-box; }
 
+@media (max-width: 767px) {
+  .inno-label {
+    transform: rotate(0deg) !important;
+  }
+}
+
 html { scroll-behavior: smooth; }
 
 body {

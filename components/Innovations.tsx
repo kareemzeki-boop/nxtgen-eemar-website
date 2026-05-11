@@ -101,6 +101,7 @@ export default function Innovations() {
                   }}
                 >
                   <div
+                    className="inno-label"
                     style={{
                       display:       "flex",
                       flexDirection: "column",
