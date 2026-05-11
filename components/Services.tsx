@@ -1,13 +1,11 @@
 "use client";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { CheckCircle2, ArrowUpRight } from "lucide-react";
 import { services } from "@/lib/content";
 
-// All material data lives in lib/content.ts — edit there.
-
 export default function Services() {
-  const [open, setOpen] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
 
   return (
     <section id="services" className="section-light py-16 md:py-24 lg:py-28">
@@ -19,7 +17,7 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-12 md:mb-16"
+          className="mb-10 md:mb-14"
         >
           <span className="tag-pill bg-indigo-50 text-indigo-600 border border-indigo-100 mb-4">
             Our Materials
@@ -27,124 +25,195 @@ export default function Services() {
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight text-zinc-900 max-w-3xl leading-tight mt-4">
             Five systems. One engineered standard.
           </h2>
-          <p className="mt-4 sm:mt-5 text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
             Every material system we produce is engineered for the GCC&apos;s climate extremes — UV, salinity, seismic loads, and the relentless demand for aesthetic precision.
           </p>
         </motion.div>
 
-        {/* Accordion */}
-        <div className="flex flex-col divide-y divide-zinc-100">
-          {services.map((svc, i) => (
-            <motion.div
-              key={svc.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.06, duration: 0.5 }}
-            >
-              <button
-                className="w-full text-left py-6 sm:py-8 flex items-start gap-4 sm:gap-6 group"
-                onClick={() => setOpen(open === svc.id ? null : svc.id)}
+        {/* ── Expanding accordion cards ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+          className="flex flex-col md:flex-row gap-2"
+          style={{ height: "clamp(480px, 54vh, 580px)" }}
+          onMouseLeave={() => setHovered(null)}
+        >
+          {services.map((svc, i) => {
+            const active = hovered === i;
+            const dimmed = hovered !== null && !active;
+
+            return (
+              <div
+                key={svc.id}
+                onMouseEnter={() => setHovered(i)}
+                style={{
+                  flex:         active ? 4 : dimmed ? 0.45 : 1,
+                  transition:   "flex 0.5s cubic-bezier(0.4,0,0.2,1)",
+                  border:       `1px solid ${active ? svc.accentColor : svc.accentColor + "35"}`,
+                  background:   "#ffffff",
+                  borderRadius: "12px",
+                  overflow:     "hidden",
+                  cursor:       "pointer",
+                  position:     "relative",
+                  minWidth:     0,
+                }}
               >
-                <span className="text-xs font-bold text-zinc-300 mt-1 w-6 sm:w-8 shrink-0 tracking-widest">
-                  {svc.number}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start sm:items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-baseline gap-2">
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-zinc-900 tracking-tight">
-                          {svc.title}
-                        </h3>
-                        <span className="text-xs sm:text-sm text-zinc-400 font-medium hidden sm:inline truncate">
-                          — {svc.full}
-                        </span>
-                      </div>
-                      <p className="text-zinc-500 text-xs sm:text-sm mt-1 font-medium">{svc.tagline}</p>
-                    </div>
-                    <div
-                      className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shrink-0 transition-all duration-200"
-                      style={{
-                        background: open === svc.id ? svc.accentColor : "#f4f4f5",
-                        color: open === svc.id ? "#fff" : "#71717a",
-                      }}
-                    >
-                      {open === svc.id ? <Minus size={15} /> : <Plus size={15} />}
-                    </div>
+                {/* Top accent bar */}
+                <div style={{
+                  position: "absolute", top: 0, left: 0, right: 0, height: 3,
+                  background: svc.accentColor,
+                  opacity: active ? 1 : 0.35,
+                  transition: "opacity 0.5s",
+                }} />
+
+                {/* Background image watermark — visible when expanded */}
+                <img
+                  src={svc.image}
+                  alt=""
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute", inset: 0,
+                    width: "100%", height: "100%",
+                    objectFit: "cover",
+                    opacity: active ? 0.06 : 0,
+                    transition: "opacity 0.5s",
+                    pointerEvents: "none",
+                  }}
+                />
+
+                {/* ── COLLAPSED — rotated label ── */}
+                <div style={{
+                  position: "absolute", inset: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  opacity: active ? 0 : 1,
+                  transition: "opacity 0.25s",
+                  pointerEvents: active ? "none" : "auto",
+                }}>
+                  <div
+                    className="svc-label"
+                    style={{
+                      display: "flex", flexDirection: "column",
+                      alignItems: "center", gap: 12,
+                      transform: "rotate(-90deg)",
+                      whiteSpace: "nowrap",
+                      transition: "transform 0.5s",
+                    }}
+                  >
+                    <span style={{
+                      fontSize: 10, fontWeight: 800, letterSpacing: "0.2em",
+                      color: "rgba(0,0,0,0.2)", textTransform: "uppercase",
+                    }}>
+                      {svc.number}
+                    </span>
+                    <span style={{
+                      fontSize: 15, fontWeight: 900, letterSpacing: "-0.01em",
+                      color: "#18181b",
+                    }}>
+                      {svc.title}
+                    </span>
+                    <span style={{
+                      fontSize: 9, fontWeight: 700, letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: svc.accentColor,
+                      padding: "3px 8px",
+                      background: `${svc.accentColor}15`,
+                      borderRadius: 999,
+                      border: `1px solid ${svc.accentColor}30`,
+                    }}>
+                      {svc.full.split(" ").slice(0, 3).join(" ")}
+                    </span>
                   </div>
                 </div>
-              </button>
 
-              <AnimatePresence initial={false}>
-                {open === svc.id && (
-                  <motion.div
-                    key="content"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    className="overflow-hidden"
-                  >
-                    <div className="pb-8 sm:pb-10 pl-0 sm:pl-10 md:pl-14 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                {/* ── EXPANDED — full content ── */}
+                <div style={{
+                  position: "absolute", inset: 0,
+                  padding: "24px 24px",
+                  display: "flex", flexDirection: "column",
+                  opacity: active ? 1 : 0,
+                  transition: active ? "opacity 0.3s 0.2s" : "opacity 0.15s",
+                  pointerEvents: active ? "auto" : "none",
+                  overflowY: "auto",
+                }}>
 
-                      {/* Left: description + features + CTA */}
-                      <div className="order-2 md:order-1">
-                        <p className="text-zinc-600 text-sm leading-relaxed mb-5">{svc.description}</p>
-                        <ul className="flex flex-col gap-2.5">
-                          {svc.features.map((f) => (
-                            <li key={f} className="flex items-start gap-2.5 text-sm text-zinc-700">
-                              <CheckCircle2
-                                size={15}
-                                className="mt-0.5 shrink-0"
-                                style={{ color: svc.accentColor }}
-                              />
-                              {f}
-                            </li>
-                          ))}
-                        </ul>
-                        <a
-                          href="#contact"
-                          className="btn-primary inline-flex items-center gap-2 px-5 sm:px-6 py-3 text-sm mt-6 sm:mt-8"
-                          style={{ background: svc.accentColor }}
-                        >
-                          Request a Quote
-                        </a>
-                      </div>
-
-                      {/* Right: facade photo with testimonial overlay */}
-                      <div className="order-1 md:order-2 relative rounded-2xl overflow-hidden h-[220px] sm:h-[280px] md:h-auto md:min-h-[300px]">
-                        <img
-                          src={svc.image}
-                          alt={svc.imageAlt}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                        <div
-                          className="absolute inset-0"
-                          style={{ background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 45%, transparent 100%)" }}
-                        />
-                        <div
-                          className="absolute bottom-0 left-0 right-0 h-1 opacity-70"
-                          style={{ background: svc.accentColor }}
-                        />
-                        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
-                          <div className="text-lg font-black leading-none mb-2 opacity-80" style={{ color: svc.accentColor }}>
-                            &ldquo;
-                          </div>
-                          <p className="text-white text-xs sm:text-sm leading-relaxed italic mb-2 line-clamp-3">
-                            {svc.quote}
-                          </p>
-                          <span className="text-white/55 text-[10px] sm:text-xs font-medium">{svc.quoteBy}</span>
-                        </div>
-                      </div>
-
+                  {/* Number + title */}
+                  <div style={{ marginBottom: 14 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+                      <span style={{ fontSize: 10, fontWeight: 800, color: "rgba(0,0,0,0.2)", letterSpacing: "0.2em" }}>
+                        {svc.number}
+                      </span>
+                      <span style={{
+                        fontSize: 9, fontWeight: 700, letterSpacing: "0.12em",
+                        textTransform: "uppercase", color: svc.accentColor,
+                        padding: "3px 8px", borderRadius: 999,
+                        background: `${svc.accentColor}15`,
+                        border: `1px solid ${svc.accentColor}30`,
+                      }}>
+                        {svc.title}
+                      </span>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
-        </div>
+                    <h3 style={{ fontSize: "clamp(16px,1.8vw,22px)", fontWeight: 900, color: "#18181b", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+                      {svc.full}
+                    </h3>
+                    <p style={{ fontSize: 11, color: "#71717a", fontWeight: 600, marginTop: 4 }}>
+                      {svc.tagline}
+                    </p>
+                  </div>
+
+                  {/* Description */}
+                  <p style={{ fontSize: 12, color: "#52525b", lineHeight: 1.65, marginBottom: 14, flexShrink: 0 }}>
+                    {svc.description}
+                  </p>
+
+                  {/* Features */}
+                  <ul style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 14, flexShrink: 0 }}>
+                    {svc.features.slice(0, 4).map((f) => (
+                      <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 7, fontSize: 11, color: "#3f3f46" }}>
+                        <CheckCircle2 size={12} style={{ color: svc.accentColor, marginTop: 1, flexShrink: 0 }} />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div style={{ flex: 1 }} />
+
+                  {/* Quote snippet */}
+                  {svc.quote && (
+                    <p style={{ fontSize: 11, color: "#a1a1aa", fontStyle: "italic", marginBottom: 14, borderLeft: `2px solid ${svc.accentColor}40`, paddingLeft: 10, lineHeight: 1.5 }}>
+                      &ldquo;{svc.quote.slice(0, 90)}&hellip;&rdquo;
+                    </p>
+                  )}
+
+                  {/* CTA */}
+                  <a
+                    href="#contact"
+                    style={{
+                      display: "inline-flex", alignItems: "center", justifyContent: "center",
+                      gap: 6, padding: "10px 18px", borderRadius: 9999,
+                      background: svc.accentColor, color: "#fff",
+                      fontSize: 11, fontWeight: 700, textDecoration: "none",
+                      letterSpacing: "0.04em", transition: "opacity 0.2s",
+                      flexShrink: 0,
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
+                    onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+                  >
+                    Request a Quote <ArrowUpRight size={12} />
+                  </a>
+
+                </div>
+              </div>
+            );
+          })}
+        </motion.div>
+
+        {/* Mobile hint */}
+        <p className="mt-5 text-center text-zinc-300 text-xs font-medium tracking-widest uppercase md:hidden">
+          Tap a panel to explore
+        </p>
+
       </div>
     </section>
   );

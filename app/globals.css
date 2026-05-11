@@ -29,7 +29,8 @@
 * { box-sizing: border-box; }
 
 @media (max-width: 767px) {
-  .inno-label {
+  .inno-label,
+  .svc-label {
     transform: rotate(0deg) !important;
   }
 }
