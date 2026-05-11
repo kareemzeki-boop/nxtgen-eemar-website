@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { motion } from "framer-motion";
 import { Cpu, Layers3, Leaf, Atom } from "lucide-react";
 
@@ -22,7 +22,7 @@ const innovations = [
       "We take architect-authored parametric geometries directly from Rhino / Grasshopper and translate them into production-ready moulds. Complex undulating surfaces and algorithmic patterns delivered at 1mm tolerances.",
     tag: "Digital Fabrication",
     color: "#8b5cf6",
-    metric: "Â±1mm",
+    metric: "±1mm",
     metricLabel: "Tolerance Achieved",
   },
   {
@@ -41,7 +41,7 @@ const innovations = [
     title: "Nano-Reinforced GFRC",
     subtitle: "Material science at the molecular level",
     description:
-      "Carbon nanotube and graphene-oxide admixtures increase tensile strength by up to 60% and dramatically improve crack resistance â€” enabling thinner, lighter, and longer-spanning GFRC panels than any standard formulation on the market.",
+      "Carbon nanotube and graphene-oxide admixtures increase tensile strength by up to 60% and dramatically improve crack resistance — enabling thinner, lighter, and longer-spanning GFRC panels than any standard formulation.",
     tag: "Next-Gen Materials",
     color: "#f59e0b",
     metric: "+60%",
@@ -51,41 +51,41 @@ const innovations = [
 
 export default function Innovations() {
   return (
-    <section id="innovations" className="section-dark py-28 relative overflow-hidden">
-      {/* Accent blobs */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
+    <section id="innovations" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)", transform: "translate(30%, -30%)" }}
       />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none"
+      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)", transform: "translate(-30%, 30%)" }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-8"
+          className="mb-12 md:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8"
         >
           <div>
             <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
               R&D Innovations
             </span>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white max-w-2xl leading-tight mt-4">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight text-white max-w-2xl leading-tight mt-4">
               Beyond the brief.
               <br />
               <span className="text-white/30">Beyond the material.</span>
             </h2>
           </div>
-          <p className="text-white/50 max-w-md text-base leading-relaxed">
-            Our in-house R&D team continuously pushes what architectural cladding can do â€” combining material science, digital fabrication, and building technology.
+          <p className="text-white/50 md:max-w-sm lg:max-w-md text-sm sm:text-base leading-relaxed">
+            Our in-house R&D team continuously pushes what architectural cladding can do — combining material science, digital fabrication, and building technology.
           </p>
         </motion.div>
 
-        {/* Cards grid */}
-        <div className="grid md:grid-cols-2 gap-5">
+        {/* Cards — 1 col mobile, 2 col sm+  */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           {innovations.map((item, i) => {
             const Icon = item.icon;
             return (
@@ -95,39 +95,33 @@ export default function Innovations() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
-                className="card-dark rounded-2xl p-8 flex flex-col gap-6 group hover:border-white/20 transition-all duration-300"
+                className="card-dark rounded-2xl p-6 sm:p-8 flex flex-col gap-5 sm:gap-6 group hover:border-white/20 transition-all duration-300"
               >
-                {/* Top row */}
                 <div className="flex items-start justify-between gap-4">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0"
                     style={{ background: `${item.color}18`, border: `1px solid ${item.color}30` }}
                   >
-                    <Icon size={22} style={{ color: item.color }} />
+                    <Icon size={20} style={{ color: item.color }} />
                   </div>
                   <div className="text-right">
-                    <div className="text-3xl font-black text-white leading-none">{item.metric}</div>
+                    <div className="text-2xl sm:text-3xl font-black text-white leading-none">{item.metric}</div>
                     <div className="text-xs text-white/40 font-medium tracking-wide mt-1">{item.metricLabel}</div>
                   </div>
                 </div>
 
-                {/* Content */}
                 <div>
-                  <span
-                    className="text-xs font-bold tracking-widest uppercase"
-                    style={{ color: item.color }}
-                  >
+                  <span className="text-xs font-bold tracking-widest uppercase" style={{ color: item.color }}>
                     {item.tag}
                   </span>
-                  <h3 className="text-xl font-bold text-white mt-2 tracking-tight">{item.title}</h3>
-                  <p className="text-white/40 text-sm mt-1 font-medium">{item.subtitle}</p>
-                  <p className="text-white/60 text-sm mt-4 leading-relaxed">{item.description}</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-white mt-2 tracking-tight">{item.title}</h3>
+                  <p className="text-white/40 text-xs sm:text-sm mt-1 font-medium">{item.subtitle}</p>
+                  <p className="text-white/60 text-xs sm:text-sm mt-3 sm:mt-4 leading-relaxed">{item.description}</p>
                 </div>
 
-                {/* CTA */}
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-200"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-200 mt-auto"
                   style={{ color: item.color }}
                 >
                   Learn more
@@ -143,4 +137,3 @@ export default function Innovations() {
     </section>
   );
 }
-

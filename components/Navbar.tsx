@@ -1,14 +1,14 @@
-﻿"use client";
+"use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const links = [
-  { label: "Services", href: "#services" },
+  { label: "Services",    href: "#services" },
   { label: "Innovations", href: "#innovations" },
-  { label: "Process", href: "#process" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Contact", href: "#contact" },
+  { label: "Process",     href: "#process" },
+  { label: "Pricing",     href: "#pricing" },
+  { label: "Contact",     href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -21,6 +21,12 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   return (
     <>
       <motion.nav
@@ -28,28 +34,27 @@ export default function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-black/90 backdrop-blur-md border-b border-white/10"
-            : "bg-transparent"
+          scrolled ? "bg-black/90 backdrop-blur-md border-b border-white/10" : "bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between" style={{ height: 72 }}>
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between" style={{ height: 68 }}>
+
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group">
+          <a href="#" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center pulse-glow" style={{ background: "#6366f1" }}>
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
                 <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                 <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
               </svg>
             </div>
             <div>
-              <div className="text-white font-bold text-base tracking-tight leading-none">NXTGEN</div>
-              <div className="text-white/50 text-xs tracking-wider leading-none mt-0.5">by Eemar Al Madina</div>
+              <div className="text-white font-bold text-sm sm:text-base tracking-tight leading-none">NXTGEN</div>
+              <div className="text-white/50 text-[10px] sm:text-xs tracking-wider leading-none mt-0.5">by Eemar Al Madina</div>
             </div>
           </a>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop links — hidden below md */}
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             {links.map((l) => (
               <a
                 key={l.href}
@@ -61,63 +66,104 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <a href="mailto:kareem@cladwise.ae" className="text-white/70 hover:text-white text-sm font-medium transition-colors">
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center gap-3 lg:gap-4">
+            <a href="mailto:kareem@cladwise.ae"
+              className="text-white/60 hover:text-white text-xs lg:text-sm font-medium transition-colors hidden lg:block"
+            >
               kareem@cladwise.ae
             </a>
-            <a
-              href="#contact"
-              className="btn-primary px-5 py-2.5 text-sm"
-            >
+            <a href="#contact" className="btn-primary px-4 lg:px-5 py-2.5 text-sm">
               Get a Quote
             </a>
           </div>
 
-          {/* Mobile hamburger */}
+          {/* Mobile / tablet hamburger */}
           <button
-            className="md:hidden text-white p-2"
+            className="md:hidden text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
             onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
           >
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </motion.nav>
 
-      {/* Mobile menu */}
+      {/* Mobile / tablet full-screen menu */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-black/96 backdrop-blur-xl flex flex-col"
           >
-            {links.map((l, i) => (
-              <motion.a
-                key={l.href}
-                href={l.href}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.07 }}
-                className="text-white text-3xl font-bold tracking-tight"
+            {/* Close button area matches navbar height */}
+            <div className="flex items-center justify-between px-5 sm:px-6" style={{ height: 68 }}>
+              <a href="#" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#6366f1" }}>
+                  <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
+                    <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
+                    <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
+                  </svg>
+                </div>
+                <div className="text-white font-bold text-sm tracking-tight">NXTGEN</div>
+              </a>
+              <button
+                className="text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
                 onClick={() => setOpen(false)}
               >
-                {l.label}
-              </motion.a>
-            ))}
-            <a
-              href="#contact"
-              className="btn-primary px-8 py-3 text-base mt-4"
-              onClick={() => setOpen(false)}
-            >
-              Get a Quote
-            </a>
+                <X size={22} />
+              </button>
+            </div>
+
+            {/* Links */}
+            <div className="flex-1 flex flex-col items-start justify-center px-8 sm:px-12 gap-2">
+              {links.map((l, i) => (
+                <motion.a
+                  key={l.href}
+                  href={l.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.06 + 0.1 }}
+                  className="text-white/80 hover:text-white text-4xl sm:text-5xl font-black tracking-tight py-2 transition-colors"
+                  onClick={() => setOpen(false)}
+                >
+                  {l.label}
+                </motion.a>
+              ))}
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+                className="mt-8 flex flex-col sm:flex-row gap-3 w-full"
+              >
+                <a
+                  href="#contact"
+                  className="btn-primary px-8 py-3.5 text-base text-center"
+                  onClick={() => setOpen(false)}
+                >
+                  Get a Quote
+                </a>
+                <a
+                  href="mailto:kareem@cladwise.ae"
+                  className="btn-outline-dark px-8 py-3.5 text-base text-center"
+                  onClick={() => setOpen(false)}
+                >
+                  kareem@cladwise.ae
+                </a>
+              </motion.div>
+            </div>
+
+            {/* Bottom info */}
+            <div className="px-8 sm:px-12 pb-8 text-white/25 text-xs">
+              Sharjah Industrial District 17, UAE &middot; ISO 9001 Certified
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
     </>
   );
 }
-

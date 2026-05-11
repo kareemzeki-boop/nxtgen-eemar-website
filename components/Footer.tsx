@@ -17,12 +17,14 @@ const innovations = ["IoT Smart Panels", "3D Parametric", "Bio-Hybrid Cladding",
 export default function Footer() {
   return (
     <footer className="section-dark border-t border-white/[0.06]">
-      {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <div className="grid lg:grid-cols-4 gap-12">
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-6">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 py-14 sm:py-16 md:py-20">
+
+        {/* Grid: 1-col mobile → 2-col sm → 4-col lg */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12">
+
+          {/* Brand — full width on mobile, spans left col on sm */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center gap-3 mb-5">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center pulse-glow" style={{ background: "#6366f1" }}>
                 <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
                   <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
@@ -34,19 +36,18 @@ export default function Footer() {
                 <div className="text-white/40 text-xs mt-0.5">by Eemar Al Madina</div>
               </div>
             </div>
-            <p className="text-white/40 text-sm leading-relaxed mb-6">
-              Engineering living facades for the Middle East. Precision-manufactured architectural cladding systems from our Sharjah factory.
+            <p className="text-white/40 text-sm leading-relaxed mb-5 max-w-xs">
+              Engineering living facades for the Middle East. Precision-manufactured architectural cladding from our Sharjah factory.
             </p>
-            <div className="flex flex-col gap-3">
-              <a
-                href="mailto:kareem@cladwise.ae"
+            <div className="flex flex-col gap-2.5">
+              <a href="mailto:kareem@cladwise.ae"
                 className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
               >
-                <Mail size={14} className="text-indigo-400" />
+                <Mail size={13} className="text-indigo-400 shrink-0" />
                 kareem@cladwise.ae
               </a>
               <div className="flex items-start gap-2 text-sm text-white/50">
-                <MapPin size={14} className="text-indigo-400 mt-0.5 shrink-0" />
+                <MapPin size={13} className="text-indigo-400 mt-0.5 shrink-0" />
                 Sharjah Industrial District 17, UAE
               </div>
             </div>
@@ -54,8 +55,8 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <div className="text-white/30 text-xs font-bold uppercase tracking-widest mb-5">Navigation</div>
-            <ul className="flex flex-col gap-3">
+            <div className="text-white/30 text-xs font-bold uppercase tracking-widest mb-4">Navigation</div>
+            <ul className="flex flex-col gap-2.5 sm:gap-3">
               {navLinks.map((l) => (
                 <li key={l.href}>
                   <a href={l.href} className="text-white/50 hover:text-white text-sm transition-colors font-medium">
@@ -66,10 +67,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Materials */}
+          {/* Materials + Innovations */}
           <div>
-            <div className="text-white/30 text-xs font-bold uppercase tracking-widest mb-5">Materials</div>
-            <ul className="flex flex-col gap-3">
+            <div className="text-white/30 text-xs font-bold uppercase tracking-widest mb-4">Materials</div>
+            <ul className="flex flex-col gap-2.5 sm:gap-3 mb-7">
               {materials.map((m) => (
                 <li key={m}>
                   <a href="#services" className="text-white/50 hover:text-white text-sm transition-colors font-medium">
@@ -78,8 +79,8 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <div className="text-white/30 text-xs font-bold uppercase tracking-widest mb-5 mt-8">Innovations</div>
-            <ul className="flex flex-col gap-3">
+            <div className="text-white/30 text-xs font-bold uppercase tracking-widest mb-4">Innovations</div>
+            <ul className="flex flex-col gap-2.5 sm:gap-3">
               {innovations.map((inn) => (
                 <li key={inn}>
                   <a href="#innovations" className="text-white/50 hover:text-white text-sm transition-colors font-medium">
@@ -90,26 +91,22 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* CTA box */}
-          <div>
-            <div className="rounded-2xl p-6 flex flex-col gap-4" style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.2)" }}>
-              <div className="text-xl font-black text-white leading-tight">
+          {/* CTA box — spans right col on sm, own col on lg */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            <div className="rounded-2xl p-5 sm:p-6 flex flex-col gap-4"
+              style={{ background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.2)" }}
+            >
+              <div className="text-lg sm:text-xl font-black text-white leading-tight">
                 Ready to specify your facade?
               </div>
               <p className="text-white/50 text-sm leading-relaxed">
                 Our engineering team responds to all enquiries within one business day.
               </p>
-              <a
-                href="#contact"
-                className="btn-primary py-3 text-sm flex items-center justify-center gap-2"
-              >
-                Start a Project <ArrowUpRight size={15} />
+              <a href="#contact" className="btn-primary py-3 text-sm flex items-center justify-center gap-2">
+                Start a Project <ArrowUpRight size={14} />
               </a>
-              <a
-                href="mailto:kareem@cladwise.ae"
-                className="btn-outline-dark py-3 text-sm flex items-center justify-center gap-2"
-              >
-                Email Directly <Mail size={14} />
+              <a href="mailto:kareem@cladwise.ae" className="btn-outline-dark py-3 text-sm flex items-center justify-center gap-2">
+                Email Directly <Mail size={13} />
               </a>
             </div>
           </div>
@@ -118,14 +115,14 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/[0.05]">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-white/20 text-xs">
-            © 2025 Eemar Al Madina LLC. All rights reserved. · Sharjah, UAE
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+          <div className="text-white/20 text-xs text-center sm:text-left">
+            &copy; 2025 Eemar Al Madina LLC. All rights reserved. &middot; Sharjah, UAE
           </div>
-          <div className="flex items-center gap-6 text-white/20 text-xs">
+          <div className="flex flex-wrap justify-center sm:justify-end items-center gap-4 sm:gap-6 text-white/20 text-xs">
             <a href="#" className="hover:text-white/50 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white/50 transition-colors">Terms of Service</a>
-            <span className="text-white/10">·</span>
+            <span className="hidden sm:inline text-white/10">·</span>
             <span>ISO 9001 Certified</span>
           </div>
         </div>
