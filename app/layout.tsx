@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NXTGEN by Eemar Al Madina | Engineering Living Facades",
-  description: "We Engineer Living Facades For The Middle East. Specialists in GFRC, GFRP, UHPC, Veloce LTGRC, and GFRG architectural cladding systems.",
+  title: "Emaar Al Madina | NXT-GEN Facade Tech",
+  description: "Emaar Al Madina — NXT-GEN Facade Tech. Specialists in GFRC, GFRP, UHPC, Veloce LTGRC, and GFRG architectural cladding systems across the GCC.",
 };
 
 export default function RootLayout({

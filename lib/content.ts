@@ -9,14 +9,14 @@
 // Used in: Navbar, Footer, Contact
 // ----------------------------------------------------------------
 export const company = {
-  name: "NXTGEN",
-  taglineBy: "by Eemar Al Madina",
+  name: "EMAAR AL MADINA",
+  taglineBy: "NXT-GEN FACADE TECH",
   email: "kareem@cladwise.ae",
   phone: "+971 6 XXX XXXX",
   phoneHours: "Sun-Thu, 8am-6pm GST",
   address: "Sharjah Industrial District 17, UAE",
   certification: "ISO 9001 Certified",
-  copyright: "© 2025 Eemar Al Madina LLC. All rights reserved. · Sharjah, UAE",
+  copyright: "© 2025 Emaar Al Madina LLC. All rights reserved. · Sharjah, UAE",
 };
 
 // ----------------------------------------------------------------
