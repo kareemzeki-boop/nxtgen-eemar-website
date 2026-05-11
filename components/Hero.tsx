@@ -20,16 +20,22 @@ function FadeUp({ delay = 0, children, className }: { delay?: number; children: 
 export default function Hero() {
   return (
     <section className="section-dark relative min-h-screen flex flex-col overflow-hidden">
-      {/* Background grid */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-      {/* Radial glow */}
+      {/* Background facade photo — geometric angled-panel building, Osaka */}
+      <div className="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1772232141617-a19025ad997e?auto=format&fit=crop&w=1920&q=85"
+          alt=""
+          className="w-full h-full object-cover object-center"
+          aria-hidden="true"
+          fetchPriority="high"
+        />
+        {/* Overlay: near-opaque on left for legibility, lighter on right so facade shows */}
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(110deg, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.90) 42%, rgba(8,8,8,0.60) 100%)" }}
+        />
+      </div>
+      {/* Radial glow on top of photo */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -122,7 +128,7 @@ export default function Hero() {
               { num: "6",    label: "GCC Countries" },
               { num: "100%", label: "Custom Engineered" },
             ].map((s) => (
-              <div key={s.label} className="bg-white/[0.025] px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-1">
+              <div key={s.label} className="bg-white/[0.06] backdrop-blur-sm px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-1">
                 <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">{s.num}</div>
                 <div className="text-[10px] sm:text-xs text-white/40 font-medium tracking-wide uppercase leading-tight">{s.label}</div>
               </div>

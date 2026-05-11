@@ -47,6 +47,16 @@ export default function Stats() {
 
   return (
     <section className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
+      {/* Subtle concrete texture background */}
+      <div className="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1569258592171-357ea26da4df?auto=format&fit=crop&w=1920&q=80"
+          alt=""
+          className="w-full h-full object-cover opacity-[0.07]"
+          aria-hidden="true"
+          loading="lazy"
+        />
+      </div>
       <div className="absolute inset-0 pointer-events-none opacity-30"
         style={{ background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(99,102,241,0.12) 0%, transparent 70%)" }}
       />

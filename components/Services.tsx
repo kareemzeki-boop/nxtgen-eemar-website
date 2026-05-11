@@ -22,6 +22,8 @@ const services = [
     quote: "NXTGEN's GFRC panels transformed our tower facade — the texture consistency across 4,200 units was flawless.",
     quoteBy: "Lead Architect, Dubai Iconic Tower Project",
     accentColor: "#6366f1",
+    image: "https://images.unsplash.com/photo-1774023451593-22c266c72fa7?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Concrete building facade with rows of windows — GFRC architectural cladding",
   },
   {
     id: "gfrp",
@@ -41,6 +43,8 @@ const services = [
     quote: "Six years on a waterfront development in Abu Dhabi — zero degradation, zero maintenance calls.",
     quoteBy: "Project Manager, Abu Dhabi Waterfront Development",
     accentColor: "#8b5cf6",
+    image: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Modern building with undulating composite facade panels — GFRP cladding system",
   },
   {
     id: "uhpc",
@@ -60,6 +64,8 @@ const services = [
     quote: "We specified UHPC for the cantilevered brise-soleil blades — NXTGEN delivered tolerances we didn't think possible in the region.",
     quoteBy: "Structural Engineer, Riyadh Cultural Centre",
     accentColor: "#06b6d4",
+    image: "https://images.unsplash.com/photo-1522743791393-522312deeebf?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Monolithic grey concrete architecture — representative of UHPC ultra-dense cladding",
   },
   {
     id: "ltgrc",
@@ -79,6 +85,8 @@ const services = [
     quote: "The Veloce LTGRC entrance wall is the most photographed element in our entire campus — it glows at dusk like nothing else.",
     quoteBy: "Design Director, Sharjah Innovation Hub",
     accentColor: "#f59e0b",
+    image: "https://images.unsplash.com/photo-1762689267018-013bf117a1a2?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Modern building facade with precise horizontal panel lines — LTGRC light-transmitting system",
   },
   {
     id: "gfrg",
@@ -98,6 +106,8 @@ const services = [
     quote: "1,200 GFRG column casings across our hotel — all installed in 14 days. Extraordinary.",
     quoteBy: "Interior Fit-Out Manager, Luxury Hotel, Qatar",
     accentColor: "#10b981",
+    image: "https://images.unsplash.com/photo-1774617780468-2901c66e0dac?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Geometric diamond pattern on architectural facade — GFRG precision cladding detail",
   },
 ];
 
@@ -180,11 +190,10 @@ export default function Services() {
                     transition={{ duration: 0.4, ease: "easeOut" }}
                     className="overflow-hidden"
                   >
-                    {/* Mobile: no left indent. Tablet+: indent to align with title */}
                     <div className="pb-8 sm:pb-10 pl-0 sm:pl-10 md:pl-14 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
 
-                      {/* Left: description + features */}
-                      <div>
+                      {/* Left: description + features + CTA */}
+                      <div className="order-2 md:order-1">
                         <p className="text-zinc-600 text-sm leading-relaxed mb-5">{svc.description}</p>
                         <ul className="flex flex-col gap-2.5">
                           {svc.features.map((f) => (
@@ -207,30 +216,36 @@ export default function Services() {
                         </a>
                       </div>
 
-                      {/* Right: testimonial */}
-                      <div
-                        className="rounded-2xl p-5 sm:p-6 flex flex-col justify-between"
-                        style={{ background: `${svc.accentColor}0d`, border: `1px solid ${svc.accentColor}20` }}
-                      >
+                      {/* Right: facade photo with testimonial overlay */}
+                      <div className="order-1 md:order-2 relative rounded-2xl overflow-hidden h-[220px] sm:h-[280px] md:h-auto md:min-h-[300px]">
+                        <img
+                          src={svc.image}
+                          alt={svc.imageAlt}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        {/* Dark gradient overlay so testimonial is readable */}
                         <div
-                          className="text-3xl font-black mb-3 leading-none"
-                          style={{ color: svc.accentColor }}
-                        >
-                          &ldquo;
-                        </div>
-                        <p className="text-zinc-700 leading-relaxed italic text-sm flex-1">
-                          {svc.quote}
-                        </p>
-                        <div className="mt-5 flex items-center gap-3">
-                          <div
-                            className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-                            style={{ background: svc.accentColor }}
-                          >
-                            {svc.quoteBy[0]}
+                          className="absolute inset-0"
+                          style={{ background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 45%, transparent 100%)" }}
+                        />
+                        {/* Accent colour tint at very bottom */}
+                        <div
+                          className="absolute bottom-0 left-0 right-0 h-1 opacity-70"
+                          style={{ background: svc.accentColor }}
+                        />
+                        {/* Testimonial */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                          <div className="text-lg font-black leading-none mb-2 opacity-80" style={{ color: svc.accentColor }}>
+                            &ldquo;
                           </div>
-                          <span className="text-xs text-zinc-500 font-medium">{svc.quoteBy}</span>
+                          <p className="text-white text-xs sm:text-sm leading-relaxed italic mb-2 line-clamp-3">
+                            {svc.quote}
+                          </p>
+                          <span className="text-white/55 text-[10px] sm:text-xs font-medium">{svc.quoteBy}</span>
                         </div>
                       </div>
+
                     </div>
                   </motion.div>
                 )}
