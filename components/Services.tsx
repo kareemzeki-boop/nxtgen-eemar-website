@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { motion, useAnimationFrame, AnimatePresence } from "framer-motion";
 import { CheckCircle2, ArrowUpRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { services } from "@/lib/content";
+import { ctaClick } from "@/lib/cta";
 
 const SIZE = 200;
 const HALF = SIZE / 2;
@@ -321,6 +322,7 @@ export default function Services() {
 
                   <a
                     href="#contact"
+                    onClick={ctaClick}
                     style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 9999, background: svc.accentColor, color: "#fff", fontSize: 12, fontWeight: 700, textDecoration: "none", letterSpacing: "0.04em", transition: "opacity 0.2s" }}
                     onMouseEnter={e => (e.currentTarget.style.opacity = "0.82")}
                     onMouseLeave={e => (e.currentTarget.style.opacity = "1")}

@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Cpu, Layers3, Leaf, Atom } from "lucide-react";
-import SpinningCube from "./SpinningCube";
 import { innovations as innovationsData } from "@/lib/content";
+import { ctaClick } from "@/lib/cta";
 
 const ICONS = [Cpu, Layers3, Leaf, Atom] as const;
 const innovations = innovationsData.map((item, i) => ({ ...item, icon: ICONS[i] }));
@@ -101,21 +101,14 @@ export default function Innovations() {
                     pointerEvents: active ? "none" : "auto",
                   }}
                 >
-                  {/* Desktop/tablet: spinning cube + bold title */}
+                  {/* Desktop/tablet: bold rotated title */}
                   <div
                     className="hidden md:flex"
-                    style={{ flexDirection: "column", alignItems: "center", gap: 14 }}
+                    style={{ flexDirection: "column", alignItems: "center", transform: "rotate(-90deg)", whiteSpace: "nowrap" }}
                   >
-                    <SpinningCube
-                      label={item.title.split(" ")[0]}
-                      color={item.color}
-                      size={58}
-                      dark={true}
-                    />
                     <span style={{
-                      fontSize: 13, fontWeight: 900, color: "rgba(255,255,255,0.85)",
-                      letterSpacing: "-0.01em", transform: "rotate(-90deg)",
-                      whiteSpace: "nowrap",
+                      fontSize: 16, fontWeight: 900, color: "rgba(255,255,255,0.88)",
+                      letterSpacing: "-0.01em",
                     }}>
                       {item.title}
                     </span>
@@ -217,6 +210,7 @@ export default function Innovations() {
                   {/* CTA */}
                   <a
                     href="#contact"
+                    onClick={ctaClick}
                     style={{
                       display: "inline-flex", alignItems: "center", justifyContent: "center",
                       gap: 6, padding: "10px 20px", borderRadius: 9999,
