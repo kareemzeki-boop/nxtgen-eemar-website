@@ -4,20 +4,19 @@ import { motion, useAnimationFrame, AnimatePresence } from "framer-motion";
 import { CheckCircle2, ArrowUpRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { services } from "@/lib/content";
 
-const SIZE = 220;
+const SIZE = 200;
 const HALF = SIZE / 2;
 
 // Cube-container rotation to bring each face front-facing
 const FACE_ROT = [
-  { x: 0,   y: 0   }, // front  → GFRC
-  { x: 0,   y: -90 }, // right  → GFRP
-  { x: 0,   y: 180 }, // back   → UHPC
-  { x: 0,   y: 90  }, // left   → LTGRC
-  { x: 90,  y: 0   }, // bottom → GFRG
-  { x: -90, y: 0   }, // top    → brand (not selectable)
+  { x: 0,   y: 0,   z: 0 }, // front  → GFRC
+  { x: 0,   y: -90, z: 0 }, // right  → GFRP
+  { x: 0,   y: 180, z: 0 }, // back   → UHPC
+  { x: 0,   y: 90,  z: 0 }, // left   → LTGRC
+  { x: 90,  y: 0,   z: 0 }, // bottom → GFRG
+  { x: -90, y: 0,   z: 0 }, // top    → brand
 ];
 
-// CSS transform placing each face in 3D space
 const FACE_POS = [
   `translateZ(${HALF}px)`,
   `rotateY(90deg) translateZ(${HALF}px)`,
@@ -28,14 +27,12 @@ const FACE_POS = [
 ];
 
 const norm = (a: number) => ((a % 360) + 360) % 360;
+const angDist = (a: number, b: number) => Math.min(Math.abs(norm(a) - norm(b)), 360 - Math.abs(norm(a) - norm(b)));
 
 const nearestFace = (rx: number, ry: number): number => {
-  const nrx = norm(rx), nry = norm(ry);
   let best = 0, bestDist = Infinity;
   FACE_ROT.slice(0, 5).forEach(({ x, y }, i) => {
-    const dx = Math.min(Math.abs(nrx - norm(x)), 360 - Math.abs(nrx - norm(x)));
-    const dy = Math.min(Math.abs(nry - norm(y)), 360 - Math.abs(nry - norm(y)));
-    const dist = Math.sqrt(dx * dx + dy * dy);
+    const dist = Math.sqrt(angDist(rx, x) ** 2 + angDist(ry, y) ** 2);
     if (dist < bestDist) { bestDist = dist; best = i; }
   });
   return best;
@@ -43,8 +40,9 @@ const nearestFace = (rx: number, ry: number): number => {
 
 export default function Services() {
   const [selected, setSelected] = useState<number | null>(null);
-  const [rotX, setRotX] = useState(-18);
+  const [rotX, setRotX] = useState(0);
   const [rotY, setRotY] = useState(0);
+  const [rotZ, setRotZ] = useState(0);
   const [idle, setIdle] = useState(true);
   const [dragging, setDragging] = useState(false);
 
@@ -53,8 +51,14 @@ export default function Services() {
     startRotX: number; startRotY: number;
   } | null>(null);
 
+  // Idle: rotate on all 3 axes like the reference card
   useAnimationFrame((_, delta) => {
-    if (idle && !dragging) setRotY(y => y - delta * 0.022);
+    if (idle && !dragging) {
+      const s = delta * 0.022;
+      setRotX(v => v + s);
+      setRotY(v => v + s);
+      setRotZ(v => v + s);
+    }
   });
 
   const goTo = (i: number) => {
@@ -63,6 +67,7 @@ export default function Services() {
     setSelected(i);
     setRotX(FACE_ROT[i].x);
     setRotY(FACE_ROT[i].y);
+    setRotZ(0);
   };
 
   const prev = () => goTo(selected === null ? 0 : (selected + services.length - 1) % services.length);
@@ -70,34 +75,27 @@ export default function Services() {
 
   const deselect = () => {
     setSelected(null);
-    setRotX(-18);
+    setRotX(0); setRotY(0); setRotZ(0);
     setIdle(true);
   };
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
-    dragRef.current = {
-      startX: e.clientX, startY: e.clientY,
-      startRotX: rotX, startRotY: rotY,
-    };
+    dragRef.current = { startX: e.clientX, startY: e.clientY, startRotX: rotX, startRotY: rotY };
     setIdle(false);
     setDragging(true);
   };
 
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragRef.current) return;
-    const dx = e.clientX - dragRef.current.startX;
-    const dy = e.clientY - dragRef.current.startY;
-    setRotY(dragRef.current.startRotY + dx * 0.6);
-    setRotX(dragRef.current.startRotX - dy * 0.35);
+    setRotY(dragRef.current.startRotY + (e.clientX - dragRef.current.startX) * 0.6);
+    setRotX(dragRef.current.startRotX - (e.clientY - dragRef.current.startY) * 0.35);
   };
 
   const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragRef.current) return;
-    const dx = e.clientX - dragRef.current.startX;
-    const dy = e.clientY - dragRef.current.startY;
-    const finalRotX = dragRef.current.startRotX - dy * 0.35;
-    const finalRotY = dragRef.current.startRotY + dx * 0.6;
+    const finalRotX = dragRef.current.startRotX - (e.clientY - dragRef.current.startY) * 0.35;
+    const finalRotY = dragRef.current.startRotY + (e.clientX - dragRef.current.startX) * 0.6;
     dragRef.current = null;
     goTo(nearestFace(finalRotX, finalRotY));
   };
@@ -108,8 +106,6 @@ export default function Services() {
     ...services.map((s, i) => ({ svc: s, idx: i })),
     null,
   ];
-
-  const hint = dragging ? "Release to snap" : idle ? "Drag to rotate the cube" : "Drag to explore more faces";
 
   return (
     <section id="services" className="section-light py-16 md:py-24 lg:py-28 overflow-hidden">
@@ -148,7 +144,8 @@ export default function Services() {
             <div
               style={{
                 width: SIZE, height: SIZE,
-                perspective: SIZE * 5,
+                perspective: 800,
+                margin: "50px auto",
                 cursor: dragging ? "grabbing" : "grab",
               }}
               onPointerDown={onPointerDown}
@@ -161,7 +158,7 @@ export default function Services() {
                   position: "relative",
                   width: "100%", height: "100%",
                   transformStyle: "preserve-3d",
-                  transform: `rotateX(${rotX}deg) rotateY(${rotY}deg)`,
+                  transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)`,
                   transition: dragging || idle ? "none" : "transform 0.7s cubic-bezier(0.4,0,0.2,1)",
                   userSelect: "none",
                 }}
@@ -170,15 +167,20 @@ export default function Services() {
                   if (!item) {
                     return (
                       <div key="brand" style={{
-                        position: "absolute", width: SIZE, height: SIZE,
+                        position: "absolute",
+                        width: SIZE, height: SIZE,
                         transform: FACE_POS[i],
-                        background: "#eeeeee",
-                        border: "2px solid #d8d8d8",
-                        display: "flex", alignItems: "center", justifyContent: "center",
+                        background: "rgba(0,0,0,0.8)",
+                        border: "2px solid",
+                        borderImage: "linear-gradient(135deg, #444, #888, #444) 1",
+                        color: "#555",
+                        fontSize: 13,
+                        fontWeight: 900,
+                        textAlign: "center",
+                        lineHeight: `${SIZE}px`,
+                        letterSpacing: "0.18em",
                       }}>
-                        <span style={{ fontSize: 13, fontWeight: 900, color: "#bbb", letterSpacing: "0.18em" }}>
-                          ELM
-                        </span>
+                        ELM
                       </div>
                     );
                   }
@@ -188,21 +190,19 @@ export default function Services() {
 
                   return (
                     <div key={s.id} style={{
-                      position: "absolute", width: SIZE, height: SIZE,
+                      position: "absolute",
+                      width: SIZE, height: SIZE,
                       transform: FACE_POS[i],
-                      background: isActive ? `${s.accentColor}18` : "#ffffff",
-                      border: `2.5px solid ${s.accentColor}`,
-                      display: "flex", flexDirection: "column",
-                      alignItems: "center", justifyContent: "center",
+                      background: isActive ? `rgba(0,0,0,0.92)` : "rgba(0,0,0,0.80)",
+                      border: "2px solid",
+                      borderImage: `linear-gradient(135deg, ${s.accentColor}, #ffffff55, ${s.accentColor}) 1`,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
                       gap: 10,
-                      transition: "background 0.3s",
+                      cursor: "pointer",
                     }}>
-                      {/* Top accent bar */}
-                      <div style={{
-                        position: "absolute", top: 0, left: 0, right: 0, height: 4,
-                        background: s.accentColor,
-                      }} />
-
                       <span style={{
                         fontSize: 9, fontWeight: 800,
                         color: s.accentColor, letterSpacing: "0.25em",
@@ -211,17 +211,23 @@ export default function Services() {
                       </span>
 
                       <span style={{
-                        fontSize: 30, fontWeight: 900, color: "#111",
-                        letterSpacing: "-0.03em", lineHeight: 1,
-                        textAlign: "center", padding: "0 12px",
+                        fontSize: 32, fontWeight: 900,
+                        color: "#ffffff",
+                        letterSpacing: "-0.03em",
+                        lineHeight: 1,
+                        textAlign: "center",
+                        padding: "0 12px",
                       }}>
                         {s.title}
                       </span>
 
                       <span style={{
-                        fontSize: 8, fontWeight: 700, letterSpacing: "0.08em",
-                        textTransform: "uppercase", color: "#fff",
-                        padding: "3px 10px", background: s.accentColor,
+                        fontSize: 8, fontWeight: 700,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#0a0a0a",
+                        padding: "3px 10px",
+                        background: s.accentColor,
                         borderRadius: 999,
                       }}>
                         {s.full.split(" ").slice(0, 3).join(" ")}
@@ -233,7 +239,7 @@ export default function Services() {
             </div>
 
             <p style={{ fontSize: 11, color: "#aaa", letterSpacing: "0.05em", textAlign: "center" }}>
-              {hint}
+              {dragging ? "Release to snap" : idle ? "Drag to rotate the cube" : "Drag to explore more faces"}
             </p>
           </div>
 
@@ -261,7 +267,6 @@ export default function Services() {
                     background: svc.accentColor, borderRadius: "16px 16px 0 0",
                   }} />
 
-                  {/* Header row */}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.2em", color: "rgba(0,0,0,0.22)" }}>
@@ -342,8 +347,8 @@ export default function Services() {
               )}
             </AnimatePresence>
           </div>
-        </motion.div>
 
+        </motion.div>
       </div>
     </section>
   );
