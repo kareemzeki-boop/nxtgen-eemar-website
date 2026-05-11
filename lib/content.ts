@@ -82,7 +82,7 @@ export const services = [
     quote:
       "NXTGEN's GFRC panels transformed our tower facade — the texture consistency across 4,200 units was flawless.",
     quoteBy: "Lead Architect, Dubai Iconic Tower Project",
-    accentColor: "#6366f1",
+    accentColor: "#5DC39B",
     image:    "https://images.unsplash.com/photo-1774023451593-22c266c72fa7?auto=format&fit=crop&w=900&q=80",
     imageAlt: "Concrete building facade with rows of windows — GFRC architectural cladding",
   },
@@ -189,7 +189,7 @@ export const innovations = [
     description:
       "Embedded sensor arrays within GFRC panels monitor structural stress, thermal expansion, moisture ingress, and surface temperature in real time. Live dashboards alert facility managers before defects become costly.",
     tag: "Structural Intelligence",
-    color: "#6366f1",
+    color: "#5DC39B",
     metric: "24/7",
     metricLabel: "Live Monitoring",
   },
@@ -243,7 +243,7 @@ export const process = [
       "Climate & exposure classification",
       "Preliminary budget schedule",
     ],
-    color: "#6366f1",
+    color: "#5DC39B",
   },
   {
     number: "02",
@@ -307,11 +307,11 @@ export const statsNumbers = [
 ];
 
 export const statsBarData = [
-  { label: "2020", value: 35,  color: "#312e81" },
-  { label: "2021", value: 52,  color: "#4338ca" },
-  { label: "2022", value: 68,  color: "#4f46e5" },
-  { label: "2023", value: 84,  color: "#6366f1" },
-  { label: "2024", value: 100, color: "#818cf8" },
+  { label: "2020", value: 35,  color: "#1d5940" },
+  { label: "2021", value: 52,  color: "#2b7859" },
+  { label: "2022", value: 68,  color: "#38946f" },
+  { label: "2023", value: 84,  color: "#4aad86" },
+  { label: "2024", value: 100, color: "#5DC39B" },
 ];
 
 export const statsCallout = {
@@ -338,7 +338,7 @@ export const testimonials = [
     role: "Lead Architect",
     company: "Dar Al-Handasah, Dubai",
     text: "NXTGEN delivered 4,200 GFRC panels for a 52-storey tower in under 14 weeks. Texture and color consistency across every single unit was extraordinary. No other regional manufacturer comes close.",
-    rating: 5, initials: "MR", color: "#6366f1",
+    rating: 5, initials: "MR", color: "#5DC39B",
   },
   {
     name: "Sarah Thompson",
