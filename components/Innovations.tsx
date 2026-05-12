@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Cpu, Layers3, Leaf, Atom } from "lucide-react";
-import { innovations as innovationsData } from "@/lib/content";
+import { innovations as innovationsData, innovationsBackgroundImage } from "@/lib/content";
 import { ctaClick } from "@/lib/cta";
 
 const ICONS = [Cpu, Layers3, Leaf, Atom] as const;
@@ -13,6 +13,16 @@ export default function Innovations() {
 
   return (
     <section id="innovations" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
+      {/* Technical drawing wallpaper */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `url(${innovationsBackgroundImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.06,
+        }}
+      />
       <div
         className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(93,195,155,0.07) 0%, transparent 70%)", transform: "translate(30%, -30%)" }}

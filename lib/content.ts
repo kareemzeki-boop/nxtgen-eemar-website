@@ -54,7 +54,7 @@ export const hero = {
   ],
   // Full-bleed background photo (Unsplash — geometric facade, Osaka)
   backgroundImage:
-    "https://images.unsplash.com/photo-1772232141617-a19025ad997e?auto=format&fit=crop&w=1920&q=85",
+    "https://i.ibb.co/Q3jZfjVT/2a5203040aa99e241d5a054da4fcbdfe.jpg",
 };
 
 // ----------------------------------------------------------------
@@ -83,8 +83,8 @@ export const services = [
       "NXTGEN's GFRC panels transformed our tower facade — the texture consistency across 4,200 units was flawless.",
     quoteBy: "Lead Architect, Dubai Iconic Tower Project",
     accentColor: "#5DC39B",
-    image:    "https://images.unsplash.com/photo-1774023451593-22c266c72fa7?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "Concrete building facade with rows of windows — GFRC architectural cladding",
+    image:    "https://i.ibb.co/q3Lfh1nf/3b6d69b1101f49a24a0900b10d6e6db7.jpg",
+    imageAlt: "White folded fin facade panels — GFRC architectural cladding",
   },
   {
     id: "gfrp",
@@ -105,8 +105,8 @@ export const services = [
       "Six years on a waterfront development in Abu Dhabi — zero degradation, zero maintenance calls.",
     quoteBy: "Project Manager, Abu Dhabi Waterfront Development",
     accentColor: "#8b5cf6",
-    image:    "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "Modern building with undulating composite facade panels — GFRP cladding system",
+    image:    "https://i.ibb.co/kVxm8vhH/ba9242eb53bc9b1b32c991cf9f24eb0f.jpg",
+    imageAlt: "Concrete lattice facade looking up at blue sky — GFRP cladding system",
   },
   {
     id: "uhpc",
@@ -127,8 +127,8 @@ export const services = [
       "We specified UHPC for the cantilevered brise-soleil blades — NXTGEN delivered tolerances we didn't think possible in the region.",
     quoteBy: "Structural Engineer, Riyadh Cultural Centre",
     accentColor: "#06b6d4",
-    image:    "https://images.unsplash.com/photo-1522743791393-522312deeebf?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "Monolithic grey concrete architecture — representative of UHPC ultra-dense cladding",
+    image:    "https://i.ibb.co/8g3c0zKk/40a2af9dbc8f240759388ce20e488f27.jpg",
+    imageAlt: "Curved concrete structure by waterfront — UHPC precision cladding",
   },
   {
     id: "ltgrc",
@@ -149,8 +149,8 @@ export const services = [
       "The Veloce LTGRC entrance wall is the most photographed element in our entire campus — it glows at dusk like nothing else.",
     quoteBy: "Design Director, Sharjah Innovation Hub",
     accentColor: "#f59e0b",
-    image:    "https://images.unsplash.com/photo-1762689267018-013bf117a1a2?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "Modern building facade with precise horizontal panel lines — LTGRC light-transmitting system",
+    image:    "https://i.ibb.co/HLDQ3Tsf/aaa182054c4bcb0e7ff2270d37aff00e.jpg",
+    imageAlt: "3D architectural concrete lattice model — Veloce LTGRC light-transmitting system",
   },
   {
     id: "gfrg",
@@ -171,8 +171,8 @@ export const services = [
       "1,200 GFRG column casings across our hotel — all installed in 14 days. Extraordinary.",
     quoteBy: "Interior Fit-Out Manager, Luxury Hotel, Qatar",
     accentColor: "#10b981",
-    image:    "https://images.unsplash.com/photo-1774617780468-2901c66e0dac?auto=format&fit=crop&w=900&q=80",
-    imageAlt: "Geometric diamond pattern on architectural facade — GFRG precision cladding detail",
+    image:    "https://i.ibb.co/3yVSKj27/f67bfac99d60e2fd9235b5f2c52380b8.jpg",
+    imageAlt: "Crane hoisting precast concrete panels during installation — GFRG precision manufacturing",
   },
 ];
 
@@ -322,9 +322,13 @@ export const statsCallout = {
   countries: ["UAE", "Saudi Arabia", "Qatar", "Bahrain", "Kuwait", "Oman"],
 };
 
-// Background photo for the Stats section (concrete monument, Seoul)
+// Background photo for the Stats section
 export const statsBackgroundImage =
-  "https://images.unsplash.com/photo-1569258592171-357ea26da4df?auto=format&fit=crop&w=1920&q=80";
+  "https://i.ibb.co/v6qk56wV/539006a21afc0bc2dd100911f1e99554.jpg";
+
+// Background texture for the Innovations section (technical facade drawing)
+export const innovationsBackgroundImage =
+  "https://i.ibb.co/F4b8THJg/cd93d1d487584dbed63eea13881cac20.jpg";
 
 // ----------------------------------------------------------------
 // PROJECTS
@@ -339,7 +343,7 @@ export const projects = [
     year: "2023",
     area: "18,400 m²",
     description: "Full facade cladding of a 62-storey mixed-use tower using custom-textured GFRC panels. Delivered 6,800 panels across 38 unique mould types in 16 weeks.",
-    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&q=85",
+    image: "https://i.ibb.co/Q3jZfjVT/2a5203040aa99e241d5a054da4fcbdfe.jpg",
     color: "#5DC39B",
     featured: true,
   },
@@ -350,7 +354,7 @@ export const projects = [
     year: "2023",
     area: "9,200 m²",
     description: "Najdi-inspired UHPC cladding with hand-carved desert textures across 14 cultural heritage buildings in the UNESCO World Heritage site.",
-    image: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?auto=format&fit=crop&w=800&q=85",
+    image: "https://i.ibb.co/8g3c0zKk/40a2af9dbc8f240759388ce20e488f27.jpg",
     color: "#f59e0b",
     featured: false,
   },
@@ -361,7 +365,7 @@ export const projects = [
     year: "2022",
     area: "11,600 m²",
     description: "Marine-grade GFRP rainscreen cladding for three waterfront residential towers in Qatar's Lusail City — zero metallic reinforcement for coastal exposure.",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=85",
+    image: "https://i.ibb.co/kVxm8vhH/ba9242eb53bc9b1b32c991cf9f24eb0f.jpg",
     color: "#06b6d4",
     featured: false,
   },
@@ -372,7 +376,7 @@ export const projects = [
     year: "2022",
     area: "7,800 m²",
     description: "Parametric GRC screen wall system generated from Grasshopper — 2,400 unique panel geometries produced via CNC moulds to ±1 mm tolerance.",
-    image: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=85",
+    image: "https://i.ibb.co/q3Lfh1nf/3b6d69b1101f49a24a0900b10d6e6db7.jpg",
     color: "#8b5cf6",
     featured: false,
   },
@@ -383,7 +387,7 @@ export const projects = [
     year: "2021",
     area: "22,000 m²",
     description: "Structural UHPC facade panels for a 72-storey commercial tower — panels span 5.4 m with no secondary steel frame, cutting programme time by 6 weeks.",
-    image: "https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?auto=format&fit=crop&w=1200&q=85",
+    image: "https://i.ibb.co/3yVSKj27/f67bfac99d60e2fd9235b5f2c52380b8.jpg",
     color: "#ef4444",
     featured: true,
   },
@@ -394,7 +398,7 @@ export const projects = [
     year: "2024",
     area: "3,400 m²",
     description: "Ornamental GRG column casings and coffered ceilings across a luxury hotel lobby — 0.5 mm surface tolerance enabling seamless paint and gold-leaf finish.",
-    image: "https://images.unsplash.com/photo-1522743791393-522312deeebf?auto=format&fit=crop&w=800&q=85",
+    image: "https://i.ibb.co/HLDQ3Tsf/aaa182054c4bcb0e7ff2270d37aff00e.jpg",
     color: "#10b981",
     featured: false,
   },
