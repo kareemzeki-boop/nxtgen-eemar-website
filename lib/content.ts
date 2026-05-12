@@ -331,11 +331,18 @@ export const innovationsBackgroundImage =
   "https://i.ibb.co/F4b8THJg/cd93d1d487584dbed63eea13881cac20.jpg";
 
 // ----------------------------------------------------------------
-// PROJECTS
-// Used in: Projects.tsx
-// image: Unsplash URL or local /project-photos/page_X.jpg once extracted
+// PROJECTS — managed via Admin Panel (admin/)
+// Source of truth: data/projects.json  ← edit there, not here
 // ----------------------------------------------------------------
-export const projects = [
+import projectsData from "../data/projects.json";
+export const projects = projectsData as Array<{
+  id: string; title: string; location: string; material: string;
+  year: string; area: string; description: string;
+  image: string; color: string; featured: boolean;
+}>;
+
+// Legacy inline array kept only for reference — not used at runtime
+const _legacyProjects = [
   {
     title: "Al Maryah Island Tower",
     location: "Abu Dhabi, UAE",
@@ -403,6 +410,7 @@ export const projects = [
     featured: false,
   },
 ];
+void _legacyProjects; // silence unused-var warning
 
 // ----------------------------------------------------------------
 // TESTIMONIALS

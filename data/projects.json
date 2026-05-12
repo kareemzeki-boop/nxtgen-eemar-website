@@ -1,0 +1,74 @@
+[
+  {
+    "id": "al-maryah",
+    "title": "Al Maryah Island Tower",
+    "location": "Abu Dhabi, UAE",
+    "material": "GFRC",
+    "year": "2023",
+    "area": "18,400 m²",
+    "description": "Full facade cladding of a 62-storey mixed-use tower using custom-textured GFRC panels. Delivered 6,800 panels across 38 unique mould types in 16 weeks.",
+    "image": "https://i.ibb.co/Q3jZfjVT/2a5203040aa99e241d5a054da4fcbdfe.jpg",
+    "color": "#5DC39B",
+    "featured": true
+  },
+  {
+    "id": "diriyah",
+    "title": "Diriyah Heritage District",
+    "location": "Riyadh, Saudi Arabia",
+    "material": "UHPC",
+    "year": "2023",
+    "area": "9,200 m²",
+    "description": "Najdi-inspired UHPC cladding with hand-carved desert textures across 14 cultural heritage buildings in the UNESCO World Heritage site.",
+    "image": "https://i.ibb.co/8g3c0zKk/40a2af9dbc8f240759388ce20e488f27.jpg",
+    "color": "#f59e0b",
+    "featured": false
+  },
+  {
+    "id": "lusail",
+    "title": "Lusail Marina Residences",
+    "location": "Doha, Qatar",
+    "material": "GFRP",
+    "year": "2022",
+    "area": "11,600 m²",
+    "description": "Marine-grade GFRP rainscreen cladding for three waterfront residential towers in Qatar's Lusail City — zero metallic reinforcement for coastal exposure.",
+    "image": "https://i.ibb.co/kVxm8vhH/ba9242eb53bc9b1b32c991cf9f24eb0f.jpg",
+    "color": "#06b6d4",
+    "featured": false
+  },
+  {
+    "id": "dubai-design",
+    "title": "Dubai Design District Hub",
+    "location": "Dubai, UAE",
+    "material": "GFRC",
+    "year": "2022",
+    "area": "7,800 m²",
+    "description": "Parametric GRC screen wall system generated from Grasshopper — 2,400 unique panel geometries produced via CNC moulds to ±1 mm tolerance.",
+    "image": "https://i.ibb.co/q3Lfh1nf/3b6d69b1101f49a24a0900b10d6e6db7.jpg",
+    "color": "#8b5cf6",
+    "featured": false
+  },
+  {
+    "id": "kafd",
+    "title": "King Abdullah Financial District",
+    "location": "Riyadh, Saudi Arabia",
+    "material": "UHPC",
+    "year": "2021",
+    "area": "22,000 m²",
+    "description": "Structural UHPC facade panels for a 72-storey commercial tower — panels span 5.4 m with no secondary steel frame, cutting programme time by 6 weeks.",
+    "image": "https://i.ibb.co/3yVSKj27/f67bfac99d60e2fd9235b5f2c52380b8.jpg",
+    "color": "#ef4444",
+    "featured": true
+  },
+  {
+    "id": "bahrain-bay",
+    "title": "Bahrain Bay Waterfront",
+    "location": "Manama, Bahrain",
+    "material": "GRG",
+    "year": "2024",
+    "area": "3,400 m²",
+    "description": "Ornamental GRG column casings and coffered ceilings across a luxury hotel lobby — 0.5 mm surface tolerance enabling seamless paint and gold-leaf finish.",
+    "image": "https://i.ibb.co/HLDQ3Tsf/aaa182054c4bcb0e7ff2270d37aff00e.jpg",
+    "color": "#10b981",
+    "featured": false
+  }
+]
