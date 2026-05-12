@@ -1,141 +1,122 @@
 const express = require("express");
-const path    = require("path");
-const fs      = require("fs");
 const multer  = require("multer");
-const { spawn } = require("child_process");
+const path    = require("path");
 
 const app  = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
-const ROOT       = path.join(__dirname, "..");
-const DATA_FILE  = path.join(ROOT, "data", "projects.json");
-const UPLOADS    = path.join(ROOT, "public", "uploads");
-const CFG_FILE   = path.join(__dirname, "config.json");
+// ── Environment config ────────────────────────────────────────────
+const GH_TOKEN   = process.env.GITHUB_TOKEN   || "";
+const GH_OWNER   = process.env.GITHUB_OWNER   || "kareemzeki-boop";
+const GH_REPO    = process.env.GITHUB_REPO    || "nxtgen-eemar-website";
+const GH_BRANCH  = process.env.GITHUB_BRANCH  || "master";
+const GH_FILE    = "data/projects.json";
+const IMGBB_KEY  = process.env.IMGBB_API_KEY  || "";
+const ADMIN_PASS = process.env.ADMIN_PASSWORD || "admin";
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Ensure uploads dir exists
-fs.mkdirSync(UPLOADS, { recursive: true });
-
-// ── Multer ────────────────────────────────────────────────────────
-const storage = multer.diskStorage({
-  destination: UPLOADS,
-  filename: (_, file, cb) => cb(null, `${Date.now()}-${file.originalname.replace(/\s+/g, "_")}`),
-});
-const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
-
-// ── Config (PAT, etc.) ───────────────────────────────────────────
-function readCfg()  { return fs.existsSync(CFG_FILE) ? JSON.parse(fs.readFileSync(CFG_FILE)) : {}; }
-function writeCfg(d){ fs.writeFileSync(CFG_FILE, JSON.stringify(d, null, 2)); }
-
-app.get("/api/config", (_, res) => {
-  const c = readCfg();
-  res.json({ ...c, pat: c.pat ? "••••••••" : "" });
-});
-app.post("/api/config", (req, res) => {
-  const cur = readCfg();
-  const incoming = req.body;
-  if (incoming.pat === "••••••••") delete incoming.pat; // don't overwrite masked
-  writeCfg({ ...cur, ...incoming });
-  res.json({ ok: true });
+// ── Auth middleware ───────────────────────────────────────────────
+app.use("/api", (req, res, next) => {
+  if (req.path === "/auth") return next();
+  const token = req.headers["x-admin-token"];
+  if (token !== ADMIN_PASS) return res.status(401).json({ error: "Unauthorized" });
+  next();
 });
 
-// ── Projects CRUD ────────────────────────────────────────────────
-function readProjects()  { return fs.existsSync(DATA_FILE) ? JSON.parse(fs.readFileSync(DATA_FILE)) : []; }
-function writeProjects(p){ fs.writeFileSync(DATA_FILE, JSON.stringify(p, null, 2)); }
-
-app.get("/api/projects", (_, res) => res.json(readProjects()));
-
-app.post("/api/projects", (req, res) => {
-  const projects = readProjects();
-  const p = { id: `proj-${Date.now()}`, featured: false, ...req.body };
-  projects.push(p);
-  writeProjects(projects);
-  res.status(201).json(p);
+app.post("/api/auth", (req, res) => {
+  if (req.body.password === ADMIN_PASS) {
+    res.json({ ok: true, token: ADMIN_PASS });
+  } else {
+    res.status(401).json({ error: "Wrong password" });
+  }
 });
 
-app.put("/api/projects/:id", (req, res) => {
-  const projects = readProjects();
-  const i = projects.findIndex(p => p.id === req.params.id);
-  if (i === -1) return res.status(404).json({ error: "Not found" });
-  projects[i] = { ...projects[i], ...req.body };
-  writeProjects(projects);
-  res.json(projects[i]);
-});
+// ── GitHub API helpers ────────────────────────────────────────────
+const GH_HEADERS = {
+  Authorization: `token ${GH_TOKEN}`,
+  Accept: "application/vnd.github.v3+json",
+  "Content-Type": "application/json",
+  "User-Agent": "ELM-Emaar-Admin",
+};
 
-app.delete("/api/projects/:id", (req, res) => {
-  writeProjects(readProjects().filter(p => p.id !== req.params.id));
-  res.json({ ok: true });
-});
-
-// ── Image upload ─────────────────────────────────────────────────
-app.post("/api/upload", upload.single("image"), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-  // Return an ImgBB-compatible public URL (served from Next.js public/)
-  res.json({ url: `/nxtgen-eemar-website/uploads/${req.file.filename}` });
-});
-
-// ── Build & Deploy (SSE streaming) ───────────────────────────────
-let proc = null;
-
-function runStream(cmd, args, cwd, res) {
-  if (proc) { res.write(`data: {"t":"err","m":"Already running"}\n\n`); res.end(); return; }
-  res.writeHead(200, { "Content-Type": "text/event-stream", "Cache-Control": "no-cache", Connection: "keep-alive" });
-  const send = (t, m) => res.write(`data: ${JSON.stringify({ t, m })}\n\n`);
-
-  proc = spawn(cmd, args, { cwd, shell: true });
-  proc.stdout.on("data", d => send("out", d.toString()));
-  proc.stderr.on("data", d => send("err", d.toString()));
-  proc.on("close", code => {
-    send(code === 0 ? "ok" : "fail", code === 0 ? "✅ Done!" : `❌ Exited with code ${code}`);
-    res.end();
-    proc = null;
-  });
+async function ghGet() {
+  const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}?ref=${GH_BRANCH}`;
+  const res = await fetch(url, { headers: GH_HEADERS });
+  if (!res.ok) throw new Error(`GitHub read failed: ${res.status} ${await res.text()}`);
+  const data = await res.json();
+  const content = Buffer.from(data.content, "base64").toString("utf8");
+  return { sha: data.sha, projects: JSON.parse(content) };
 }
 
-app.get("/api/build", (req, res) => {
-  runStream("npm", ["run", "build"], ROOT, res);
-});
-
-app.get("/api/deploy", (req, res) => {
-  const { pat } = readCfg();
-  const remote = pat
-    ? `https://${pat}@github.com/kareemzeki-boop/nxtgen-eemar-website.git`
-    : null;
-
-  res.writeHead(200, { "Content-Type": "text/event-stream", "Cache-Control": "no-cache", Connection: "keep-alive" });
-  const send = (t, m) => res.write(`data: ${JSON.stringify({ t, m })}\n\n`);
-
-  if (proc) { send("err", "Already running"); res.end(); return; }
-
-  const steps = [
-    ["git", ["add", "-A"]],
-    ["git", ["commit", "-m", `Admin update ${new Date().toLocaleDateString("en-GB")}`]],
-    remote
-      ? ["git", ["-c", "credential.helper=", "push", remote, "HEAD:master"]]
-      : ["git", ["push", "origin", "master"]],
-  ];
-
-  (async () => {
-    for (const [cmd, args] of steps) {
-      send("out", `$ ${cmd} ${args.join(" ").replace(pat || "", "***")}\n`);
-      await new Promise((resolve, reject) => {
-        proc = spawn(cmd, args, { cwd: ROOT, shell: true });
-        proc.stdout.on("data", d => send("out", d.toString()));
-        proc.stderr.on("data", d => send("err", d.toString()));
-        proc.on("close", code => { proc = null; code === 0 ? resolve() : reject(code); });
-      });
-    }
-    send("ok", "✅ Deployed to GitHub Pages!");
-    res.end();
-  })().catch(code => {
-    send("fail", `❌ Failed (exit ${code})`);
-    res.end();
-    proc = null;
+async function ghPut(projects, sha, message) {
+  const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+  const content = Buffer.from(JSON.stringify(projects, null, 2)).toString("base64");
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: GH_HEADERS,
+    body: JSON.stringify({ message, content, sha, branch: GH_BRANCH }),
   });
+  if (!res.ok) throw new Error(`GitHub write failed: ${res.status} ${await res.text()}`);
+  return res.json();
+}
+
+// ── Projects CRUD ─────────────────────────────────────────────────
+app.get("/api/projects", async (_, res) => {
+  try {
+    const { projects } = await ghGet();
+    res.json(projects);
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-app.listen(PORT, () => {
-  console.log(`\n🟢  ELM Emaar Admin  →  http://localhost:${PORT}\n`);
+app.post("/api/projects", async (req, res) => {
+  try {
+    const { sha, projects } = await ghGet();
+    const p = { id: `proj-${Date.now()}`, featured: false, ...req.body };
+    projects.push(p);
+    await ghPut(projects, sha, `Admin: add "${p.title}"`);
+    res.status(201).json(p);
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
+
+app.put("/api/projects/:id", async (req, res) => {
+  try {
+    const { sha, projects } = await ghGet();
+    const i = projects.findIndex(p => p.id === req.params.id);
+    if (i === -1) return res.status(404).json({ error: "Not found" });
+    projects[i] = { ...projects[i], ...req.body };
+    await ghPut(projects, sha, `Admin: update "${projects[i].title}"`);
+    res.json(projects[i]);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.delete("/api/projects/:id", async (req, res) => {
+  try {
+    const { sha, projects } = await ghGet();
+    const name = projects.find(p => p.id === req.params.id)?.title || req.params.id;
+    await ghPut(projects.filter(p => p.id !== req.params.id), sha, `Admin: delete "${name}"`);
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ── Image upload → ImgBB ──────────────────────────────────────────
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
+
+app.post("/api/upload", upload.single("image"), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  if (!IMGBB_KEY) return res.status(400).json({ error: "IMGBB_API_KEY not configured" });
+  try {
+    const base64 = req.file.buffer.toString("base64");
+    const body   = new URLSearchParams({ key: IMGBB_KEY, image: base64 });
+    const r = await fetch("https://api.imgbb.com/1/upload", { method: "POST", body });
+    const data = await r.json();
+    if (!data.success) throw new Error(data.error?.message || "ImgBB upload failed");
+    res.json({ url: data.data.url });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ── Health check ──────────────────────────────────────────────────
+app.get("/api/health", (_, res) => res.json({ ok: true, ts: new Date().toISOString() }));
+
+app.listen(PORT, () => console.log(`\n🟢  ELM Emaar Admin  →  http://localhost:${PORT}\n`));
