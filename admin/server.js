@@ -129,4 +129,4 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
 // ── Health check ──────────────────────────────────────────────────
 app.get("/api/health", (_, res) => res.json({ ok: true, ts: new Date().toISOString() }));
 
-app.listen(PORT, () => console.log(`\n🟢  ELM Emaar Admin  →  http://localhost:${PORT}\n`));
+app.listen(PORT, "0.0.0.0", () => console.log(`\n🟢  ELM Emaar Admin  →  http://localhost:${PORT}\n`));
