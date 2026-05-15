@@ -17,6 +17,16 @@ const ADMIN_PASS = process.env.ADMIN_PASSWORD || "admin";
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+// ── CORS ──────────────────────────────────────────────────────────
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "*";
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", CORS_ORIGIN);
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-admin-token");
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
 // ── Auth middleware ───────────────────────────────────────────────
 app.use("/api", (req, res, next) => {
   if (req.path === "/auth") return next();
@@ -119,4 +129,8 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
 // ── Health check ──────────────────────────────────────────────────
 app.get("/api/health", (_, res) => res.json({ ok: true, ts: new Date().toISOString() }));
 
-app.listen(PORT, () => console.log(`\n🟢  ELM Emaar Admin  →  http://localhost:${PORT}\n`));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`\n🟢  ELM Emaar Admin  →  http://localhost:${PORT}`);
+  console.log(`    CORS origin      :  ${CORS_ORIGIN}`);
+  console.log(`    GitHub repo      :  ${GH_OWNER}/${GH_REPO}@${GH_BRANCH}\n`);
+});

@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   basePath: "/nxtgen-eemar-website",
   images: {
     unoptimized: true,
+    remotePatterns: [
+      { protocol: "https", hostname: "nxtgen-eemar-website.up.railway.app" },
+      { protocol: "https", hostname: "i.ibb.co" },
+    ],
   },
 };
 
