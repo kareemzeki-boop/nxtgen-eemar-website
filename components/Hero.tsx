@@ -19,15 +19,30 @@ function FadeUp({ delay = 0, children, className }: { delay?: number; children: 
 export default function Hero() {
   return (
     <section className="section-dark relative min-h-screen flex flex-col overflow-hidden">
-      {/* Background facade photo */}
+      {/* Background — video loop with photo fallback */}
       <div className="absolute inset-0">
-        <img
-          src={hero.backgroundImage}
-          alt=""
-          className="w-full h-full object-cover object-center"
-          aria-hidden="true"
-          fetchPriority="high"
-        />
+        {hero.backgroundVideo ? (
+          <video
+            key={hero.backgroundVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={hero.backgroundImage}
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          >
+            <source src={hero.backgroundVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            src={hero.backgroundImage}
+            alt=""
+            className="w-full h-full object-cover object-center"
+            aria-hidden="true"
+            fetchPriority="high"
+          />
+        )}
         {/* Overlay: near-opaque on left for legibility, lighter on right so facade shows */}
         <div
           className="absolute inset-0"
