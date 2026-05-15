@@ -1,7 +1,6 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "deploy": {
-    "startCommand": "node admin/server.js",
-    "healthcheckPath": "/api/health"
+    "startCommand": "node admin/server.js"
   }
 }
