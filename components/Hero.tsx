@@ -19,34 +19,44 @@ function FadeUp({ delay = 0, children, className }: { delay?: number; children: 
 export default function Hero() {
   return (
     <section className="section-dark relative min-h-screen flex flex-col overflow-hidden">
-      {/* Background — video loop with photo fallback */}
-      <div className="absolute inset-0">
-        {hero.backgroundVideo ? (
-          <video
-            key={hero.backgroundVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={hero.backgroundImage}
+      {/* Background — looping video with photo fallback */}
+      <div className="absolute inset-0 overflow-hidden">
+
+        {/* Photo — always rendered as instant fallback */}
+        <img
+          src={hero.backgroundImage}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          aria-hidden="true"
+          fetchPriority="high"
+        />
+
+        {/* YouTube loop — scales to cover, no controls, muted autoplay */}
+        {hero.backgroundVideo && (
+          <div
             aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}
           >
-            <source src={hero.backgroundVideo} type="video/mp4" />
-          </video>
-        ) : (
-          <img
-            src={hero.backgroundImage}
-            alt=""
-            className="w-full h-full object-cover object-center"
-            aria-hidden="true"
-            fetchPriority="high"
-          />
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${hero.backgroundVideo}?autoplay=1&mute=1&loop=1&playlist=${hero.backgroundVideo}&controls=0&disablekb=1&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&start=5`}
+              allow="autoplay; encrypted-media"
+              style={{
+                position: "absolute",
+                top: "50%", left: "50%",
+                width: "max(100%, 177.78vh)",
+                height: "max(100%, 56.25vw)",
+                transform: "translate(-50%, -50%)",
+                border: "none",
+              }}
+              title=""
+            />
+          </div>
         )}
+
         {/* Overlay: near-opaque on left for legibility, lighter on right so facade shows */}
         <div
           className="absolute inset-0"
-          style={{ background: "linear-gradient(110deg, rgba(24,24,24,0.97) 0%, rgba(24,24,24,0.90) 42%, rgba(24,24,24,0.55) 100%)" }}
+          style={{ background: "linear-gradient(110deg, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.88) 40%, rgba(10,10,10,0.60) 100%)" }}
         />
       </div>
       {/* Radial glow on top of photo */}

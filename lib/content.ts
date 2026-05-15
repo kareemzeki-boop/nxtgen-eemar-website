@@ -56,7 +56,8 @@ export const hero = {
   backgroundImage:
     "https://i.ibb.co/Q3jZfjVT/2a5203040aa99e241d5a054da4fcbdfe.jpg",
   // Looping hero video — drop an MP4/WebM URL here (leave empty to use photo only)
-  backgroundVideo: "",
+  // YouTube video ID — set to "" to show photo only
+  backgroundVideo: "97bV0gJrJtU",
 };
 
 // ----------------------------------------------------------------
