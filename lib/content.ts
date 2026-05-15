@@ -55,7 +55,7 @@ export const hero = {
   // Full-bleed background photo (Unsplash — geometric facade, Osaka)
   backgroundImage:
     "https://i.ibb.co/Q3jZfjVT/2a5203040aa99e241d5a054da4fcbdfe.jpg",
-  // Looping hero video — drop an MP4/WebM URL here (leave empty to use photo only)
+  // Looping hero video — drop an MP4/WebM URL here (yt-dlp -f 22<https://youtube.com/watch?v=xnsxllY5VPw&si=83069t3pKhqFNcts>)
   // YouTube video ID — set to "" to show photo only
   backgroundVideo: "xnsxllY5VPw",
 };
