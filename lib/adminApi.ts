@@ -1,4 +1,4 @@
-const BASE = (process.env.NEXT_PUBLIC_ADMIN_API_URL ?? "http://localhost:4000").replace(/\/$/, "");
+const BASE = (process.env.NEXT_PUBLIC_ADMIN_API_URL ?? "https://nxtgen-eemar-website.up.railway.app").replace(/\/$/, "");
 
 export type Project = {
   id: string;
