@@ -81,6 +81,7 @@ export default function Services() {
   };
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
     (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
     dragRef.current = { startX: e.clientX, startY: e.clientY, startRotX: rotX, startRotY: rotY };
     setIdle(false);
@@ -95,10 +96,14 @@ export default function Services() {
 
   const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragRef.current) return;
-    const finalRotX = dragRef.current.startRotX - (e.clientY - dragRef.current.startY) * 0.35;
-    const finalRotY = dragRef.current.startRotY + (e.clientX - dragRef.current.startX) * 0.6;
+    const dx = e.clientX - dragRef.current.startX;
+    const dy = e.clientY - dragRef.current.startY;
+    const finalRotX = dragRef.current.startRotX - dy * 0.35;
+    const finalRotY = dragRef.current.startRotY + dx * 0.6;
     dragRef.current = null;
+    // Treat tiny movements as a click → snap to nearest face
     goTo(nearestFace(finalRotX, finalRotY));
+    setDragging(false);
   };
 
   const svc = selected !== null ? services[selected] : null;
@@ -148,6 +153,9 @@ export default function Services() {
                 perspective: 800,
                 margin: "50px auto",
                 cursor: dragging ? "grabbing" : "grab",
+                touchAction: "none",
+                userSelect: "none",
+                WebkitUserSelect: "none",
               }}
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
@@ -190,20 +198,22 @@ export default function Services() {
                   const isActive = selected === idx;
 
                   return (
-                    <div key={s.id} style={{
-                      position: "absolute",
-                      width: SIZE, height: SIZE,
-                      transform: FACE_POS[i],
-                      background: isActive ? `rgba(0,0,0,0.92)` : "rgba(0,0,0,0.80)",
-                      border: "2px solid",
-                      borderImage: `linear-gradient(135deg, ${s.accentColor}, #ffffff55, ${s.accentColor}) 1`,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
-                      cursor: "pointer",
-                    }}>
+                    <div key={s.id}
+                      onClick={() => goTo(idx)}
+                      style={{
+                        position: "absolute",
+                        width: SIZE, height: SIZE,
+                        transform: FACE_POS[i],
+                        background: isActive ? `rgba(0,0,0,0.92)` : "rgba(0,0,0,0.80)",
+                        border: "2px solid",
+                        borderImage: `linear-gradient(135deg, ${s.accentColor}, #ffffff55, ${s.accentColor}) 1`,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 10,
+                        cursor: "pointer",
+                      }}>
                       <span style={{
                         fontSize: 9, fontWeight: 800,
                         color: s.accentColor, letterSpacing: "0.25em",
