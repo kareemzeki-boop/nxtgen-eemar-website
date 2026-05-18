@@ -12,7 +12,7 @@ export default function Innovations() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section id="innovations" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
+    <section id="innovations" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden" style={{ maxWidth: "100vw" }}>
       {/* Technical drawing wallpaper */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -24,11 +24,11 @@ export default function Innovations() {
         }}
       />
       <div
-        className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
+        className="absolute top-0 right-0 w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(93,195,155,0.07) 0%, transparent 70%)", transform: "translate(30%, -30%)" }}
       />
       <div
-        className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none"
+        className="absolute bottom-0 left-0 w-[260px] h-[260px] sm:w-[400px] sm:h-[400px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(93,195,155,0.04) 0%, transparent 70%)", transform: "translate(-30%, 30%)" }}
       />
 
@@ -76,6 +76,7 @@ export default function Innovations() {
               <div
                 key={item.title}
                 onMouseEnter={() => setHovered(i)}
+                onClick={() => setHovered(hovered === i ? null : i)}
                 style={{
                   flex:       active ? 4 : dimmed ? 0.55 : 1,
                   transition: "flex 0.5s cubic-bezier(0.4,0,0.2,1)",

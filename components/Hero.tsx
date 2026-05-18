@@ -12,6 +12,9 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const ytRef     = useRef<HTMLDivElement>(null);
   const [prog, setProg] = useState(0);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 640 : false
+  );
 
   /* ── scroll progress ─────────────────────────────────── */
   useEffect(() => {
@@ -26,6 +29,12 @@ export default function Hero() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   /* ── YouTube background ──────────────────────────────── */
@@ -70,7 +79,7 @@ export default function Hero() {
   const locOp   = r(prog, 0.50, 0.63);
   // stats
   const statsIn    = r(prog, 0.60, 0.72);   // appear
-  const statsScale = 1 + r(prog, 0.68, 0.87) * 1.8;  // 1 → 2.8×
+  const statsScale = 1 + r(prog, 0.68, 0.87) * (isMobile ? 0.35 : 1.8);  // 1→1.35× mobile, 1→2.8× desktop
   const statsOut   = 1 - r(prog, 0.84, 1.00);         // fade
   const statsOp    = statsIn * statsOut;
   const statsY     = (1 - statsIn) * 32;
@@ -85,7 +94,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       className="section-dark"
-      style={{ height: "360vh", position: "relative" }}
+      style={{ height: isMobile ? "300vh" : "360vh", position: "relative" }}
     >
       {/* sticky viewport-height frame — exits upward when stats finish fading */}
       <div style={{
@@ -139,7 +148,7 @@ export default function Hero() {
 
         {/* ── Content ──────────────────────────────────── */}
         <div
-          className="relative max-w-7xl mx-auto px-5 sm:px-6 pt-28 sm:pt-32 md:pt-36 pb-10 flex flex-col h-full"
+          className="relative max-w-7xl mx-auto px-5 sm:px-6 pt-24 sm:pt-32 md:pt-36 pb-10 flex flex-col h-full"
           style={{ zIndex: 10 }}
         >
 
