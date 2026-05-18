@@ -33,7 +33,8 @@ export default function Hero() {
       `&playlist=${videoId}`,
       "&controls=0&disablekb=1&modestbranding=1",
       "&playsinline=1&rel=0&iv_load_policy=3&fs=0",
-      "&start=4",
+      "&start=4&cc_load_policy=0",
+      "&origin=https%3A%2F%2Fkareemzeki-boop.github.io",
     ].join("");
     iframe.setAttribute("allow", "autoplay; encrypted-media; fullscreen");
     iframe.setAttribute("allowfullscreen", "");
@@ -75,7 +76,6 @@ export default function Hero() {
               style={{
                 position: "absolute",
                 top: "50%", left: "50%",
-                /* Always wider/taller than the viewport to avoid black bars */
                 width: "max(100%, 177.78vh)",
                 height: "max(100%, 56.25vw)",
                 transform: "translate(-50%, -50%)",
@@ -84,10 +84,17 @@ export default function Hero() {
           </div>
         )}
 
-        {/* Overlay: near-opaque on left for legibility, lighter on right so facade shows */}
+        {/* Transparent blocker — sits above the iframe, catches all pointer events
+            so YouTube never receives hover/click → no pause/mute UI shown */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 2 }} />
+
+        {/* Overlay: dark gradient for text legibility */}
         <div
           className="absolute inset-0"
-          style={{ background: "linear-gradient(110deg, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.88) 40%, rgba(10,10,10,0.60) 100%)" }}
+          style={{
+            zIndex: 3,
+            background: "linear-gradient(110deg, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.90) 40%, rgba(10,10,10,0.72) 100%)",
+          }}
         />
       </div>
       {/* Radial glow on top of photo */}
