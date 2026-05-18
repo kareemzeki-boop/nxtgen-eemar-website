@@ -1,250 +1,325 @@
 "use client";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Cpu, Layers3, Leaf, Atom } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Cpu, Layers3, Leaf, Atom, ArrowRight } from "lucide-react";
 import { innovations as innovationsData, innovationsBackgroundImage } from "@/lib/content";
 import { ctaClick } from "@/lib/cta";
 
 const ICONS = [Cpu, Layers3, Leaf, Atom] as const;
-const innovations = innovationsData.map((item, i) => ({ ...item, icon: ICONS[i] }));
+const cards = innovationsData.map((item, i) => ({ ...item, Icon: ICONS[i] }));
+
+/** clamp progress to 0-1 within sub-range */
+const r = (v: number, a: number, b: number) =>
+  Math.max(0, Math.min(1, (v - a) / (b - a)));
+
+// Each card's enter window as fraction of total section scroll progress
+const WINDOWS: [number, number][] = [
+  [0.02, 0.18],
+  [0.24, 0.40],
+  [0.46, 0.61],
+  [0.65, 0.80],
+];
 
 export default function Innovations() {
-  const [hovered, setHovered] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [prog, setProg] = useState(0);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const onScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const total = section.offsetHeight - window.innerHeight;
+      const scrolled = Math.max(0, -rect.top);
+      setProg(total > 0 ? Math.min(1, scrolled / total) : 0);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <section id="innovations" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden" style={{ maxWidth: "100vw" }}>
-      {/* Technical drawing wallpaper */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `url(${innovationsBackgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: 0.06,
-        }}
-      />
-      <div
-        className="absolute top-0 right-0 w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(93,195,155,0.07) 0%, transparent 70%)", transform: "translate(30%, -30%)" }}
-      />
-      <div
-        className="absolute bottom-0 left-0 w-[260px] h-[260px] sm:w-[400px] sm:h-[400px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(93,195,155,0.04) 0%, transparent 70%)", transform: "translate(-30%, 30%)" }}
-      />
+    <section
+      ref={sectionRef}
+      id="innovations"
+      className="section-dark relative"
+      style={{ height: "600vh" }}
+    >
+      {/* ── Sticky viewport ── */}
+      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
-
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-10 md:mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+        {/* Header — visible before first card enters */}
+        <div
+          className="absolute inset-0 flex items-center"
+          style={{
+            opacity: 1 - r(prog, 0.0, 0.12),
+            transition: "opacity 0.05s linear",
+            zIndex: 0,
+          }}
         >
-          <div>
-            <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
+          {/* Background texture */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: `url(${innovationsBackgroundImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: 0.06,
+            }}
+          />
+          <div className="relative max-w-7xl mx-auto px-5 sm:px-6 w-full">
+            <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs">
               R&amp;D Innovations
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight text-white max-w-2xl leading-tight mt-4">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white max-w-2xl leading-tight mt-6">
               Beyond the brief.
               <br />
               <span className="text-white/30">Beyond the material.</span>
             </h2>
+            <p className="text-white/40 text-sm mt-5 font-medium tracking-wide">
+              Scroll to explore our four core breakthroughs ↓
+            </p>
           </div>
-          <p className="text-white/40 md:max-w-xs text-sm leading-relaxed hidden md:block">
-            Hover each panel to explore our four core breakthroughs in facade engineering.
-          </p>
-        </motion.div>
+        </div>
 
-        {/* ── Expanding accordion cards ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-          className="flex flex-col md:flex-row gap-2"
-          style={{ height: "clamp(460px, 52vh, 560px)" }}
-          onMouseLeave={() => setHovered(null)}
-        >
-          {innovations.map((item, i) => {
-            const Icon    = item.icon;
-            const active  = hovered === i;
-            const dimmed  = hovered !== null && !active;
+        {/* ── Cards — each slides up and stacks ── */}
+        {cards.map((item, i) => {
+          const { Icon } = item;
+          const [a, b] = WINDOWS[i];
+          const enter = r(prog, a, b);
+          const ty = (1 - enter) * 100; // 100% → 0%
 
-            return (
+          return (
+            <div
+              key={item.title}
+              style={{
+                position: "absolute",
+                inset: 0,
+                transform: `translateY(${ty}%)`,
+                transition: "transform 0.04s linear",
+                zIndex: i + 1,
+              }}
+            >
+              {/* Card background */}
+              <div className="absolute inset-0" style={{ background: "#0f0f0f" }} />
               <div
-                key={item.title}
-                onMouseEnter={() => setHovered(i)}
-                onClick={() => setHovered(hovered === i ? null : i)}
+                className="absolute inset-0"
+                style={{ background: `${item.color}09` }}
+              />
+              <div
+                className="absolute inset-0 pointer-events-none"
                 style={{
-                  flex:       active ? 4 : dimmed ? 0.55 : 1,
-                  transition: "flex 0.5s cubic-bezier(0.4,0,0.2,1)",
-                  border:     `1px solid ${active ? item.color : item.color + "40"}`,
-                  background: active ? "#1c1c1c" : "#181818",
-                  borderRadius: "12px",
-                  overflow:   "hidden",
-                  cursor:     "pointer",
-                  position:   "relative",
-                  minWidth:   0,
+                  backgroundImage: `url(${innovationsBackgroundImage})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  opacity: 0.035,
+                }}
+              />
+
+              {/* Top accent */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0, left: 0, right: 0,
+                  height: 3,
+                  background: `linear-gradient(90deg, ${item.color}, ${item.color}44)`,
+                }}
+              />
+
+              {/* Large ghost metric — background decoration */}
+              <div
+                className="absolute right-0 bottom-0 pointer-events-none select-none hidden md:block"
+                style={{
+                  fontSize: "clamp(160px, 20vw, 260px)",
+                  fontWeight: 900,
+                  color: item.color,
+                  opacity: 0.04,
+                  lineHeight: 1,
+                  letterSpacing: "-0.05em",
+                  transform: "translate(8%, 18%)",
                 }}
               >
-                {/* Top accent line */}
-                <div
-                  style={{
-                    position: "absolute", top: 0, left: 0, right: 0, height: 2,
-                    background: item.color,
-                    opacity: active ? 1 : 0.3,
-                    transition: "opacity 0.5s",
-                  }}
-                />
+                {item.metric}
+              </div>
 
-                {/* ── COLLAPSED view — rotated label ── */}
-                <div
-                  style={{
-                    position:   "absolute",
-                    inset:      0,
-                    display:    "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    opacity:    active ? 0 : 1,
-                    transition: "opacity 0.25s",
-                    pointerEvents: active ? "none" : "auto",
-                  }}
-                >
-                  {/* Desktop/tablet: bold rotated title */}
-                  <div
-                    className="hidden md:flex"
-                    style={{ flexDirection: "column", alignItems: "center", transform: "rotate(-90deg)", whiteSpace: "nowrap" }}
-                  >
-                    <span style={{
-                      fontSize: 16, fontWeight: 900, color: "rgba(255,255,255,0.88)",
-                      letterSpacing: "-0.01em",
-                    }}>
-                      {item.title}
-                    </span>
-                  </div>
-
-                  {/* Mobile: horizontal, all elements */}
-                  <div
-                    className="flex md:hidden"
+              {/* Content */}
+              <div
+                className="relative h-full flex flex-col justify-center max-w-7xl mx-auto px-5 sm:px-8"
+                style={{ paddingTop: 64, paddingBottom: 40 }}
+              >
+                {/* Progress track */}
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 36 }}>
+                  {cards.map((_, j) => (
+                    <div
+                      key={j}
+                      style={{
+                        height: 3,
+                        width: j === i ? 28 : 14,
+                        borderRadius: 999,
+                        background: j <= i ? item.color : "rgba(255,255,255,0.1)",
+                        transition: "width 0.3s, background 0.3s",
+                      }}
+                    />
+                  ))}
+                  <span
                     style={{
-                      flexDirection: "column",
-                      alignItems:    "center",
-                      gap:           14,
-                      whiteSpace:    "nowrap",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.25)",
+                      marginLeft: 8,
+                      letterSpacing: "0.1em",
                     }}
                   >
-                    <div style={{
-                      width: 28, height: 28, borderRadius: 6,
-                      background: `${item.color}18`,
-                      border: `1px solid ${item.color}35`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      <Icon size={13} style={{ color: item.color }} />
-                    </div>
-                    <span style={{
-                      fontSize: 11, fontWeight: 700, letterSpacing: "0.13em",
-                      textTransform: "uppercase", color: item.color,
-                    }}>
-                      {item.tag}
-                    </span>
-                    <span style={{
-                      fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.75)",
-                      letterSpacing: "0.02em",
-                    }}>
-                      {item.title}
-                    </span>
-                  </div>
+                    {String(i + 1).padStart(2, "0")}&nbsp;/&nbsp;{String(cards.length).padStart(2, "0")}
+                  </span>
                 </div>
 
-                {/* ── EXPANDED view — full content ── */}
-                <div
-                  style={{
-                    position:   "absolute",
-                    inset:      0,
-                    padding:    "28px 28px",
-                    display:    "flex",
-                    flexDirection: "column",
-                    opacity:    active ? 1 : 0,
-                    transition: active ? "opacity 0.3s 0.2s" : "opacity 0.15s",
-                    pointerEvents: active ? "auto" : "none",
-                    overflowY:  "auto",
-                  }}
-                >
-                  {/* Tag + metric */}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                {/* Two-column on desktop */}
+                <div className="flex flex-col md:flex-row md:items-center md:gap-16">
+
+                  {/* Left — main content */}
+                  <div className="flex-1 min-w-0">
+                    {/* Icon + tag */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 22 }}>
                       <div
                         style={{
-                          width: 36, height: 36, borderRadius: 8,
+                          width: 42, height: 42, borderRadius: 10,
                           background: `${item.color}18`,
-                          border: `1px solid ${item.color}30`,
+                          border: `1px solid ${item.color}35`,
                           display: "flex", alignItems: "center", justifyContent: "center",
                           flexShrink: 0,
                         }}
                       >
-                        <Icon size={16} style={{ color: item.color }} />
+                        <Icon size={18} style={{ color: item.color }} />
                       </div>
-                      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase", color: item.color }}>
+                      <span
+                        style={{
+                          fontSize: 10, fontWeight: 700,
+                          letterSpacing: "0.14em",
+                          textTransform: "uppercase",
+                          color: item.color,
+                        }}
+                      >
                         {item.tag}
                       </span>
                     </div>
-                    <div style={{ textAlign: "right" }}>
-                      <div style={{ fontSize: 26, fontWeight: 900, color: "#fff", lineHeight: 1 }}>
-                        {item.metric}
-                      </div>
-                      <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", marginTop: 3, fontWeight: 500 }}>
-                        {item.metricLabel}
-                      </div>
+
+                    <h3
+                      style={{
+                        fontSize: "clamp(28px, 4.5vw, 56px)",
+                        fontWeight: 900,
+                        color: "#fff",
+                        letterSpacing: "-0.03em",
+                        lineHeight: 1.08,
+                        marginBottom: 14,
+                      }}
+                    >
+                      {item.title}
+                    </h3>
+
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "rgba(255,255,255,0.38)",
+                        fontWeight: 600,
+                        marginBottom: 18,
+                        letterSpacing: "0.01em",
+                      }}
+                    >
+                      {item.subtitle}
+                    </p>
+
+                    <p
+                      style={{
+                        fontSize: "clamp(14px, 1.1vw, 16px)",
+                        color: "rgba(255,255,255,0.58)",
+                        lineHeight: 1.72,
+                        maxWidth: 500,
+                        marginBottom: 36,
+                      }}
+                    >
+                      {item.description}
+                    </p>
+
+                    <a
+                      href="#contact"
+                      onClick={ctaClick}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
+                        padding: "13px 28px",
+                        borderRadius: 9999,
+                        background: item.color,
+                        color: "#0a0a0a",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        textDecoration: "none",
+                        letterSpacing: "0.04em",
+                      }}
+                    >
+                      Start a Project <ArrowRight size={14} />
+                    </a>
+                  </div>
+
+                  {/* Right — metric (desktop) */}
+                  <div
+                    className="hidden md:flex"
+                    style={{
+                      flexDirection: "column",
+                      alignItems: "flex-end",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "clamp(64px, 9vw, 110px)",
+                        fontWeight: 900,
+                        color: item.color,
+                        lineHeight: 1,
+                        letterSpacing: "-0.04em",
+                      }}
+                    >
+                      {item.metric}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: "rgba(255,255,255,0.28)",
+                        fontWeight: 600,
+                        marginTop: 8,
+                        textAlign: "right",
+                        maxWidth: 180,
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      {item.metricLabel}
                     </div>
                   </div>
 
-                  {/* Title */}
-                  <h3 style={{ fontSize: "clamp(18px,2vw,26px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 10 }}>
-                    {item.title}
-                  </h3>
+                </div>
 
-                  {/* Subtitle */}
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontWeight: 600, marginBottom: 12 }}>
-                    {item.subtitle}
-                  </p>
-
-                  {/* Description */}
-                  <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.65, marginBottom: 20, flexShrink: 0 }}>
-                    {item.description}
-                  </p>
-
-                  {/* Spacer */}
-                  <div style={{ flex: 1 }} />
-
-                  {/* CTA */}
-                  <a
-                    href="#contact"
-                    onClick={ctaClick}
+                {/* Mobile metric */}
+                <div className="flex md:hidden items-baseline gap-3" style={{ marginTop: 28 }}>
+                  <span
                     style={{
-                      display: "inline-flex", alignItems: "center", justifyContent: "center",
-                      gap: 6, padding: "10px 20px", borderRadius: 9999,
-                      background: item.color, color: "#0a0a0a",
-                      fontSize: 12, fontWeight: 700, textDecoration: "none",
-                      letterSpacing: "0.04em", transition: "opacity 0.2s",
+                      fontSize: 42,
+                      fontWeight: 900,
+                      color: item.color,
+                      lineHeight: 1,
+                      letterSpacing: "-0.03em",
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
-                    onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
                   >
-                    Start a Project
-                  </a>
+                    {item.metric}
+                  </span>
+                  <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", fontWeight: 600 }}>
+                    {item.metricLabel}
+                  </span>
                 </div>
 
               </div>
-            );
-          })}
-        </motion.div>
-
-        {/* Mobile hint */}
-        <p className="mt-5 text-center text-white/25 text-xs font-medium tracking-widest uppercase md:hidden">
-          Tap a panel to explore
-        </p>
+            </div>
+          );
+        })}
 
       </div>
     </section>
