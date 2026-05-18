@@ -22,34 +22,24 @@ export default function Hero() {
 
   useEffect(() => {
     const videoId = hero.backgroundVideo;
-    if (!videoId) return;
+    const container = ytRef.current;
+    if (!videoId || !container) return;
 
-    function createPlayer() {
-      if (!ytRef.current) return;
-      new (window as any).YT.Player(ytRef.current, {
-        videoId,
-        playerVars: {
-          autoplay: 1, mute: 1, loop: 1, playlist: videoId,
-          controls: 0, disablekb: 1, modestbranding: 1,
-          playsinline: 1, rel: 0, iv_load_policy: 3, fs: 0,
-        },
-        events: {
-          onReady: (e: any) => { e.target.mute(); e.target.playVideo(); },
-        },
-      });
-    }
+    // Build the iframe directly in JS — most reliable way to get muted autoplay
+    const iframe = document.createElement("iframe");
+    iframe.src = [
+      `https://www.youtube.com/embed/${videoId}`,
+      "?autoplay=1&mute=1&loop=1",
+      `&playlist=${videoId}`,
+      "&controls=0&disablekb=1&modestbranding=1",
+      "&playsinline=1&rel=0&iv_load_policy=3&fs=0",
+    ].join("");
+    iframe.setAttribute("allow", "autoplay; encrypted-media; fullscreen");
+    iframe.setAttribute("allowfullscreen", "");
+    iframe.style.cssText = "position:absolute;inset:0;width:100%;height:100%;border:none;";
+    container.appendChild(iframe);
 
-    if ((window as any).YT?.Player) {
-      createPlayer();
-    } else {
-      (window as any).onYouTubeIframeAPIReady = createPlayer;
-      if (!document.getElementById("yt-api-script")) {
-        const s = document.createElement("script");
-        s.id = "yt-api-script";
-        s.src = "https://www.youtube.com/iframe_api";
-        document.head.appendChild(s);
-      }
-    }
+    return () => { if (container.contains(iframe)) container.removeChild(iframe); };
   }, []);
 
   return (
@@ -66,7 +56,7 @@ export default function Hero() {
           fetchPriority="high"
         />
 
-        {/* YouTube IFrame API player — mounts here, scales to cover */}
+        {/* YouTube video — injected programmatically, scales to cover 16:9 */}
         {hero.backgroundVideo && (
           <div
             aria-hidden="true"
@@ -77,6 +67,7 @@ export default function Hero() {
               style={{
                 position: "absolute",
                 top: "50%", left: "50%",
+                /* Always wider/taller than the viewport to avoid black bars */
                 width: "max(100%, 177.78vh)",
                 height: "max(100%, 56.25vw)",
                 transform: "translate(-50%, -50%)",
