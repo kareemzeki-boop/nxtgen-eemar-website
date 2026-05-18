@@ -33,10 +33,18 @@ export default function Hero() {
       `&playlist=${videoId}`,
       "&controls=0&disablekb=1&modestbranding=1",
       "&playsinline=1&rel=0&iv_load_policy=3&fs=0",
+      "&start=4",
     ].join("");
     iframe.setAttribute("allow", "autoplay; encrypted-media; fullscreen");
     iframe.setAttribute("allowfullscreen", "");
-    iframe.style.cssText = "position:absolute;inset:0;width:100%;height:100%;border:none;";
+    // Slightly oversized so YouTube logo/branding is clipped off all edges
+    iframe.style.cssText = [
+      "position:absolute;border:none;",
+      "top:50%;left:50%;",
+      "width:calc(100% + 160px);",   /* extra 80px each side */
+      "height:calc(100% + 90px);",   /* extra 45px top/bottom */
+      "transform:translate(-50%,-50%);",
+    ].join("");
     container.appendChild(iframe);
 
     return () => { if (container.contains(iframe)) container.removeChild(iframe); };
