@@ -17,12 +17,8 @@ export default function Home() {
       <CTAOverlay />
       <Navbar />
       <main>
-        <div style={{ position: "relative", zIndex: 10 }}>
-          <Hero />
-        </div>
-        <div style={{ position: "relative", zIndex: 5, marginTop: "-140vh" }}>
-          <Services />
-        </div>
+        <Hero />
+        <Services />
         <Innovations />
         <Process />
         <Stats />
