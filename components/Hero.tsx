@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Award, Zap } from "lucide-react";
 import { hero, company } from "@/lib/content";
@@ -17,6 +18,40 @@ function FadeUp({ delay = 0, children, className }: { delay?: number; children: 
 }
 
 export default function Hero() {
+  const ytRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const videoId = hero.backgroundVideo;
+    if (!videoId) return;
+
+    function createPlayer() {
+      if (!ytRef.current) return;
+      new (window as any).YT.Player(ytRef.current, {
+        videoId,
+        playerVars: {
+          autoplay: 1, mute: 1, loop: 1, playlist: videoId,
+          controls: 0, disablekb: 1, modestbranding: 1,
+          playsinline: 1, rel: 0, iv_load_policy: 3, fs: 0,
+        },
+        events: {
+          onReady: (e: any) => { e.target.mute(); e.target.playVideo(); },
+        },
+      });
+    }
+
+    if ((window as any).YT?.Player) {
+      createPlayer();
+    } else {
+      (window as any).onYouTubeIframeAPIReady = createPlayer;
+      if (!document.getElementById("yt-api-script")) {
+        const s = document.createElement("script");
+        s.id = "yt-api-script";
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(s);
+      }
+    }
+  }, []);
+
   return (
     <section className="section-dark relative min-h-screen flex flex-col overflow-hidden">
       {/* Background — looping video with photo fallback */}
@@ -31,24 +66,21 @@ export default function Hero() {
           fetchPriority="high"
         />
 
-        {/* YouTube loop — scales to cover, no controls, muted autoplay */}
+        {/* YouTube IFrame API player — mounts here, scales to cover */}
         {hero.backgroundVideo && (
           <div
             aria-hidden="true"
             style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}
           >
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${hero.backgroundVideo}?autoplay=1&mute=1&loop=1&playlist=${hero.backgroundVideo}&controls=0&disablekb=1&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&start=5`}
-              allow="autoplay; encrypted-media"
+            <div
+              ref={ytRef}
               style={{
                 position: "absolute",
                 top: "50%", left: "50%",
                 width: "max(100%, 177.78vh)",
                 height: "max(100%, 56.25vw)",
                 transform: "translate(-50%, -50%)",
-                border: "none",
               }}
-              title=""
             />
           </div>
         )}
