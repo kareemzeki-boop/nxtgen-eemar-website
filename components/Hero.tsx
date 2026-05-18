@@ -12,9 +12,7 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const ytRef     = useRef<HTMLDivElement>(null);
   const [prog, setProg] = useState(0);
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== "undefined" ? window.innerWidth < 640 : false
-  );
+  const [isMobile, setIsMobile] = useState(false);
 
   /* ── scroll progress ─────────────────────────────────── */
   useEffect(() => {
@@ -32,9 +30,10 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth < 640);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   /* ── YouTube background ──────────────────────────────── */
@@ -94,7 +93,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       className="section-dark"
-      style={{ height: isMobile ? "300vh" : "360vh", position: "relative" }}
+      style={{ height: isMobile ? "300vh" : "360vh", position: "relative", background: "transparent" }}
     >
       {/* sticky viewport-height frame — exits upward when stats finish fading */}
       <div style={{
