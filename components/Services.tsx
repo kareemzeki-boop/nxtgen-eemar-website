@@ -67,6 +67,10 @@ export default function Services() {
     setRotX(FACE_ROT[i].x);
     setRotY(FACE_ROT[i].y);
     setRotZ(0);
+    // on mobile, scroll detail panel into view after animation settles
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setTimeout(() => detailRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 420);
+    }
   };
 
   const prev = () => goTo(selected === null ? 0 : (selected + services.length - 1) % services.length);
@@ -111,6 +115,7 @@ export default function Services() {
   }, []);
 
   const svc = selected !== null ? services[selected] : null;
+  const detailRef = useRef<HTMLDivElement>(null);
 
   const faces: Array<{ svc: typeof services[0]; idx: number } | null> = [
     ...services.map((s, i) => ({ svc: s, idx: i })),
@@ -121,7 +126,7 @@ export default function Services() {
     <section
       id="services"
       className="relative overflow-hidden"
-      style={{ background: "#080808", paddingTop: "clamp(64px,8vw,120px)", paddingBottom: "clamp(64px,8vw,120px)" }}
+      style={{ background: "#0a0a0a", paddingTop: "clamp(40px,6vw,100px)", paddingBottom: "clamp(40px,6vw,100px)" }}
     >
       {/* ambient glow behind cube */}
       <div
@@ -143,7 +148,7 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.85, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="text-center mb-14 md:mb-20"
+          className="text-center mb-8 md:mb-16"
         >
           <span
             style={{
@@ -197,8 +202,8 @@ export default function Services() {
             <motion.div
               initial={{ scale: 0.45, opacity: 0, y: 60, rotateX: -25 }}
               whileInView={{ scale: 1, opacity: 1, y: 0, rotateX: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ type: "spring", stiffness: 160, damping: 18, delay: 0.18 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ type: "spring", stiffness: 160, damping: 18, delay: 0.1 }}
               style={{ position: "relative" }}
             >
               {/* glow ring */}
@@ -223,7 +228,7 @@ export default function Services() {
                 style={{
                   width: SIZE, height: SIZE,
                   perspective: 900,
-                  margin: "clamp(40px,5vw,60px) auto",
+                  margin: "clamp(16px,4vw,52px) auto",
                   cursor: dragging ? "grabbing" : "grab",
                   touchAction: "none",
                   userSelect: "none",
@@ -354,12 +359,13 @@ export default function Services() {
           <AnimatePresence mode="wait">
             {svc ? (
               <motion.div
+                ref={detailRef}
                 key={selected}
                 layout
-                initial={{ opacity: 0, x: isMobile ? 0 : 40, y: isMobile ? 24 : 0, scale: 0.97 }}
-                animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-                exit={{ opacity: 0, x: isMobile ? 0 : -20, y: isMobile ? -12 : 0, scale: 0.97 }}
-                transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                initial={{ opacity: 0, y: 28, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -16, scale: 0.97 }}
+                transition={{ duration: 0.38, ease: [0.25, 0.46, 0.45, 0.94] }}
                 style={{
                   flex: 1,
                   width: "100%",
