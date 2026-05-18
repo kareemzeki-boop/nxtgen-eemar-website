@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useAnimationFrame, AnimatePresence } from "framer-motion";
 import { CheckCircle2, ArrowUpRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { services } from "@/lib/content";
@@ -39,6 +39,7 @@ const nearestFace = (rx: number, ry: number): number => {
 
 export default function Services() {
   const [selected, setSelected] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const [rotX, setRotX] = useState(-15);
   const [rotY, setRotY] = useState(20);
   const [rotZ, setRotZ] = useState(0);
@@ -101,6 +102,13 @@ export default function Services() {
     setDragging(false);
     goTo(nearestFace(finalRotX, finalRotY));
   };
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const svc = selected !== null ? services[selected] : null;
 
@@ -170,9 +178,9 @@ export default function Services() {
         <div
           style={{
             display: "flex",
-            flexDirection: selected !== null ? "row" : "column",
-            alignItems: selected !== null ? "flex-start" : "center",
-            gap: selected !== null ? "clamp(32px,4vw,64px)" : 0,
+            flexDirection: selected !== null && !isMobile ? "row" : "column",
+            alignItems: selected !== null && !isMobile ? "flex-start" : "center",
+            gap: selected !== null ? "clamp(24px,3vw,56px)" : 0,
             transition: "all 0.6s cubic-bezier(0.34,1.56,0.64,1)",
           }}
         >
@@ -348,20 +356,21 @@ export default function Services() {
               <motion.div
                 key={selected}
                 layout
-                initial={{ opacity: 0, x: 40, scale: 0.97 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -20, scale: 0.97 }}
+                initial={{ opacity: 0, x: isMobile ? 0 : 40, y: isMobile ? 24 : 0, scale: 0.97 }}
+                animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                exit={{ opacity: 0, x: isMobile ? 0 : -20, y: isMobile ? -12 : 0, scale: 0.97 }}
                 transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                 style={{
                   flex: 1,
+                  width: "100%",
                   background: "rgba(255,255,255,0.03)",
                   border: `1px solid rgba(255,255,255,0.08)`,
                   borderRadius: 20,
-                  padding: "clamp(24px,3vw,36px)",
+                  padding: "clamp(20px,3vw,36px)",
                   position: "relative",
                   overflow: "hidden",
                   backdropFilter: "blur(12px)",
-                  marginTop: "clamp(40px,5vw,60px)",
+                  marginTop: isMobile ? 16 : 0,
                 }}
               >
                 {/* accent top bar */}
