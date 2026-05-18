@@ -44,6 +44,7 @@
 html { scroll-behavior: smooth; }
 
 body {
+  background-color: #0a0a0a;
   font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -163,3 +164,19 @@ body {
 /* ── Scrollbar hide ──────────────────────────────────────── */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Marquee ─────────────────────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track-reverse {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 22s linear infinite reverse;
+}

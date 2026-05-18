@@ -1,6 +1,7 @@
 import CTAOverlay from "@/components/CTAOverlay";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import MaterialsBridge from "@/components/MaterialsBridge";
 import Services from "@/components/Services";
 import Innovations from "@/components/Innovations";
 import Process from "@/components/Process";
@@ -17,6 +18,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <MaterialsBridge />
         <Services />
         <Innovations />
         <Process />
