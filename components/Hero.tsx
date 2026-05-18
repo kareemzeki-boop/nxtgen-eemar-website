@@ -37,12 +37,12 @@ export default function Hero() {
     ].join("");
     iframe.setAttribute("allow", "autoplay; encrypted-media; fullscreen");
     iframe.setAttribute("allowfullscreen", "");
-    // Slightly oversized so YouTube logo/branding is clipped off all edges
+    // Oversized so YouTube controls/icons are fully clipped off all edges
     iframe.style.cssText = [
-      "position:absolute;border:none;",
+      "position:absolute;border:none;pointer-events:none;",
       "top:50%;left:50%;",
-      "width:calc(100% + 160px);",   /* extra 80px each side */
-      "height:calc(100% + 90px);",   /* extra 45px top/bottom */
+      "width:calc(100% + 400px);",   /* 200px clipped each side */
+      "height:calc(100% + 300px);",  /* 150px clipped top & bottom */
       "transform:translate(-50%,-50%);",
     ].join("");
     container.appendChild(iframe);
