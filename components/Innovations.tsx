@@ -70,12 +70,12 @@ export default function Innovations() {
             <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs">
               R&amp;D Innovations
             </span>
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white max-w-2xl leading-tight mt-6">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight max-w-2xl leading-tight mt-6" style={{ color: "var(--c-text)" }}>
               Beyond the brief.
               <br />
-              <span className="text-white/30">Beyond the material.</span>
+              <span style={{ color: "var(--c-28)" }}>Beyond the material.</span>
             </h2>
-            <p className="text-white/40 text-sm mt-5 font-medium tracking-wide">
+            <p className="text-sm mt-5 font-medium tracking-wide" style={{ color: "var(--c-40)" }}>
               Scroll to explore our four core breakthroughs ↓
             </p>
           </div>
@@ -100,7 +100,7 @@ export default function Innovations() {
               }}
             >
               {/* Card background */}
-              <div className="absolute inset-0" style={{ background: "#0f0f0f" }} />
+              <div className="absolute inset-0" style={{ background: "var(--c-surface)" }} />
               <div
                 className="absolute inset-0"
                 style={{ background: `${item.color}09` }}
@@ -155,7 +155,7 @@ export default function Innovations() {
                         height: 3,
                         width: j === i ? 28 : 14,
                         borderRadius: 999,
-                        background: j <= i ? item.color : "rgba(255,255,255,0.1)",
+                        background: j <= i ? item.color : "var(--c-border-md)",
                         transition: "width 0.3s, background 0.3s",
                       }}
                     />
@@ -164,7 +164,7 @@ export default function Innovations() {
                     style={{
                       fontSize: 11,
                       fontWeight: 700,
-                      color: "rgba(255,255,255,0.25)",
+                      color: "var(--c-25)",
                       marginLeft: 8,
                       letterSpacing: "0.1em",
                     }}
@@ -207,7 +207,7 @@ export default function Innovations() {
                       style={{
                         fontSize: "clamp(28px, 4.5vw, 56px)",
                         fontWeight: 900,
-                        color: "#fff",
+                        color: "var(--c-text)",
                         letterSpacing: "-0.03em",
                         lineHeight: 1.08,
                         marginBottom: 14,
@@ -219,7 +219,7 @@ export default function Innovations() {
                     <p
                       style={{
                         fontSize: 13,
-                        color: "rgba(255,255,255,0.38)",
+                        color: "var(--c-38)",
                         fontWeight: 600,
                         marginBottom: 18,
                         letterSpacing: "0.01em",
@@ -231,7 +231,7 @@ export default function Innovations() {
                     <p
                       style={{
                         fontSize: "clamp(14px, 1.1vw, 16px)",
-                        color: "rgba(255,255,255,0.58)",
+                        color: "var(--c-55)",
                         lineHeight: 1.72,
                         maxWidth: 500,
                         marginBottom: 36,
@@ -284,7 +284,7 @@ export default function Innovations() {
                     <div
                       style={{
                         fontSize: 12,
-                        color: "rgba(255,255,255,0.28)",
+                        color: "var(--c-28)",
                         fontWeight: 600,
                         marginTop: 8,
                         textAlign: "right",
@@ -311,7 +311,7 @@ export default function Innovations() {
                   >
                     {item.metric}
                   </span>
-                  <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", fontWeight: 600 }}>
+                  <span style={{ fontSize: 11, color: "var(--c-28)", fontWeight: 600 }}>
                     {item.metricLabel}
                   </span>
                 </div>

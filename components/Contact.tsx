@@ -60,12 +60,12 @@ export default function Contact() {
             <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
               Get In Touch
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 display" style={{ color: "#F0EDE6" }}>
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 display" style={{ color: "var(--c-text)" }}>
               Let&apos;s engineer
               <br />
-              <span style={{ color: "rgba(240,237,230,0.25)" }}>your next facade.</span>
+              <span style={{ color: "var(--c-25)" }}>your next facade.</span>
             </h2>
-            <p className="mt-5 text-sm sm:text-base leading-relaxed max-w-md" style={{ color: "rgba(240,237,230,0.48)" }}>
+            <p className="mt-5 text-sm sm:text-base leading-relaxed max-w-md" style={{ color: "var(--c-48)" }}>
               Tell us about your project — material system, scale, programme, and any constraints. Our engineering team responds within one business day.
             </p>
 
@@ -81,16 +81,16 @@ export default function Contact() {
                     <Icon size={16} style={{ color: "#C9A86C" }} />
                   </div>
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "rgba(240,237,230,0.35)" }}>{label}</div>
+                    <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--c-35)" }}>{label}</div>
                     {isLink ? (
-                      <a href={href} className="text-sm font-semibold transition-colors" style={{ color: "#F0EDE6" }}
+                      <a href={href} className="text-sm font-semibold transition-colors" style={{ color: "var(--c-text)" }}
                         onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C9A86C")}
-                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#F0EDE6")}
+                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-text)")}
                       >{value}</a>
                     ) : (
-                      <div className="text-sm font-semibold" style={{ color: "#F0EDE6" }}>{value}</div>
+                      <div className="text-sm font-semibold" style={{ color: "var(--c-text)" }}>{value}</div>
                     )}
-                    {sub && <div className="text-xs mt-0.5" style={{ color: "rgba(240,237,230,0.35)" }}>{sub}</div>}
+                    {sub && <div className="text-xs mt-0.5" style={{ color: "var(--c-35)" }}>{sub}</div>}
                   </div>
                 </div>
               ))}
@@ -104,8 +104,8 @@ export default function Contact() {
                 { label: "24hr",     sub: "Response"  },
               ].map((item) => (
                 <div key={item.label} className="card-dark rounded-xl p-3 sm:p-4 text-center">
-                  <div className="mono text-base sm:text-xl font-bold" style={{ color: "#F0EDE6" }}>{item.label}</div>
-                  <div className="text-xs mt-0.5 sm:mt-1" style={{ color: "rgba(240,237,230,0.35)" }}>{item.sub}</div>
+                  <div className="mono text-base sm:text-xl font-bold" style={{ color: "var(--c-text)" }}>{item.label}</div>
+                  <div className="text-xs mt-0.5 sm:mt-1" style={{ color: "var(--c-35)" }}>{item.sub}</div>
                 </div>
               ))}
             </div>
@@ -137,8 +137,8 @@ export default function Contact() {
                     <CheckCircle2 size={30} style={{ color: "#C9A86C" }} />
                   </motion.div>
                   <div>
-                    <h3 className="text-2xl font-bold mb-2 display" style={{ color: "#F0EDE6" }}>Message Received</h3>
-                    <p className="text-sm leading-relaxed" style={{ color: "rgba(240,237,230,0.48)" }}>
+                    <h3 className="text-2xl font-bold mb-2 display" style={{ color: "var(--c-text)" }}>Message Received</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: "var(--c-48)" }}>
                       Thank you for reaching out. Our engineering team will review your project details and respond within one business day.
                     </p>
                   </div>
@@ -222,7 +222,7 @@ export default function Contact() {
                     </AnimatePresence>
                   </button>
 
-                  <p className="text-xs text-center" style={{ color: "rgba(240,237,230,0.22)" }}>
+                  <p className="text-xs text-center" style={{ color: "var(--c-22)" }}>
                     We respond within 1 business day &middot; All enquiries treated in strict confidence
                   </p>
                 </motion.form>

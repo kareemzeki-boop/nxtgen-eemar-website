@@ -8,11 +8,11 @@ export default function MaterialsBridge() {
     <section
       aria-hidden="true"
       style={{
-        background: "#0a0a0a",
+        background: "var(--c-section)",
         paddingTop: "clamp(48px, 8vw, 96px)",
         paddingBottom: "clamp(48px, 8vw, 96px)",
         overflow: "hidden",
-        borderTop: "1px solid rgba(255,255,255,0.055)",
+        borderTop: "1px solid var(--c-border)",
       }}
     >
       {/* Row 1 — material codes, large ghost text scrolling left */}
@@ -27,7 +27,7 @@ export default function MaterialsBridge() {
                 fontWeight: 900,
                 letterSpacing: "-0.03em",
                 textTransform: "uppercase",
-                color: i % 2 === 0 ? "rgba(201,168,108,0.07)" : "rgba(255,255,255,0.04)",
+                color: i % 2 === 0 ? "rgba(201,168,108,0.07)" : "var(--c-border-sm)",
                 marginRight: "clamp(24px, 4vw, 72px)",
                 lineHeight: 1,
                 userSelect: "none",
@@ -49,14 +49,14 @@ export default function MaterialsBridge() {
           marginBottom: "clamp(8px, 1.5vw, 20px)",
         }}
       >
-        <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.07)" }} />
+        <div style={{ flex: 1, height: 1, background: "var(--c-border)" }} />
         <p
           style={{
             fontSize: "clamp(9px, 1vw, 12px)",
             fontWeight: 700,
             letterSpacing: "0.28em",
             textTransform: "uppercase",
-            color: "rgba(240,237,230,0.22)",
+            color: "var(--c-22)",
             whiteSpace: "nowrap",
             fontFamily: "'DM Sans', sans-serif",
           }}
@@ -65,7 +65,7 @@ export default function MaterialsBridge() {
           &nbsp; Precision Manufactured &nbsp;·&nbsp; Sharjah, UAE &nbsp;·&nbsp; GCC Standard &nbsp;
           <span style={{ color: "#C9A86C" }}>●</span>
         </p>
-        <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.07)" }} />
+        <div style={{ flex: 1, height: 1, background: "var(--c-border)" }} />
       </div>
 
       {/* Row 2 — facade words, smaller ghost text scrolling right */}
@@ -80,7 +80,7 @@ export default function MaterialsBridge() {
                 fontWeight: 800,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                color: i % 2 === 0 ? "rgba(255,255,255,0.04)" : "rgba(201,168,108,0.06)",
+                color: i % 2 === 0 ? "var(--c-border-sm)" : "rgba(201,168,108,0.06)",
                 marginRight: "clamp(20px, 3.5vw, 56px)",
                 lineHeight: 1,
                 userSelect: "none",

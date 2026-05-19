@@ -9,7 +9,7 @@ export default function Pricing() {
   return (
     <section id="pricing" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 50% 40% at 50% 100%, rgba(93,195,155,0.08) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 50% 40% at 50% 100%, rgba(201,168,108,0.06) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -25,12 +25,12 @@ export default function Pricing() {
           <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
             Pricing & Engagement
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight text-white max-w-3xl mx-auto leading-tight mt-4">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight max-w-3xl mx-auto leading-tight mt-4" style={{ color: "var(--c-text)" }}>
             The right engagement
             <br />
-            <span className="text-white/30">for every project stage.</span>
+            <span style={{ color: "var(--c-28)" }}>for every project stage.</span>
           </h2>
-          <p className="mt-4 sm:mt-5 text-white/50 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+          <p className="mt-4 sm:mt-5 max-w-xl mx-auto text-sm sm:text-base leading-relaxed" style={{ color: "var(--c-45)" }}>
             Whether you&apos;re specifying materials at RIBA Stage 1 or need a turnkey installation partner, we have a model that fits.
           </p>
         </motion.div>
@@ -64,15 +64,21 @@ export default function Pricing() {
                 <div className={`text-xs font-bold tracking-widest uppercase mb-3 ${plan.highlight ? "text-indigo-200" : "text-indigo-400"}`}>
                   {plan.name}
                 </div>
-                <div className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+                <div className="text-3xl sm:text-4xl font-black tracking-tight text-white" style={{ color: "var(--c-text)" }}>
                   {plan.price}
                 </div>
                 {plan.per && (
-                  <div className={`text-sm mt-1 ${plan.highlight ? "text-indigo-200" : "text-white/40"}`}>
+                  <div
+                    className={`text-sm mt-1 ${plan.highlight ? "text-indigo-200" : ""}`}
+                    style={plan.highlight ? undefined : { color: "var(--c-40)" }}
+                  >
                     {plan.per}
                   </div>
                 )}
-                <p className={`text-xs sm:text-sm mt-3 sm:mt-4 leading-relaxed ${plan.highlight ? "text-indigo-100" : "text-white/50"}`}>
+                <p
+                  className={`text-xs sm:text-sm mt-3 sm:mt-4 leading-relaxed ${plan.highlight ? "text-indigo-100" : ""}`}
+                  style={plan.highlight ? undefined : { color: "var(--c-45)" }}
+                >
                   {plan.description}
                 </p>
               </div>
@@ -84,7 +90,10 @@ export default function Pricing() {
                       size={15}
                       className={`mt-0.5 shrink-0 ${plan.highlight ? "text-indigo-200" : "text-indigo-400"}`}
                     />
-                    <span className={plan.highlight ? "text-indigo-50" : "text-white/70"}>{f}</span>
+                    <span
+                      className={plan.highlight ? "text-indigo-50" : ""}
+                      style={plan.highlight ? undefined : { color: "var(--c-55)" }}
+                    >{f}</span>
                   </li>
                 ))}
               </ul>
@@ -108,7 +117,8 @@ export default function Pricing() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="text-center text-white/30 text-xs sm:text-sm mt-8 sm:mt-10 px-4"
+          className="text-center text-xs sm:text-sm mt-8 sm:mt-10 px-4"
+          style={{ color: "var(--c-28)" }}
         >
           All projects subject to site assessment and material specification review &middot; Prices vary by scope and geography
         </motion.p>

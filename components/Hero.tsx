@@ -188,7 +188,7 @@ export default function Hero() {
             <WordReveal
               text={hero.headlinePart3}
               offset={words1.length + words2.length}
-              style={{ display: "block", color: "rgba(240,237,230,0.28)" }}
+              style={{ display: "block", color: "var(--c-28)" }}
             />
           </h1>
 
@@ -202,7 +202,7 @@ export default function Hero() {
             }}
           >
             <p className="text-base sm:text-lg md:text-xl max-w-2xl leading-relaxed"
-              style={{ color: "rgba(240,237,230,0.55)" }}>
+              style={{ color: "var(--c-55)" }}>
               {hero.subheadline}
             </p>
           </div>
@@ -221,7 +221,7 @@ export default function Hero() {
               <span
                 key={m}
                 className="mono px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold tracking-widest border"
-                style={{ color: "rgba(240,237,230,0.65)", borderColor: "rgba(240,237,230,0.09)", background: "rgba(240,237,230,0.04)" }}
+                style={{ color: "var(--c-55)", borderColor: "var(--c-border-sm)", background: "var(--c-panel)" }}
               >
                 {m}
               </span>
@@ -258,7 +258,7 @@ export default function Hero() {
               transition: "opacity 0.05s linear",
               marginTop: "clamp(14px, 2vw, 24px)",
               display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8,
-              color: "rgba(240,237,230,0.35)",
+              color: "var(--c-35)",
               fontSize: "0.8rem",
             }}
           >
@@ -293,8 +293,8 @@ export default function Hero() {
               <div
                 key={s.label}
                 style={{
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.10)",
+                  background: "var(--c-panel)",
+                  border: "1px solid var(--c-border-md)",
                   backdropFilter: "blur(12px)",
                   borderRadius: 999,
                   padding: "10px 28px",
@@ -342,7 +342,7 @@ export default function Hero() {
         {/* Bottom fade */}
         <div
           className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
-          style={{ zIndex: 11, background: "linear-gradient(to bottom, transparent, #0C0C0B)" }}
+          style={{ zIndex: 11, background: "linear-gradient(to bottom, transparent, var(--c-bg))" }}
         />
       </div>
     </section>
