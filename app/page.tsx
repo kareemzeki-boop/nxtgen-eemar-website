@@ -1,7 +1,7 @@
 import PageLoader from "@/components/PageLoader";
 import CTAOverlay from "@/components/CTAOverlay";
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
+import HeroSlider from "@/components/HeroSlider";
 import MaterialsBridge from "@/components/MaterialsBridge";
 import Services from "@/components/Services";
 import Innovations from "@/components/Innovations";
@@ -22,7 +22,7 @@ export default function Home() {
       <CTAOverlay />
       <Navbar />
       <main>
-        <Hero />
+        <HeroSlider />
         <MaterialsBridge />
         <Services />
         <Innovations />

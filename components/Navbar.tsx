@@ -108,9 +108,9 @@ export default function Navbar() {
                   key={l.href}
                   href={l.href}
                   className="relative text-sm font-medium transition-colors duration-200 py-1"
-                  style={{ color: isActive ? "#C9A86C" : "var(--c-45)" }}
+                  style={{ color: isActive ? "#C9A86C" : (scrolled ? "var(--c-45)" : "rgba(255,255,255,0.85)") }}
                   onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "var(--c-text)"; }}
-                  onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)"; }}
+                  onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = scrolled ? "var(--c-45)" : "rgba(255,255,255,0.85)"; }}
                 >
                   {l.label}
                   {isActive && (
@@ -145,7 +145,7 @@ export default function Navbar() {
           {/* Hamburger */}
           <button
             className="md:hidden p-1.5 rounded-lg transition-colors"
-            style={{ color: "var(--c-text)" }}
+            style={{ color: scrolled ? "var(--c-text)" : "#fff" }}
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
             onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = "var(--c-panel)")}
