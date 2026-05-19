@@ -27,7 +27,7 @@ export default function MaterialsBridge() {
                 fontWeight: 900,
                 letterSpacing: "-0.03em",
                 textTransform: "uppercase",
-                color: i % 2 === 0 ? "rgba(93,195,155,0.07)" : "rgba(255,255,255,0.04)",
+                color: i % 2 === 0 ? "rgba(201,168,108,0.07)" : "rgba(255,255,255,0.04)",
                 marginRight: "clamp(24px, 4vw, 72px)",
                 lineHeight: 1,
                 userSelect: "none",
@@ -56,13 +56,14 @@ export default function MaterialsBridge() {
             fontWeight: 700,
             letterSpacing: "0.28em",
             textTransform: "uppercase",
-            color: "rgba(255,255,255,0.25)",
+            color: "rgba(240,237,230,0.22)",
             whiteSpace: "nowrap",
+            fontFamily: "'DM Sans', sans-serif",
           }}
         >
-          <span style={{ color: "#5DC39B" }}>●</span>
+          <span style={{ color: "#C9A86C" }}>●</span>
           &nbsp; Precision Manufactured &nbsp;·&nbsp; Sharjah, UAE &nbsp;·&nbsp; GCC Standard &nbsp;
-          <span style={{ color: "#5DC39B" }}>●</span>
+          <span style={{ color: "#C9A86C" }}>●</span>
         </p>
         <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.07)" }} />
       </div>
@@ -79,7 +80,7 @@ export default function MaterialsBridge() {
                 fontWeight: 800,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                color: i % 2 === 0 ? "rgba(255,255,255,0.04)" : "rgba(93,195,155,0.06)",
+                color: i % 2 === 0 ? "rgba(255,255,255,0.04)" : "rgba(201,168,108,0.06)",
                 marginRight: "clamp(20px, 3.5vw, 56px)",
                 lineHeight: 1,
                 userSelect: "none",

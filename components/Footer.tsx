@@ -1,44 +1,71 @@
 "use client";
 import { motion } from "framer-motion";
-import { Mail, MapPin, ArrowUpRight } from "lucide-react";
+import { Mail, MapPin, ArrowUpRight, Shield, Clock, Award } from "lucide-react";
 import { company, footerNavLinks as navLinks, footerMaterials as materials, footerInnovations as innovations } from "@/lib/content";
 
-// All footer data lives in lib/content.ts — edit there.
+const CERT_BADGES = [
+  { icon: Award,  label: "ISO 9001",    sub: "Quality Certified"   },
+  { icon: Shield, label: "10-Year",     sub: "Product Warranty"    },
+  { icon: Clock,  label: "24hr",        sub: "Response Guaranteed" },
+];
 
 export default function Footer() {
   return (
-    <footer className="section-dark border-t border-white/[0.06]">
+    <footer className="section-dark" style={{ borderTop: "none" }}>
+      {/* Animated gradient top line */}
+      <div className="footer-gradient-line" />
+
       <div className="max-w-7xl mx-auto px-5 sm:px-6 py-14 sm:py-16 md:py-20">
 
-        {/* Grid: 1-col mobile → 2-col sm → 4-col lg */}
+        {/* Cert badges row */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-wrap gap-3 mb-12 sm:mb-14"
+        >
+          {CERT_BADGES.map(({ icon: Icon, label, sub }) => (
+            <div key={label} className="cert-badge">
+              <span className="cert-dot" />
+              <Icon size={11} />
+              <span>{label} · {sub}</span>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Main grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12">
 
-          {/* Brand — full width on mobile, spans left col on sm */}
+          {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center pulse-glow shrink-0" style={{ background: "#5DC39B" }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center pulse-glow shrink-0" style={{ background: "#C9A86C" }}>
                 <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
                   <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                   <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
                 </svg>
               </div>
               <div>
-                <div className="text-white font-black text-base tracking-tight leading-none">{company.name}</div>
-                <div className="text-white/40 text-xs mt-0.5">{company.taglineBy}</div>
+                <div className="font-bold text-base tracking-tight leading-none" style={{ color: "#F0EDE6" }}>{company.name}</div>
+                <div className="text-xs mt-0.5" style={{ color: "rgba(240,237,230,0.35)" }}>{company.taglineBy}</div>
               </div>
             </div>
-            <p className="text-white/40 text-sm leading-relaxed mb-5 max-w-xs">
+            <p className="text-sm leading-relaxed mb-5 max-w-xs" style={{ color: "rgba(240,237,230,0.38)" }}>
               Engineering living facades for the Middle East. Precision-manufactured architectural cladding from our Sharjah factory.
             </p>
             <div className="flex flex-col gap-2.5">
               <a href={`mailto:${company.email}`}
-                className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-sm font-medium transition-colors"
+                style={{ color: "rgba(240,237,230,0.45)" }}
+                onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C9A86C")}
+                onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.45)")}
               >
-                <Mail size={13} className="text-indigo-400 shrink-0" />
+                <Mail size={13} style={{ color: "#C9A86C" }} className="shrink-0" />
                 {company.email}
               </a>
-              <div className="flex items-start gap-2 text-sm text-white/50">
-                <MapPin size={13} className="text-indigo-400 mt-0.5 shrink-0" />
+              <div className="flex items-start gap-2 text-sm" style={{ color: "rgba(240,237,230,0.45)" }}>
+                <MapPin size={13} style={{ color: "#C9A86C" }} className="mt-0.5 shrink-0" />
                 {company.address}
               </div>
             </div>
@@ -46,55 +73,93 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <div className="text-white/30 text-xs font-bold uppercase tracking-widest mb-4">Navigation</div>
+            <div className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(240,237,230,0.25)" }}>Navigation</div>
             <ul className="flex flex-col gap-2.5 sm:gap-3">
-              {navLinks.map((l) => (
-                <li key={l.href}>
-                  <a href={l.href} className="text-white/50 hover:text-white text-sm transition-colors font-medium">
+              {navLinks.map((l, i) => (
+                <motion.li
+                  key={l.href}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06, duration: 0.4 }}
+                >
+                  <a
+                    href={l.href}
+                    className="text-sm font-medium transition-colors"
+                    style={{ color: "rgba(240,237,230,0.45)" }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C9A86C")}
+                    onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.45)")}
+                  >
                     {l.label}
                   </a>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
 
           {/* Materials + Innovations */}
           <div>
-            <div className="text-white/30 text-xs font-bold uppercase tracking-widest mb-4">Materials</div>
+            <div className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(240,237,230,0.25)" }}>Materials</div>
             <ul className="flex flex-col gap-2.5 sm:gap-3 mb-7">
-              {materials.map((m) => (
-                <li key={m}>
-                  <a href="#services" className="text-white/50 hover:text-white text-sm transition-colors font-medium">
+              {materials.map((m, i) => (
+                <motion.li
+                  key={m}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05, duration: 0.4 }}
+                >
+                  <a
+                    href="#services"
+                    className="mono text-sm font-medium transition-colors"
+                    style={{ color: "rgba(240,237,230,0.45)" }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C9A86C")}
+                    onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.45)")}
+                  >
                     {m}
                   </a>
-                </li>
+                </motion.li>
               ))}
             </ul>
-            <div className="text-white/30 text-xs font-bold uppercase tracking-widest mb-4">Innovations</div>
+            <div className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(240,237,230,0.25)" }}>Innovations</div>
             <ul className="flex flex-col gap-2.5 sm:gap-3">
-              {innovations.map((inn) => (
-                <li key={inn}>
-                  <a href="#innovations" className="text-white/50 hover:text-white text-sm transition-colors font-medium">
+              {innovations.map((inn, i) => (
+                <motion.li
+                  key={inn}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 + 0.2, duration: 0.4 }}
+                >
+                  <a
+                    href="#innovations"
+                    className="text-sm font-medium transition-colors"
+                    style={{ color: "rgba(240,237,230,0.45)" }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#F0EDE6")}
+                    onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.45)")}
+                  >
                     {inn}
                   </a>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
 
-          {/* CTA box — spans right col on sm, own col on lg */}
+          {/* CTA box */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <div className="rounded-2xl p-5 sm:p-6 flex flex-col gap-4"
-              style={{ background: "rgba(93,195,155,0.10)", border: "1px solid rgba(93,195,155,0.22)" }}
+            <div
+              className="rounded-2xl p-5 sm:p-6 flex flex-col gap-4"
+              style={{ background: "rgba(201,168,108,0.08)", border: "1px solid rgba(201,168,108,0.18)" }}
             >
-              <div className="text-lg sm:text-xl font-black text-white leading-tight">
+              <div className="text-lg sm:text-xl font-bold leading-tight display" style={{ color: "#F0EDE6" }}>
                 Ready to specify your facade?
               </div>
-              <p className="text-white/50 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(240,237,230,0.45)" }}>
                 Our engineering team responds to all enquiries within one business day.
               </p>
               <a href="#contact" className="btn-primary py-3 text-sm flex items-center justify-center gap-2">
-                Start a Project <ArrowUpRight size={14} />
+                <span>Start a Project</span>
+                <ArrowUpRight size={14} />
               </a>
               <a href={`mailto:${company.email}`} className="btn-outline-dark py-3 text-sm flex items-center justify-center gap-2">
                 {company.email} <Mail size={13} />
@@ -105,15 +170,15 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/[0.05]">
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <div className="max-w-7xl mx-auto px-5 sm:px-6 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-          <div className="text-white/20 text-xs text-center sm:text-left">
+          <div className="text-xs text-center sm:text-left" style={{ color: "rgba(240,237,230,0.2)" }}>
             {company.copyright}
           </div>
-          <div className="flex flex-wrap justify-center sm:justify-end items-center gap-4 sm:gap-6 text-white/20 text-xs">
-            <a href="#" className="hover:text-white/50 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white/50 transition-colors">Terms of Service</a>
-            <span className="hidden sm:inline text-white/10">·</span>
+          <div className="flex flex-wrap justify-center sm:justify-end items-center gap-4 sm:gap-6 text-xs" style={{ color: "rgba(240,237,230,0.2)" }}>
+            <a href="#" onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.5)")} onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.2)")} className="transition-colors">Privacy Policy</a>
+            <a href="#" onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.5)")} onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.2)")} className="transition-colors">Terms of Service</a>
+            <span className="hidden sm:inline" style={{ color: "rgba(240,237,230,0.1)" }}>·</span>
             <span>ISO 9001 Certified</span>
           </div>
         </div>

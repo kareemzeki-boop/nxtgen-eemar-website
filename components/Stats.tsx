@@ -3,7 +3,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { statsNumbers as stats, statsBarData as BAR_DATA, statsCallout, statsBackgroundImage } from "@/lib/content";
 
-// All stats data lives in lib/content.ts — edit there.
+const PROGRESS = [80, 75, 60, 100, 98, 98];
 
 function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
   const [count, setCount] = useState(0);
@@ -13,7 +13,7 @@ function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
   useEffect(() => {
     if (!inView) return;
     let start = 0;
-    const duration = 1600;
+    const duration = 1800;
     const step = 16;
     const increment = target / (duration / step);
     const timer = setInterval(() => {
@@ -33,18 +33,18 @@ export default function Stats() {
 
   return (
     <section className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
-      {/* Subtle concrete texture background */}
       <div className="absolute inset-0">
         <img
           src={statsBackgroundImage}
           alt=""
-          className="w-full h-full object-cover opacity-[0.07]"
+          className="w-full h-full object-cover opacity-[0.055]"
           aria-hidden="true"
           loading="lazy"
         />
       </div>
-      <div className="absolute inset-0 pointer-events-none opacity-30"
-        style={{ background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(93,195,155,0.10) 0%, transparent 70%)" }}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-30"
+        style={{ background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(201,168,108,0.08) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -60,15 +60,17 @@ export default function Stats() {
           <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
             By The Numbers
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight text-white max-w-3xl leading-tight mt-4">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 display" style={{ color: "#F0EDE6" }}>
             Results that speak
             <br />
-            <span className="text-white/30">louder than specs.</span>
+            <span style={{ color: "rgba(240,237,230,0.22)" }}>louder than specs.</span>
           </h2>
         </motion.div>
 
-        {/* Stats grid — 2 cols mobile, 3 cols sm+, 3 cols md */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-white/[0.05] rounded-2xl overflow-hidden mb-12 md:mb-16">
+        {/* Stats grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-px rounded-2xl overflow-hidden mb-12 md:mb-16"
+          style={{ background: "rgba(255,255,255,0.04)" }}
+        >
           {stats.map((s, i) => (
             <motion.div
               key={s.label}
@@ -76,26 +78,44 @@ export default function Stats() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="bg-[#242424] px-5 sm:px-6 md:px-8 py-6 sm:py-7 md:py-8 group hover:bg-indigo-500/5 transition-colors duration-300"
+              className="px-5 sm:px-6 md:px-8 py-6 sm:py-7 md:py-8 group transition-colors duration-300"
+              style={{ background: "var(--bg-surface)" }}
+              onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "rgba(201,168,108,0.05)")}
+              onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.background = "var(--bg-surface)")}
             >
-              <div className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight mb-1.5">
+              <div className="mono text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-1.5" style={{ color: "#F0EDE6" }}>
                 {typeof s.value === "number" ? (
                   <CountUp target={s.value} suffix={s.suffix} />
                 ) : `${s.value}${s.suffix}`}
               </div>
-              <div className="text-xs sm:text-sm font-bold text-white/80 mb-1">{s.label}</div>
-              <div className="text-xs text-white/30 leading-tight">{s.sub}</div>
+              <div className="text-xs sm:text-sm font-bold mb-0.5" style={{ color: "rgba(240,237,230,0.75)" }}>{s.label}</div>
+              <div className="text-xs leading-tight" style={{ color: "rgba(240,237,230,0.28)" }}>{s.sub}</div>
+
+              {/* Progress bar */}
+              <div className="stat-bar-track mt-3">
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: (PROGRESS[i] ?? 75) / 100 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 + 0.5, duration: 1.4, ease: [0.4, 0, 0.2, 1] }}
+                  style={{
+                    height: "100%",
+                    background: "linear-gradient(90deg, rgba(201,168,108,0.6), #C9A86C)",
+                    borderRadius: 1,
+                    transformOrigin: "left",
+                  }}
+                />
+              </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Bar chart + callout — stacked on mobile, side-by-side on md+ */}
+        {/* Bar chart + callout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
 
-          {/* Bar chart */}
           <div ref={barRef}>
-            <div className="text-white/50 text-xs font-semibold uppercase tracking-widest mb-5 sm:mb-6">
-              m2 Produced (Indexed) &middot; 2020-2024
+            <div className="text-xs font-semibold uppercase tracking-widest mb-5 sm:mb-6 mono" style={{ color: "rgba(240,237,230,0.4)" }}>
+              m² Produced (Indexed) &middot; 2020–2024
             </div>
             <div className="flex items-end gap-2 sm:gap-3 h-36 sm:h-44 md:h-48">
               {BAR_DATA.map((bar, i) => (
@@ -104,14 +124,14 @@ export default function Stats() {
                     className="w-full rounded-t-lg"
                     style={{ background: bar.color, height: 0 }}
                     animate={barsInView ? { height: `${bar.value * 1.5}px` } : {}}
-                    transition={{ delay: i * 0.1, duration: 0.7, ease: "easeOut" }}
+                    transition={{ delay: i * 0.1, duration: 0.8, ease: "easeOut" }}
                   />
-                  <span className="text-xs text-white/30 font-medium">{bar.label}</span>
+                  <span className="mono text-xs font-medium" style={{ color: "rgba(240,237,230,0.28)" }}>{bar.label}</span>
                 </div>
               ))}
             </div>
-            <p className="text-white/30 text-xs mt-4 leading-relaxed">
-              Production capacity has grown nearly 3x since 2020 following our Sharjah D17 expansion.
+            <p className="text-xs mt-4 leading-relaxed" style={{ color: "rgba(240,237,230,0.25)" }}>
+              Production capacity has grown nearly 3× since 2020 following our Sharjah D17 expansion.
             </p>
           </div>
 
@@ -123,18 +143,22 @@ export default function Stats() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="card-dark rounded-2xl p-6 sm:p-8"
           >
-            <div className="text-4xl sm:text-5xl font-black mb-2" style={{ color: "#5DC39B" }}>
+            <div className="mono text-4xl sm:text-5xl font-bold mb-2" style={{ color: "#C9A86C" }}>
               {statsCallout.headline}
             </div>
-            <div className="text-white text-xl sm:text-2xl font-bold mb-3 sm:mb-4 leading-tight">
+            <div className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 leading-tight display" style={{ color: "#F0EDE6" }}>
               {statsCallout.subheadline}
             </div>
-            <p className="text-white/50 text-xs sm:text-sm leading-relaxed mb-5 sm:mb-6">
+            <p className="text-xs sm:text-sm leading-relaxed mb-5 sm:mb-6" style={{ color: "rgba(240,237,230,0.45)" }}>
               {statsCallout.body}
             </p>
             <div className="flex flex-wrap gap-2">
               {statsCallout.countries.map((c) => (
-                <span key={c} className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold text-indigo-300 bg-indigo-500/10 border border-indigo-500/20">
+                <span
+                  key={c}
+                  className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold"
+                  style={{ color: "#C9A86C", background: "rgba(201,168,108,0.10)", border: "1px solid rgba(201,168,108,0.22)" }}
+                >
                   {c}
                 </span>
               ))}
