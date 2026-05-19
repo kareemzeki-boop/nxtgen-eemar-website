@@ -54,7 +54,7 @@ export default function Pricing() {
             >
               {plan.badge && (
                 <div className="absolute -top-3 left-6 sm:left-8">
-                  <span className="px-3 sm:px-4 py-1 rounded-full text-xs font-bold bg-white text-indigo-600">
+                  <span className="px-3 sm:px-4 py-1 rounded-full text-xs font-bold bg-white text-indigo-600 pulse-badge inline-block">
                     {plan.badge}
                   </span>
                 </div>
