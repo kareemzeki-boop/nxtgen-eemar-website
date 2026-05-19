@@ -52,11 +52,7 @@ export const hero = {
     { num: "6",    label: "GCC Countries"      },
     { num: "100%", label: "Custom Engineered"  },
   ],
-  // Full-bleed background photo (Unsplash — geometric facade, Osaka)
-  backgroundImage:
-    "https://i.ibb.co/Q3jZfjVT/2a5203040aa99e241d5a054da4fcbdfe.jpg",
-  // Looping hero video — drop an MP4/WebM URL here (leave empty to use photo only)
-  // YouTube video ID — set to "" to show photo only
+  backgroundImage: "/nxtgen-eemar-website/images/hero-facade.png",
   backgroundVideo: "6h0kNAtRqI4",
 };
 
@@ -86,8 +82,8 @@ export const services = [
       "NXTGEN's GFRC panels transformed our tower facade — the texture consistency across 4,200 units was flawless.",
     quoteBy: "Lead Architect, Dubai Iconic Tower Project",
     accentColor: "#5DC39B",
-    image:    "https://i.ibb.co/q3Lfh1nf/3b6d69b1101f49a24a0900b10d6e6db7.jpg",
-    imageAlt: "White folded fin facade panels — GFRC architectural cladding",
+    image:    "/nxtgen-eemar-website/images/service-gfrc.png",
+    imageAlt: "Cultural centre with circular GFRC facade opening and luminous mesh panels",
   },
   {
     id: "gfrp",
@@ -130,8 +126,8 @@ export const services = [
       "We specified UHPC for the cantilevered brise-soleil blades — NXTGEN delivered tolerances we didn't think possible in the region.",
     quoteBy: "Structural Engineer, Riyadh Cultural Centre",
     accentColor: "#06b6d4",
-    image:    "https://i.ibb.co/8g3c0zKk/40a2af9dbc8f240759388ce20e488f27.jpg",
-    imageAlt: "Curved concrete structure by waterfront — UHPC precision cladding",
+    image:    "/nxtgen-eemar-website/images/service-uhpc.jpg",
+    imageAlt: "Brutalist UHPC concrete facade with deep reveals and angular volumes",
   },
   {
     id: "ltgrc",
@@ -327,11 +323,11 @@ export const statsCallout = {
 
 // Background photo for the Stats section
 export const statsBackgroundImage =
-  "https://i.ibb.co/v6qk56wV/539006a21afc0bc2dd100911f1e99554.jpg";
+  "/nxtgen-eemar-website/images/stats-bg.png";
 
-// Background texture for the Innovations section (technical facade drawing)
+// Background texture for the Innovations section
 export const innovationsBackgroundImage =
-  "https://i.ibb.co/F4b8THJg/cd93d1d487584dbed63eea13881cac20.jpg";
+  "/nxtgen-eemar-website/images/innovations-bg.jpg";
 
 // ----------------------------------------------------------------
 // PROJECTS — managed via Admin Panel (admin/)
