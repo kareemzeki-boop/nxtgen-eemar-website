@@ -1,38 +1,27 @@
+import NavbarCladwise from "@/components/NavbarCladwise";
+import HeroCladwise from "@/components/HeroCladwise";
+import AboutCladwise from "@/components/AboutCladwise";
+import MetricsGrid from "@/components/MetricsGrid";
+import ProductGrid from "@/components/ProductGrid";
+import MarqueeCladwise from "@/components/MarqueeCladwise";
+import ServicesMatrix from "@/components/ServicesMatrix";
+import FooterCladwise from "@/components/FooterCladwise";
 import PageLoader from "@/components/PageLoader";
-import CTAOverlay from "@/components/CTAOverlay";
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import MaterialsBridge from "@/components/MaterialsBridge";
-import Services from "@/components/Services";
-import Innovations from "@/components/Innovations";
-import Process from "@/components/Process";
-import Stats from "@/components/Stats";
-import Projects from "@/components/Projects";
-import Pricing from "@/components/Pricing";
-import FAQ from "@/components/FAQ";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import BackToTop from "@/components/BackToTop";
+
 export default function Home() {
   return (
     <>
       <PageLoader />
-      <CTAOverlay />
-      <Navbar />
+      <NavbarCladwise />
       <main>
-        <Hero />
-        <MaterialsBridge />
-        <Services />
-        <Innovations />
-        <Process />
-        <Stats />
-        <Projects />
-        <Pricing />
-        <FAQ />
-        <Contact />
+        <HeroCladwise />
+        <AboutCladwise />
+        <MetricsGrid />
+        <MarqueeCladwise />
+        <ProductGrid />
+        <ServicesMatrix />
       </main>
-      <Footer />
-      <BackToTop />
+      <FooterCladwise />
     </>
   );
 }
