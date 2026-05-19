@@ -1,52 +1,30 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Award, Zap } from "lucide-react";
 import { hero, company } from "@/lib/content";
 import { ctaClick } from "@/lib/cta";
+import KineticText from "./KineticText";
+import MagneticEl from "./MagneticEl";
+import ParticleField from "./ParticleField";
 
 const r = (prog: number, a: number, b: number) =>
   Math.max(0, Math.min(1, (prog - a) / (b - a)));
 
-const wordVariants: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.065, duration: 0.55, ease: "easeOut" },
-  }),
-};
-
-function WordReveal({ text, offset = 0, style }: { text: string; offset?: number; style?: React.CSSProperties }) {
-  return (
-    <span style={style}>
-      {text.split(" ").map((word, i) => (
-        <motion.span
-          key={i}
-          custom={offset + i}
-          initial="hidden"
-          animate="visible"
-          variants={wordVariants}
-          style={{ display: "inline-block", marginRight: "0.28em" }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
-
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const ytRef      = useRef<HTMLDivElement>(null);
-  const [prog, setProg]       = useState(0);
+  const sectionRef   = useRef<HTMLElement>(null);
+  const ytRef        = useRef<HTMLDivElement>(null);
+  const [prog, setProg]         = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [sweepKey, setSweepKey] = useState(0);
+  const sweptRef   = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
     const onScroll = () => {
-      const rect  = section.getBoundingClientRect();
-      const total = section.offsetHeight - window.innerHeight;
+      const rect    = section.getBoundingClientRect();
+      const total   = section.offsetHeight - window.innerHeight;
       const scrolled = Math.max(0, -rect.top);
       setProg(total > 0 ? Math.min(1, scrolled / total) : 0);
     };
@@ -60,6 +38,18 @@ export default function Hero() {
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // Trigger gold shimmer once after kinetic text finishes
+  useEffect(() => {
+    if (sweptRef.current) return;
+    const totalChars = (hero.headlinePart1 + hero.headlinePart2 + hero.headlinePart3).length;
+    const delay = totalChars * 22 + 650; // stagger * chars + duration + buffer
+    const t = setTimeout(() => {
+      setSweepKey(k => k + 1);
+      sweptRef.current = true;
+    }, delay);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -89,25 +79,24 @@ export default function Hero() {
     return () => { if (container.contains(iframe)) container.removeChild(iframe); };
   }, []);
 
-  const paraOp  = r(prog, 0.10, 0.25);
-  const paraY   = (1 - paraOp) * 30;
-  const matOp   = r(prog, 0.25, 0.40);
+  // Scroll-driven values
+  const paraOp  = r(prog, 0.10, 0.26);
+  const paraY   = (1 - paraOp) * 32;
+  const matOp   = r(prog, 0.26, 0.40);
   const matY    = (1 - matOp) * 24;
-  const ctaOp   = r(prog, 0.40, 0.55);
+  const ctaOp   = r(prog, 0.40, 0.54);
   const ctaY    = (1 - ctaOp) * 24;
   const locOp   = r(prog, 0.50, 0.63);
   const statsIn    = r(prog, 0.60, 0.72);
-  const statsScale = 1 + r(prog, 0.68, 0.87) * (isMobile ? 0.35 : 1.8);
+  const statsScale = 1 + r(prog, 0.68, 0.87) * (isMobile ? 0.3 : 1.6);
   const statsOut   = 1 - r(prog, 0.84, 1.00);
   const statsOp    = statsIn * statsOut;
-  const statsY     = (1 - statsIn) * 32;
+  const statsY     = (1 - statsIn) * 30;
   const exitProg   = r(prog, 0.82, 1.00);
-  const heroExitY  = exitProg * -100;
-  const heroExitOp = 1 - exitProg * 0.6;
-
-  const words1 = hero.headlinePart1.split(" ");
-  const words2 = hero.headlinePart2.split(" ");
+  const heroExitY  = exitProg * -90;
+  const heroExitOp = 1 - exitProg * 0.55;
   const scrollIndicatorOp = 1 - r(prog, 0, 0.12);
+  const bgParallaxY = -prog * 12; // background drifts slower than scroll
 
   return (
     <section
@@ -122,15 +111,23 @@ export default function Hero() {
         willChange: "transform, opacity",
       }}>
 
-        {/* Background */}
+        {/* ── Layer 0: Background ── */}
         <div className="absolute inset-0 overflow-hidden">
-          <img
-            src={hero.backgroundImage}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover object-center"
-            aria-hidden="true"
-            fetchPriority="high"
-          />
+          <div style={{
+            position: "absolute", inset: "-8%",
+            transform: `translateY(${bgParallaxY}%)`,
+            transition: "transform 0.05s linear",
+          }}>
+            <img
+              src={hero.backgroundImage}
+              alt=""
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+              aria-hidden="true"
+              fetchPriority="high"
+            />
+          </div>
+
+          {/* YouTube video overlay */}
           {hero.backgroundVideo && (
             <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
               <div
@@ -143,33 +140,43 @@ export default function Hero() {
               />
             </div>
           )}
-          <div style={{ position: "absolute", inset: 0, zIndex: 2 }} />
+
+          {/* Dark gradient overlay — left heavier for text legibility */}
           <div
             className="absolute inset-0"
             style={{
               zIndex: 3,
-              background: "linear-gradient(110deg,rgba(12,12,11,0.97) 0%,rgba(12,12,11,0.90) 40%,rgba(12,12,11,0.70) 100%)",
+              background: "linear-gradient(105deg, rgba(12,12,11,0.97) 0%, rgba(12,12,11,0.92) 45%, rgba(12,12,11,0.72) 100%)",
             }}
           />
         </div>
 
-        {/* Gold glow */}
+        {/* ── Layer 1: Gold radial glow ── */}
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ zIndex: 4, background: "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,108,0.10) 0%, transparent 70%)" }}
+          style={{
+            zIndex: 4,
+            background: "radial-gradient(ellipse 70% 55% at 50% -5%, rgba(201,168,108,0.13) 0%, transparent 65%)",
+          }}
         />
 
-        {/* Content */}
+        {/* ── Layer 2: Particles ── */}
+        <div className="absolute inset-0" style={{ zIndex: 5 }}>
+          <ParticleField count={isMobile ? 30 : 55} />
+        </div>
+
+        {/* ── Layer 3: Content ── */}
         <div
-          className="relative max-w-7xl mx-auto px-5 sm:px-6 pt-24 sm:pt-32 md:pt-36 pb-10 flex flex-col h-full"
-          style={{ zIndex: 10 }}
+          className="relative max-w-7xl mx-auto px-5 sm:px-6 flex flex-col h-full"
+          style={{ zIndex: 10, paddingTop: "clamp(88px, 14vh, 140px)", paddingBottom: 40 }}
         >
+
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-6 sm:mb-8"
+            transition={{ duration: 0.55, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-6 sm:mb-7"
           >
             <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs">
               <Award size={11} />
@@ -177,105 +184,150 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Headline — word-by-word reveal */}
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.93] max-w-5xl display">
-            <WordReveal text={hero.headlinePart1} offset={0} style={{ display: "block" }} />
-            <WordReveal
-              text={hero.headlinePart2}
-              offset={words1.length}
-              style={{ display: "block", color: "#F0EDE6" }}
-            />
-            <WordReveal
-              text={hero.headlinePart3}
-              offset={words1.length + words2.length}
-              style={{ display: "block", color: "var(--c-28)" }}
-            />
-          </h1>
+          {/* ── Kinetic headline ── */}
+          <div style={{ position: "relative" }}>
+            <h1
+              className="display font-black tracking-tight leading-[0.9] max-w-5xl"
+              style={{ fontSize: "clamp(48px, 6.8vw, 108px)" }}
+            >
+              <KineticText
+                text={hero.headlinePart1}
+                delay={0.2}
+                stagger={0.018}
+                style={{ display: "block", color: "var(--c-text)" }}
+              />
+              <KineticText
+                text={hero.headlinePart2}
+                delay={0.2 + hero.headlinePart1.length * 0.018 + 0.05}
+                stagger={0.018}
+                style={{ display: "block", color: "var(--c-text)" }}
+              />
+              <KineticText
+                text={hero.headlinePart3}
+                delay={0.2 + (hero.headlinePart1.length + hero.headlinePart2.length) * 0.018 + 0.1}
+                stagger={0.018}
+                style={{ display: "block" }}
+                className="display-gold"
+              />
+            </h1>
 
-          {/* Paragraph — scroll stage 1 */}
+            {/* Gold shimmer sweep across headline */}
+            {sweepKey > 0 && (
+              <div
+                key={sweepKey}
+                className="gold-sweep-line"
+                aria-hidden="true"
+              />
+            )}
+          </div>
+
+          {/* ── Subheadline — scroll stage 1 ── */}
           <div
             style={{
               opacity: paraOp,
               transform: `translateY(${paraY}px)`,
               transition: "opacity 0.05s linear, transform 0.05s linear",
               marginTop: "clamp(20px, 3vw, 32px)",
+              maxWidth: 560,
             }}
           >
-            <p className="text-base sm:text-lg md:text-xl max-w-2xl leading-relaxed"
-              style={{ color: "var(--c-55)" }}>
+            <p
+              style={{
+                fontSize: "clamp(14px, 1.2vw, 18px)",
+                lineHeight: 1.72,
+                color: "var(--c-55)",
+                fontWeight: 400,
+              }}
+            >
               {hero.subheadline}
             </p>
           </div>
 
-          {/* Material pills — scroll stage 2 */}
+          {/* ── Material pills — scroll stage 2 ── */}
           <div
             style={{
               opacity: matOp,
               transform: `translateY(${matY}px)`,
               transition: "opacity 0.05s linear, transform 0.05s linear",
-              marginTop: "clamp(16px, 2vw, 24px)",
+              marginTop: "clamp(14px, 2vw, 22px)",
               display: "flex", flexWrap: "wrap", gap: 8,
             }}
           >
             {hero.materials.map((m) => (
               <span
                 key={m}
-                className="mono px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold tracking-widest border"
-                style={{ color: "var(--c-55)", borderColor: "var(--c-border-sm)", background: "var(--c-panel)" }}
+                className="mono rounded-full text-xs font-bold tracking-widest"
+                style={{
+                  padding: "6px 14px",
+                  color: "var(--c-55)",
+                  borderColor: "var(--c-border-sm)",
+                  background: "var(--c-panel)",
+                  border: "1px solid var(--c-border-sm)",
+                }}
               >
                 {m}
               </span>
             ))}
           </div>
 
-          {/* CTAs — scroll stage 3 */}
+          {/* ── CTAs — scroll stage 3 ── */}
           <div
             style={{
               opacity: ctaOp,
               transform: `translateY(${ctaY}px)`,
               transition: "opacity 0.05s linear, transform 0.05s linear",
               marginTop: "clamp(20px, 3vw, 36px)",
-              display: "flex", flexWrap: "wrap", gap: 12,
+              display: "flex", flexWrap: "wrap", gap: 14,
+              alignItems: "center",
             }}
           >
-            <a
-              href={hero.ctaPrimary.href}
-              onClick={ctaClick}
-              className="btn-primary px-6 sm:px-7 py-3.5 text-sm sm:text-base flex items-center gap-2"
-            >
-              <span>{hero.ctaPrimary.label}</span>
-              <ArrowRight size={16} />
-            </a>
-            <a href={hero.ctaSecondary.href} className="btn-outline-dark px-6 sm:px-7 py-3.5 text-sm sm:text-base text-center">
-              {hero.ctaSecondary.label}
-            </a>
+            <MagneticEl strength={0.25}>
+              <a
+                href={hero.ctaPrimary.href}
+                onClick={ctaClick}
+                className="btn-primary flex items-center gap-2"
+                style={{ padding: "14px 28px", fontSize: "clamp(13px, 1.1vw, 15px)" }}
+              >
+                <span>{hero.ctaPrimary.label}</span>
+                <ArrowRight size={15} />
+              </a>
+            </MagneticEl>
+            <MagneticEl strength={0.2}>
+              <a
+                href={hero.ctaSecondary.href}
+                className="btn-outline-dark"
+                style={{ padding: "14px 28px", fontSize: "clamp(13px, 1.1vw, 15px)" }}
+              >
+                {hero.ctaSecondary.label}
+              </a>
+            </MagneticEl>
           </div>
 
-          {/* Location + ISO — scroll stage 3 */}
+          {/* ── Location + ISO — scroll stage 3 ── */}
           <div
             style={{
               opacity: locOp,
               transition: "opacity 0.05s linear",
               marginTop: "clamp(14px, 2vw, 24px)",
-              display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8,
+              display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10,
               color: "var(--c-35)",
-              fontSize: "0.8rem",
+              fontSize: "0.78rem",
             }}
           >
-            <MapPin size={13} style={{ color: "#C9A86C" }} />
+            <MapPin size={12} style={{ color: "#C9A86C", flexShrink: 0 }} />
             <span>{company.address}</span>
-            <span className="hidden sm:inline">&nbsp;·&nbsp;</span>
-            <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <Zap size={12} style={{ color: "#C9A86C" }} />
+            <span style={{ color: "var(--c-20)" }}>·</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+              <Zap size={11} style={{ color: "#C9A86C" }} />
               {company.certification}
             </span>
           </div>
 
-          {/* Stats pills — scroll stage 4 */}
+          {/* ── Stats pills — scroll stage 4 ── */}
           <div
             style={{
               position: "absolute",
-              bottom: "clamp(64px, 10vh, 96px)",
+              bottom: "clamp(60px, 10vh, 90px)",
               left: 0, right: 0,
               padding: "0 20px",
               opacity: statsOp,
@@ -285,7 +337,7 @@ export default function Hero() {
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              gap: 12,
+              gap: 10,
               zIndex: 5,
             }}
           >
@@ -293,11 +345,12 @@ export default function Hero() {
               <div
                 key={s.label}
                 style={{
-                  background: "var(--c-panel)",
-                  border: "1px solid var(--c-border-md)",
-                  backdropFilter: "blur(12px)",
+                  background: "rgba(12,12,11,0.7)",
+                  border: "1px solid rgba(201,168,108,0.18)",
+                  backdropFilter: "blur(16px)",
+                  WebkitBackdropFilter: "blur(16px)",
                   borderRadius: 999,
-                  padding: "10px 28px",
+                  padding: "11px 26px",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -305,21 +358,31 @@ export default function Hero() {
                   minWidth: 110,
                 }}
               >
-                <span className="mono" style={{ fontSize: "clamp(20px,2.5vw,28px)", fontWeight: 700, color: "#F0EDE6", lineHeight: 1 }}>
+                <span
+                  className="mono"
+                  style={{ fontSize: "clamp(19px, 2.2vw, 26px)", fontWeight: 700, color: "#C9A86C", lineHeight: 1 }}
+                >
                   {s.num}
                 </span>
-                <span style={{ fontSize: 9, fontWeight: 700, color: "rgba(240,237,230,0.38)", letterSpacing: "0.1em", textTransform: "uppercase", whiteSpace: "nowrap" }}>
+                <span style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  color: "rgba(240,237,230,0.38)",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  whiteSpace: "nowrap",
+                }}>
                   {s.label}
                 </span>
               </div>
             ))}
           </div>
 
-          {/* Scroll indicator */}
+          {/* ── Scroll indicator ── */}
           <div
             style={{
               position: "absolute",
-              bottom: "clamp(20px, 3vh, 28px)",
+              bottom: "clamp(18px, 3vh, 26px)",
               left: "50%",
               transform: "translateX(-50%)",
               zIndex: 12,
@@ -331,18 +394,23 @@ export default function Hero() {
               transition: "opacity 0.15s linear",
             }}
           >
-            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.22em", color: "rgba(201,168,108,0.4)", textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif" }}>
+            <span style={{
+              fontSize: 9,
+              fontWeight: 700,
+              letterSpacing: "0.22em",
+              color: "rgba(201,168,108,0.4)",
+              textTransform: "uppercase",
+            }}>
               Scroll
             </span>
             <div className="scroll-caret" />
           </div>
-
         </div>
 
         {/* Bottom fade */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
-          style={{ zIndex: 11, background: "linear-gradient(to bottom, transparent, var(--c-bg))" }}
+          className="absolute bottom-0 left-0 right-0 pointer-events-none"
+          style={{ height: "clamp(60px, 10vh, 100px)", zIndex: 11, background: "linear-gradient(to bottom, transparent, var(--c-bg))" }}
         />
       </div>
     </section>

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Cpu, Layers3, Leaf, Atom, ArrowRight } from "lucide-react";
 import { innovations as innovationsData, innovationsBackgroundImage } from "@/lib/content";
 import { ctaClick } from "@/lib/cta";
+import KineticText from "./KineticText";
 
 const ICONS = [Cpu, Layers3, Leaf, Atom] as const;
 const cards = innovationsData.map((item, i) => ({ ...item, Icon: ICONS[i] }));
@@ -67,15 +68,42 @@ export default function Innovations() {
             }}
           />
           <div className="relative max-w-7xl mx-auto px-5 sm:px-6 w-full">
-            <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs">
+            <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs mb-6">
               R&amp;D Innovations
             </span>
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight max-w-2xl leading-tight mt-6" style={{ color: "var(--c-text)" }}>
-              Beyond the brief.
-              <br />
-              <span style={{ color: "var(--c-28)" }}>Beyond the material.</span>
-            </h2>
-            <p className="text-sm mt-5 font-medium tracking-wide" style={{ color: "var(--c-40)" }}>
+            <KineticText
+              text="Beyond the brief."
+              delay={0.1}
+              stagger={0.022}
+              as="h2"
+              style={{
+                display: "block",
+                fontSize: "clamp(36px, 5.5vw, 88px)",
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontWeight: 900,
+                letterSpacing: "-0.04em",
+                lineHeight: 0.92,
+                color: "var(--c-text)",
+                marginTop: 12,
+                marginBottom: 4,
+              }}
+            />
+            <KineticText
+              text="Beyond the material."
+              delay={0.4}
+              stagger={0.018}
+              style={{
+                display: "block",
+                fontSize: "clamp(24px, 3.8vw, 64px)",
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontWeight: 700,
+                letterSpacing: "-0.03em",
+                lineHeight: 1,
+                color: "var(--c-28)",
+                marginBottom: 20,
+              }}
+            />
+            <p className="text-sm font-medium tracking-wide" style={{ color: "var(--c-40)" }}>
               Scroll to explore our four core breakthroughs ↓
             </p>
           </div>
@@ -97,6 +125,10 @@ export default function Innovations() {
                 transform: `translateY(${ty}%)`,
                 transition: "transform 0.04s linear",
                 zIndex: i + 1,
+                // Clip-path reveal as card slides in (0→1 maps clip 100%→0%)
+                clipPath: enter < 0.5
+                  ? `inset(${Math.max(0, (1 - enter * 2) * 8)}% 0 0 0)`
+                  : "inset(0% 0 0 0)",
               }}
             >
               {/* Card background */}

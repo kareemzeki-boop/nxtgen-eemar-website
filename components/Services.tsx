@@ -4,6 +4,7 @@ import { motion, useAnimationFrame, AnimatePresence } from "framer-motion";
 import { CheckCircle2, ArrowUpRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { services } from "@/lib/content";
 import { ctaClick } from "@/lib/cta";
+import KineticText from "./KineticText";
 
 const SIZE = 260;
 const HALF = SIZE / 2;
@@ -150,31 +151,41 @@ export default function Services() {
           transition={{ duration: 0.85, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center mb-8 md:mb-16"
         >
-          <span
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              fontSize: 10, fontWeight: 800, letterSpacing: "0.18em",
-              textTransform: "uppercase", color: "#5DC39B",
-              border: "1px solid rgba(93,195,155,0.25)",
-              borderRadius: 999, padding: "5px 14px",
-              background: "rgba(93,195,155,0.07)",
-              marginBottom: 20,
-            }}
-          >
+          <span className="tag-pill mb-5" style={{ color: "#5DC39B", borderColor: "rgba(93,195,155,0.25)", background: "rgba(93,195,155,0.07)" }}>
             Our Materials
           </span>
-          <h2
+          <KineticText
+            text="Five systems."
+            delay={0.1}
+            stagger={0.02}
+            as="h2"
             style={{
-              fontSize: "clamp(32px,5vw,64px)",
-              fontWeight: 900, letterSpacing: "-0.035em",
-              color: "#fff", lineHeight: 1.05,
-              marginBottom: 16,
+              display: "block",
+              fontSize: "clamp(36px, 5.5vw, 80px)",
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontWeight: 900,
+              letterSpacing: "-0.035em",
+              color: "var(--c-text)",
+              lineHeight: 0.95,
+              marginBottom: 6,
             }}
-          >
-            Five systems.<br />
-            <span style={{ color: "rgba(255,255,255,0.35)" }}>One engineered standard.</span>
-          </h2>
-          <p style={{ fontSize: "clamp(14px,1.5vw,17px)", color: "rgba(255,255,255,0.45)", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
+          />
+          <KineticText
+            text="One engineered standard."
+            delay={0.35}
+            stagger={0.016}
+            style={{
+              display: "block",
+              fontSize: "clamp(24px, 3.5vw, 56px)",
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontWeight: 700,
+              letterSpacing: "-0.03em",
+              color: "var(--c-28)",
+              lineHeight: 1,
+              marginBottom: 20,
+            }}
+          />
+          <p style={{ fontSize: "clamp(13px,1.2vw,16px)", color: "var(--c-45)", maxWidth: 520, margin: "0 auto", lineHeight: 1.75 }}>
             Every material we produce is engineered for GCC climate extremes — UV, salinity, seismic loads, and the relentless demand for architectural precision.
           </p>
         </motion.div>
