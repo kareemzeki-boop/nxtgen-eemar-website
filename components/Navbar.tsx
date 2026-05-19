@@ -6,36 +6,14 @@ import { navLinks as links, company } from "@/lib/content";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
-  const [scrolled, setScrolled]           = useState(false);
-  const [open, setOpen]                   = useState(false);
+  const [scrolled, setScrolled]         = useState(false);
+  const [open, setOpen]                 = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
-  const [velWidth, setVelWidth]           = useState(0);
 
   useEffect(() => {
-    let lastY = window.scrollY;
-    let lastT = Date.now();
-    let raf: number;
-    let decayT: ReturnType<typeof setTimeout>;
-
-    const onScroll = () => {
-      const now = Date.now();
-      const dy = Math.abs(window.scrollY - lastY);
-      const dt = Math.max(1, now - lastT);
-      const speed = Math.min(dy / dt * 8, 100); // 0-100
-      setScrolled(window.scrollY > 30);
-      setVelWidth(speed);
-      lastY = window.scrollY; lastT = now;
-      clearTimeout(decayT);
-      decayT = setTimeout(() => setVelWidth(0), 200);
-    };
-    const rafLoop = () => { raf = requestAnimationFrame(rafLoop); };
-    rafLoop();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(decayT);
-      window.removeEventListener("scroll", onScroll);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -77,12 +55,6 @@ export default function Navbar() {
           borderColor: "var(--c-nav-border)",
         } : {}}
       >
-        {/* Scroll velocity indicator line */}
-        <div
-          className="nav-velocity-line"
-          style={{ width: `${velWidth}%`, opacity: scrolled ? 1 : 0 }}
-          aria-hidden="true"
-        />
         <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between" style={{ height: 68 }}>
 
           {/* Logo */}

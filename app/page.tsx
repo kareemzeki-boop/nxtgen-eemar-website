@@ -5,16 +5,14 @@ import Hero from "@/components/Hero";
 import MaterialsBridge from "@/components/MaterialsBridge";
 import Services from "@/components/Services";
 import Innovations from "@/components/Innovations";
-import ProcessV2 from "@/components/ProcessV2";
-import StatsV2 from "@/components/StatsV2";
-import HorizontalProjects from "@/components/HorizontalProjects";
-import Testimonials from "@/components/Testimonials";
+import Process from "@/components/Process";
+import Stats from "@/components/Stats";
+import Projects from "@/components/Projects";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
-import ContactV2 from "@/components/ContactV2";
-import FooterV2 from "@/components/FooterV2";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
-
 export default function Home() {
   return (
     <>
@@ -26,15 +24,14 @@ export default function Home() {
         <MaterialsBridge />
         <Services />
         <Innovations />
-        <ProcessV2 />
-        <StatsV2 />
-        <HorizontalProjects />
-        <Testimonials />
+        <Process />
+        <Stats />
+        <Projects />
         <Pricing />
         <FAQ />
-        <ContactV2 />
+        <Contact />
       </main>
-      <FooterV2 />
+      <Footer />
       <BackToTop />
     </>
   );
