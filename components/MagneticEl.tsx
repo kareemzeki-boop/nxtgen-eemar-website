@@ -9,9 +9,15 @@ interface Props {
   style?: React.CSSProperties;
 }
 
+const isTouch = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+
 export default function MagneticEl({ children, strength = 0.3, className, style }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
+
+  if (isTouch) {
+    return <div className={className} style={style}>{children}</div>;
+  }
 
   const move = (e: React.MouseEvent) => {
     if (!ref.current) return;

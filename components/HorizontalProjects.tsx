@@ -123,8 +123,8 @@ export default function HorizontalProjects() {
         </div>
       </div>
 
-      {/* ── Horizontal scroll container ── */}
-      <div ref={wrapperRef} style={{ overflow: "hidden" }}>
+      {/* ── Horizontal scroll container (desktop only) ── */}
+      <div ref={wrapperRef} className="hidden md:block" style={{ overflow: "hidden" }}>
         <div
           ref={trackRef}
           className="h-scroll-track"
