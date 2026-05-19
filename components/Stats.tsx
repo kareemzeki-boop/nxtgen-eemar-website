@@ -1,30 +1,41 @@
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { statsNumbers as stats, statsBarData as BAR_DATA, statsCallout, statsBackgroundImage } from "@/lib/content";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const PROGRESS = [80, 75, 60, 100, 98, 98];
 
 function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true });
+  const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const duration = 1800;
-    const step = 16;
-    const increment = target / (duration / step);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) { setCount(target); clearInterval(timer); }
-      else { setCount(Math.floor(start)); }
-    }, step);
-    return () => clearInterval(timer);
-  }, [inView, target]);
+    const el = ref.current;
+    if (!el) return;
 
-  return <span ref={ref}>{count}{suffix}</span>;
+    const obj = { val: 0 };
+    const tween = gsap.to(obj, {
+      val: target,
+      duration: 1.8,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%",
+        once: true,
+      },
+      onUpdate() {
+        setDisplay(Math.round(obj.val));
+      },
+    });
+
+    return () => { tween.kill(); };
+  }, [target]);
+
+  return <span ref={ref}>{display}{suffix}</span>;
 }
 
 export default function Stats() {

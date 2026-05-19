@@ -1,15 +1,43 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Cpu, Layers3, Leaf, Atom } from "lucide-react";
 import { innovations as innovationsData, innovationsBackgroundImage } from "@/lib/content";
 import { ctaClick } from "@/lib/cta";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ICONS = [Cpu, Layers3, Leaf, Atom] as const;
 const innovations = innovationsData.map((item, i) => ({ ...item, icon: ICONS[i] }));
 
 export default function Innovations() {
   const [hovered, setHovered] = useState<number | null>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = cardsRef.current;
+    if (!container) return;
+    const cards = Array.from(container.children) as HTMLElement[];
+
+    const ctx = gsap.context(() => {
+      gsap.from(cards, {
+        opacity: 0,
+        y: 40,
+        stagger: 0.1,
+        duration: 0.7,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: container,
+          start: "top 80%",
+          once: true,
+        },
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section id="innovations" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
@@ -63,6 +91,7 @@ export default function Innovations() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+          ref={cardsRef}
           className="flex flex-col md:flex-row gap-2"
           style={{ height: "clamp(460px, 52vh, 560px)" }}
           onMouseLeave={() => setHovered(null)}

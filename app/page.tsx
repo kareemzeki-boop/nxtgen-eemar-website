@@ -1,3 +1,4 @@
+import PageLoader from "@/components/PageLoader";
 import CTAOverlay from "@/components/CTAOverlay";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -15,6 +16,7 @@ import BackToTop from "@/components/BackToTop";
 export default function Home() {
   return (
     <>
+      <PageLoader />
       <CTAOverlay />
       <Navbar />
       <main>
