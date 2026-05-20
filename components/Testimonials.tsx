@@ -41,7 +41,7 @@ export default function Testimonials() {
         </motion.div>
 
         {/* Cards — 1 col mobile, 2 col sm, 3 col lg */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
           {testimonials.map((t, i) => (
             <motion.div
               key={t.name}

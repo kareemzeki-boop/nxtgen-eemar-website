@@ -44,11 +44,11 @@ export default function Contact() {
     <section id="contact" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 60% 50% at 20% 50%, rgba(201,168,108,0.07) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 60% 50% at 20% 50%, rgba(45,212,191,0.07) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-10 lg:gap-16 items-start">
 
           {/* Left */}
           <motion.div
@@ -60,12 +60,12 @@ export default function Contact() {
             <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
               Get In Touch
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 display" style={{ color: "#F0EDE6" }}>
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 display" style={{ color: "var(--c-text)" }}>
               Let&apos;s engineer
               <br />
-              <span style={{ color: "rgba(240,237,230,0.25)" }}>your next facade.</span>
+              <span style={{ color: "var(--c-25)" }}>your next facade.</span>
             </h2>
-            <p className="mt-5 text-sm sm:text-base leading-relaxed max-w-md" style={{ color: "rgba(240,237,230,0.48)" }}>
+            <p className="mt-5 text-sm sm:text-base leading-relaxed max-w-md" style={{ color: "var(--c-48)" }}>
               Tell us about your project — material system, scale, programme, and any constraints. Our engineering team responds within one business day.
             </p>
 
@@ -77,20 +77,20 @@ export default function Contact() {
               ].map(({ icon: Icon, label, value, href, sub, isLink }) => (
                 <div key={label} className="flex items-start gap-3 sm:gap-4">
                   <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: "rgba(201,168,108,0.12)" }}>
-                    <Icon size={16} style={{ color: "#C9A86C" }} />
+                    style={{ background: "rgba(45,212,191,0.12)" }}>
+                    <Icon size={16} style={{ color: "#2DD4BF" }} />
                   </div>
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "rgba(240,237,230,0.35)" }}>{label}</div>
+                    <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--c-35)" }}>{label}</div>
                     {isLink ? (
-                      <a href={href} className="text-sm font-semibold transition-colors" style={{ color: "#F0EDE6" }}
-                        onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C9A86C")}
-                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#F0EDE6")}
+                      <a href={href} className="text-sm font-semibold transition-colors" style={{ color: "var(--c-text)" }}
+                        onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#2DD4BF")}
+                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-text)")}
                       >{value}</a>
                     ) : (
-                      <div className="text-sm font-semibold" style={{ color: "#F0EDE6" }}>{value}</div>
+                      <div className="text-sm font-semibold" style={{ color: "var(--c-text)" }}>{value}</div>
                     )}
-                    {sub && <div className="text-xs mt-0.5" style={{ color: "rgba(240,237,230,0.35)" }}>{sub}</div>}
+                    {sub && <div className="text-xs mt-0.5" style={{ color: "var(--c-35)" }}>{sub}</div>}
                   </div>
                 </div>
               ))}
@@ -104,8 +104,8 @@ export default function Contact() {
                 { label: "24hr",     sub: "Response"  },
               ].map((item) => (
                 <div key={item.label} className="card-dark rounded-xl p-3 sm:p-4 text-center">
-                  <div className="mono text-base sm:text-xl font-bold" style={{ color: "#F0EDE6" }}>{item.label}</div>
-                  <div className="text-xs mt-0.5 sm:mt-1" style={{ color: "rgba(240,237,230,0.35)" }}>{item.sub}</div>
+                  <div className="mono text-base sm:text-xl font-bold" style={{ color: "var(--c-text)" }}>{item.label}</div>
+                  <div className="text-xs mt-0.5 sm:mt-1" style={{ color: "var(--c-35)" }}>{item.sub}</div>
                 </div>
               ))}
             </div>
@@ -132,13 +132,13 @@ export default function Contact() {
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, damping: 14, delay: 0.1 }}
                     className="w-16 h-16 rounded-full flex items-center justify-center"
-                    style={{ background: "rgba(201,168,108,0.15)" }}
+                    style={{ background: "rgba(45,212,191,0.15)" }}
                   >
-                    <CheckCircle2 size={30} style={{ color: "#C9A86C" }} />
+                    <CheckCircle2 size={30} style={{ color: "#2DD4BF" }} />
                   </motion.div>
                   <div>
-                    <h3 className="text-2xl font-bold mb-2 display" style={{ color: "#F0EDE6" }}>Message Received</h3>
-                    <p className="text-sm leading-relaxed" style={{ color: "rgba(240,237,230,0.48)" }}>
+                    <h3 className="text-2xl font-bold mb-2 display" style={{ color: "var(--c-text)" }}>Message Received</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: "var(--c-48)" }}>
                       Thank you for reaching out. Our engineering team will review your project details and respond within one business day.
                     </p>
                   </div>
@@ -157,7 +157,7 @@ export default function Contact() {
                   exit={{ opacity: 0 }}
                   className="card-dark rounded-2xl p-5 sm:p-8 flex flex-col gap-4 sm:gap-5"
                 >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                     <FloatField id="name"    label="Full Name"   required value={form.name}    onChange={v => setForm({ ...form, name: v })}    />
                     <FloatField id="company" label="Company"             value={form.company} onChange={v => setForm({ ...form, company: v })} />
                   </div>
@@ -182,7 +182,7 @@ export default function Contact() {
                         ["unsure","Not sure – need guidance"],
                       ].map(([v, l]) => <option key={v} value={v} className="bg-zinc-900">{l}</option>)}
                     </select>
-                    <label className="float-label" style={form.material ? { top: 10, transform: "none", fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#C9A86C" } : {}}>
+                    <label className="float-label" style={form.material ? { top: 10, transform: "none", fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#2DD4BF" } : {}}>
                       Material System
                     </label>
                   </div>
@@ -222,7 +222,7 @@ export default function Contact() {
                     </AnimatePresence>
                   </button>
 
-                  <p className="text-xs text-center" style={{ color: "rgba(240,237,230,0.22)" }}>
+                  <p className="text-xs text-center" style={{ color: "var(--c-22)" }}>
                     We respond within 1 business day &middot; All enquiries treated in strict confidence
                   </p>
                 </motion.form>

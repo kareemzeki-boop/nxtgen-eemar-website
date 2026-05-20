@@ -39,7 +39,7 @@ function ProjectCard({ project, index, large = false }: { project: typeof projec
       transition={{ delay: index * 0.07, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`group relative rounded-2xl overflow-hidden ${large ? "md:row-span-2" : ""}`}
       style={{
-        minHeight: large ? 520 : 300,
+        minHeight: large ? "clamp(300px, 40vw, 520px)" : "clamp(220px, 28vw, 300px)",
         transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transition: "transform 0.25s ease",
         willChange: "transform",
@@ -73,25 +73,25 @@ function ProjectCard({ project, index, large = false }: { project: typeof projec
           >
             {project.material}
           </span>
-          <span className="mono text-xs font-medium" style={{ color: "rgba(240,237,230,0.35)" }}>{project.year}</span>
+          <span className="mono text-xs font-medium" style={{ color: "var(--c-35)" }}>{project.year}</span>
         </div>
 
         <div>
           {large && (
-            <p className="text-xs sm:text-sm leading-relaxed mb-3 max-w-xs" style={{ color: "rgba(240,237,230,0.55)" }}>
+            <p className="text-xs sm:text-sm leading-relaxed mb-3 max-w-xs" style={{ color: "var(--c-55)" }}>
               {project.description}
             </p>
           )}
           <h3 className={`font-bold tracking-tight leading-tight mb-2 display ${large ? "text-2xl sm:text-3xl" : "text-lg sm:text-xl"}`}
-            style={{ color: "#F0EDE6" }}>
+            style={{ color: "var(--c-text)" }}>
             {project.title}
           </h3>
           <div className="flex items-center justify-between gap-3">
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-1.5 text-xs" style={{ color: "rgba(240,237,230,0.45)" }}>
+              <div className="flex items-center gap-1.5 text-xs" style={{ color: "var(--c-45)" }}>
                 <MapPin size={11} /> {project.location}
               </div>
-              <div className="flex items-center gap-1.5 text-xs" style={{ color: "rgba(240,237,230,0.45)" }}>
+              <div className="flex items-center gap-1.5 text-xs" style={{ color: "var(--c-45)" }}>
                 <Layers size={11} /> {project.area}
               </div>
             </div>
@@ -120,7 +120,7 @@ export default function Projects() {
     <section id="projects" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 60% 40% at 20% 50%, rgba(201,168,108,0.05) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 60% 40% at 20% 50%, rgba(45,212,191,0.05) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -137,20 +137,20 @@ export default function Projects() {
             <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
               Featured Projects
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 display" style={{ color: "#F0EDE6" }}>
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 display" style={{ color: "var(--c-text)" }}>
               Built to last.
               <br />
-              <span style={{ color: "rgba(240,237,230,0.22)" }}>Across the GCC.</span>
+              <span style={{ color: "var(--c-22)" }}>Across the GCC.</span>
             </h2>
           </div>
           <div className="flex items-center gap-5 shrink-0">
             {[{ n: "80+", l: "Projects" }, { n: "6", l: "Countries" }, { n: "100K+", l: "m² Installed" }].map((s, i) => (
               <div key={i} className="text-center">
-                <div className="mono text-3xl sm:text-4xl font-bold" style={{ color: "#F0EDE6" }}>{s.n}</div>
-                <div className="text-xs sm:text-sm mt-1" style={{ color: "rgba(240,237,230,0.35)" }}>{s.l}</div>
+                <div className="mono text-3xl sm:text-4xl font-bold" style={{ color: "var(--c-text)" }}>{s.n}</div>
+                <div className="text-xs sm:text-sm mt-1" style={{ color: "var(--c-35)" }}>{s.l}</div>
                 {i < 2 && <div className="hidden" />}
               </div>
-            )).reduce((acc, el, i) => i === 0 ? [el] : [...acc, <div key={`d${i}`} style={{ width: 1, height: 40, background: "rgba(255,255,255,0.08)" }} />, el], [] as React.ReactNode[])}
+            )).reduce((acc, el, i) => i === 0 ? [el] : [...acc, <div key={`d${i}`} style={{ width: 1, height: 40, background: "var(--c-border)" }} />, el], [] as React.ReactNode[])}
           </div>
         </motion.div>
 
@@ -168,9 +168,9 @@ export default function Projects() {
               onClick={() => setFilter(f)}
               style={{
                 padding: "6px 16px", borderRadius: 9999,
-                background: filter === f ? "#C9A86C" : "rgba(255,255,255,0.05)",
-                color: filter === f ? "#0C0C0B" : "rgba(240,237,230,0.50)",
-                border: `1px solid ${filter === f ? "#C9A86C" : "rgba(255,255,255,0.08)"}`,
+                background: filter === f ? "#2DD4BF" : "var(--c-panel)",
+                color: filter === f ? "#0C0C0B" : "var(--c-55)",
+                border: `1px solid ${filter === f ? "#2DD4BF" : "var(--c-border)"}`,
                 fontSize: 12, fontWeight: 700, letterSpacing: "0.05em",
                 cursor: "pointer", transition: "all 0.2s ease",
                 fontFamily: "'DM Sans', sans-serif",
@@ -183,7 +183,7 @@ export default function Projects() {
 
         {/* Grid */}
         <AnimatePresence mode="popLayout">
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             {featured[0] && (
               <motion.div key={featured[0].title + "-feat0"} layout className="lg:row-span-2 lg:col-span-1">
                 <ProjectCard project={featured[0]} index={0} large />

@@ -13,7 +13,7 @@ export default function FAQ() {
 
   return (
     <section id="faq" className="section-light py-16 md:py-24 lg:py-28">
-      <div className="max-w-3xl mx-auto px-5 sm:px-6">
+      <div className="max-w-4xl mx-auto px-5 sm:px-6">
 
         {/* Header */}
         <motion.div
@@ -34,7 +34,7 @@ export default function FAQ() {
         </motion.div>
 
         {/* Category tabs — scrollable on mobile */}
-        <div className="flex gap-2 mb-8 sm:mb-10 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap sm:justify-center scrollbar-hide">
+        <div className="flex gap-2 md:gap-3 mb-8 sm:mb-10 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap sm:justify-center scrollbar-hide">
           {categories.map((cat) => (
             <button
               key={cat}

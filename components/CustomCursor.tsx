@@ -2,17 +2,14 @@
 import { useEffect, useRef } from "react";
 
 export default function CustomCursor() {
-  const outerRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
-  const dotRef   = useRef<HTMLDivElement>(null);
-
-  const pos   = useRef({ x: -200, y: -200 });
-  const lerped = useRef({ x: -200, y: -200 });
-  const rafId = useRef(0);
-  const hovered = useRef(false);
+  const outerRef  = useRef<HTMLDivElement>(null);
+  const innerRef  = useRef<HTMLDivElement>(null);
+  const dotRef    = useRef<HTMLDivElement>(null);
+  const pos       = useRef({ x: -200, y: -200 });
+  const lerped    = useRef({ x: -200, y: -200 });
+  const rafId     = useRef(0);
 
   useEffect(() => {
-    // Skip on touch devices
     if (window.matchMedia("(pointer: coarse)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -37,14 +34,8 @@ export default function CustomCursor() {
     };
     rafId.current = requestAnimationFrame(animate);
 
-    const onEnter = () => {
-      hovered.current = true;
-      if (innerRef.current) innerRef.current.style.transform = "scale(1.8)";
-    };
-    const onLeave = () => {
-      hovered.current = false;
-      if (innerRef.current) innerRef.current.style.transform = "scale(1)";
-    };
+    const onEnter = () => { if (innerRef.current) innerRef.current.style.transform = "scale(1.8)"; };
+    const onLeave = () => { if (innerRef.current) innerRef.current.style.transform = "scale(1)"; };
 
     const bindTargets = () => {
       document.querySelectorAll("a, button, [data-cursor]").forEach(el => {
@@ -54,7 +45,6 @@ export default function CustomCursor() {
     };
     bindTargets();
 
-    // Re-bind after DOM mutations (dynamic content)
     const observer = new MutationObserver(bindTargets);
     observer.observe(document.body, { childList: true, subtree: true });
 
@@ -77,7 +67,7 @@ export default function CustomCursor() {
             width: 40,
             height: 40,
             borderRadius: "50%",
-            border: "1.5px solid rgba(201,168,108,0.55)",
+            border: "1.5px solid rgba(45,212,191,0.55)",
             transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
           }}
         />
@@ -92,7 +82,7 @@ export default function CustomCursor() {
           width: 6,
           height: 6,
           borderRadius: "50%",
-          background: "#C9A86C",
+          background: "#2DD4BF",
           pointerEvents: "none",
           zIndex: 999999,
           willChange: "transform",

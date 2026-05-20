@@ -1,13 +1,13 @@
 [
   {
     "id": "al-maryah",
-    "title": "Al Maryah Island Tower",
+    "title": "ABU DHABI ",
     "location": "Abu Dhabi, UAE",
     "material": "GFRC",
-    "year": "2023",
+    "year": "2025",
     "area": "18,400 m²",
-    "description": "Full facade cladding of a 62-storey mixed-use tower using custom-textured GFRC panels. Delivered 6,800 panels across 38 unique mould types in 16 weeks.",
-    "image": "https://i.ibb.co/Q3jZfjVT/2a5203040aa99e241d5a054da4fcbdfe.jpg",
+    "description": "Modern luxury villa façade featuring clean white GRC cladding panels with minimalist architectural lines and large full-height glazing. The project highlights precision installation, seamless joint finishing, and contemporary exterior detailing, creating a sleek and elegant waterfront residence aesthetic.\n",
+    "image": "https://i.ibb.co/MyXm80KT/4077b91a6e23.png",
     "color": "#5DC39B",
     "featured": true
   },
@@ -70,5 +70,29 @@
     "image": "https://i.ibb.co/HLDQ3Tsf/aaa182054c4bcb0e7ff2270d37aff00e.jpg",
     "color": "#10b981",
     "featured": false
+  },
+  {
+    "id": "proj-1778829348600",
+    "featured": false,
+    "title": "YS2 C27 - Mayyas at the Bay ",
+    "location": "ABU DHABI ",
+    "material": "GFRC",
+    "year": "2026",
+    "area": "800",
+    "description": "Supply and installation of architectural GFRC façade elements for Mayyas at the Bay project in Abu Dhabi.\nThe scope includes curved balcony fascias, horizontal architectural bands, decorative façade profiles, and custom molded GFRC elements designed to achieve a modern and seamless architectural appearance.\n\nThe project was executed with high-quality finishing standards, ensuring durability, smooth surface texture, accurate alignment, and compliance with project specifications and consultant requirements.",
+    "image": "https://i.ibb.co/fVZ0qFwC/75a1e0e97fcb.jpg",
+    "color": "#5DC39B"
+  },
+  {
+    "id": "muscat-cultural",
+    "featured": true,
+    "title": "Grand Mosque Cultural Wing",
+    "location": "Muscat, Oman",
+    "material": "GRG",
+    "year": "2024",
+    "area": "5,600 m²",
+    "description": "Ornamental GRG facade screen with hand-cast Islamic geometric lattice panels across three monumental arched bays. Each panel replicates historic Mashrabiya patterning at 0.5 mm surface tolerance — fabricated in our Sharjah facility and installed on-site in 22 days.",
+    "image": "/nxtgen-eemar-website/images/project-islamic-arch.jpg",
+    "color": "#8b5cf6"
   }
 ]

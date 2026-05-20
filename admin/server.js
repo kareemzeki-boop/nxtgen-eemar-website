@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 // ── Auth middleware ───────────────────────────────────────────────
 app.use("/api", (req, res, next) => {
-  if (req.path === "/auth") return next();
+  if (req.path === "/auth" || req.path === "/health") return next();
   const token = req.headers["x-admin-token"];
   if (token !== ADMIN_PASS) return res.status(401).json({ error: "Unauthorized" });
   next();

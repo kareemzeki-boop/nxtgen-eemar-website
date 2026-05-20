@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { navLinks as links, company } from "@/lib/content";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [scrolled, setScrolled]         = useState(false);
@@ -48,25 +49,25 @@ export default function Navbar() {
             : "bg-transparent"
         }`}
         style={scrolled ? {
-          background: "rgba(17,17,9,0.88)",
+          background: "var(--c-nav-bg)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          borderColor: "rgba(255,255,255,0.06)",
+          borderColor: "var(--c-nav-border)",
         } : {}}
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between" style={{ height: 68 }}>
 
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center pulse-glow shrink-0" style={{ background: "#C9A86C" }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center pulse-glow shrink-0" style={{ background: "#2DD4BF" }}>
               <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
                 <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                 <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
               </svg>
             </div>
             <div>
-              <div className="font-bold text-sm sm:text-base tracking-tight leading-none" style={{ color: "#F0EDE6" }}>{company.name}</div>
-              <div className="text-[10px] sm:text-xs tracking-wider leading-none mt-0.5" style={{ color: "rgba(240,237,230,0.4)" }}>{company.taglineBy}</div>
+              <div className="font-bold text-sm sm:text-base tracking-tight leading-none" style={{ color: "var(--c-text)" }}>{company.name}</div>
+              <div className="text-[10px] sm:text-xs tracking-wider leading-none mt-0.5" style={{ color: "var(--c-40)" }}>{company.taglineBy}</div>
             </div>
           </a>
 
@@ -79,15 +80,15 @@ export default function Navbar() {
                   key={l.href}
                   href={l.href}
                   className="relative text-sm font-medium transition-colors duration-200 py-1"
-                  style={{ color: isActive ? "#C9A86C" : "rgba(240,237,230,0.60)" }}
-                  onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "#F0EDE6"; }}
-                  onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.60)"; }}
+                  style={{ color: isActive ? "#2DD4BF" : "var(--c-45)" }}
+                  onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "var(--c-text)"; }}
+                  onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)"; }}
                 >
                   {l.label}
                   {isActive && (
                     <motion.div
                       layoutId="nav-underline"
-                      style={{ position: "absolute", bottom: -2, left: 0, right: 0, height: 2, background: "#C9A86C", borderRadius: 1 }}
+                      style={{ position: "absolute", bottom: -2, left: 0, right: 0, height: 2, background: "#2DD4BF", borderRadius: 1 }}
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -98,12 +99,13 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
+            <ThemeToggle />
             <a
               href={`mailto:${company.email}`}
               className="text-xs lg:text-sm font-medium transition-colors hidden lg:block"
-              style={{ color: "rgba(240,237,230,0.45)" }}
-              onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#F0EDE6")}
-              onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(240,237,230,0.45)")}
+              style={{ color: "var(--c-45)" }}
+              onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-text)")}
+              onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)")}
             >
               {company.email}
             </a>
@@ -115,10 +117,10 @@ export default function Navbar() {
           {/* Hamburger */}
           <button
             className="md:hidden p-1.5 rounded-lg transition-colors"
-            style={{ color: "#F0EDE6" }}
+            style={{ color: "var(--c-text)" }}
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
-            onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = "rgba(240,237,230,0.08)")}
+            onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.background = "var(--c-panel)")}
             onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = "transparent")}
           >
             {open ? <X size={22} /> : <Menu size={22} />}
@@ -135,11 +137,11 @@ export default function Navbar() {
             exit={{ x: "100%", opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             className="fixed inset-0 z-40 flex flex-col"
-            style={{ background: "rgba(17,17,9,0.98)", backdropFilter: "blur(24px)" }}
+            style={{ background: "var(--c-nav-bg)", backdropFilter: "blur(24px)" }}
           >
             <div className="flex items-center justify-between px-5 sm:px-6" style={{ height: 68 }}>
               <a href="#" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#C9A86C" }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#2DD4BF" }}>
                   <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
                     <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                     <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
@@ -165,7 +167,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.06 + 0.05 }}
                   className="text-4xl sm:text-5xl font-bold tracking-tight py-2 transition-colors display"
-                  style={{ color: activeSection === l.href.replace("#","") ? "#C9A86C" : "rgba(240,237,230,0.75)" }}
+                  style={{ color: activeSection === l.href.replace("#","") ? "#2DD4BF" : "var(--c-55)" }}
                   onClick={() => setOpen(false)}
                 >
                   {l.label}
@@ -187,7 +189,7 @@ export default function Navbar() {
               </motion.div>
             </div>
 
-            <div className="px-8 sm:px-12 pb-8 text-xs" style={{ color: "rgba(240,237,230,0.2)" }}>
+            <div className="px-8 sm:px-12 pb-8 text-xs" style={{ color: "var(--c-20)" }}>
               {company.address} &middot; {company.certification}
             </div>
           </motion.div>
