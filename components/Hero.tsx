@@ -37,7 +37,6 @@ function WordReveal({ text, offset = 0, style }: { text: string; offset?: number
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const ytRef      = useRef<HTMLDivElement>(null);
   const [prog, setProg]       = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -62,76 +61,6 @@ export default function Hero() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  useEffect(() => {
-    const videoId   = hero.backgroundVideo;
-    const container = ytRef.current;
-    if (!videoId || !container) return;
-
-    const PLAYER_ID = "yt-hero-bg";
-    const playerDiv = document.createElement("div");
-    playerDiv.id = PLAYER_ID;
-    container.appendChild(playerDiv);
-
-    const iframeStyle = [
-      "position:absolute;border:none;pointer-events:none;",
-      "top:50%;left:50%;",
-      "width:calc(100% + 480px);",
-      "height:calc(100% + 360px);",
-      "transform:translate(-50%,-50%);",
-    ].join("");
-
-    const playerDivStyle = [
-      "position:absolute;top:50%;left:50%;",
-      "width:calc(100% + 480px);height:calc(100% + 360px);",
-      "transform:translate(-50%,-50%);pointer-events:none;",
-    ].join("");
-
-    const initPlayer = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const YT = (window as any).YT;
-      new YT.Player(PLAYER_ID, {
-        videoId,
-        playerVars: {
-          autoplay: 1, mute: 1, loop: 1, playlist: videoId,
-          controls: 0, disablekb: 1, modestbranding: 1,
-          playsinline: 1, rel: 0, iv_load_policy: 3, fs: 0,
-          start: 4, cc_load_policy: 0, showinfo: 0,
-          origin: typeof window !== "undefined" ? window.location.origin : "",
-        },
-        events: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onReady: (e: any) => {
-            e.target.setVolume(0);
-            e.target.playVideo();
-            const iframe: HTMLIFrameElement | null = playerDiv.querySelector("iframe");
-            if (iframe) iframe.style.cssText = iframeStyle;
-            playerDiv.style.cssText = playerDivStyle;
-          },
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onStateChange: (e: any) => {
-            if (e.data === 2) e.target.playVideo(); // resume if paused
-          },
-        },
-      });
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((window as any).YT?.Player) {
-      initPlayer();
-    } else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).onYouTubeIframeAPIReady = initPlayer;
-      if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
-        const s = document.createElement("script");
-        s.src = "https://www.youtube.com/iframe_api";
-        document.head.appendChild(s);
-      }
-    }
-
-    return () => {
-      if (container.contains(playerDiv)) container.removeChild(playerDiv);
-    };
-  }, []);
 
   const paraOp  = r(prog, 0.10, 0.25);
   const paraY   = (1 - paraOp) * 30;
@@ -175,18 +104,21 @@ export default function Hero() {
             aria-hidden="true"
             fetchPriority="high"
           />
-          {hero.backgroundVideo && (
-            <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
-              <div
-                ref={ytRef}
-                style={{
-                  position: "absolute", top: "50%", left: "50%",
-                  width: "max(100%, 177.78vh)", height: "max(100%, 56.25vw)",
-                  transform: "translate(-50%, -50%)",
-                }}
-              />
-            </div>
-          )}
+          <video
+            aria-hidden="true"
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{
+              position: "absolute", inset: 0,
+              width: "100%", height: "100%",
+              objectFit: "cover", objectPosition: "center",
+              pointerEvents: "none",
+            }}
+          >
+            <source src="/nxtgen-eemar-website/images/hero-video.mp4" type="video/mp4" />
+          </video>
           {/* Light uniform tint so video reads through everywhere */}
           <div
             className="absolute inset-0"
