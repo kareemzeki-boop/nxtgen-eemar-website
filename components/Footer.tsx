@@ -40,7 +40,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center pulse-glow shrink-0" style={{ background: "#C9A86C" }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center pulse-glow shrink-0" style={{ background: "#2DD4BF" }}>
                 <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
                   <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                   <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
@@ -58,14 +58,14 @@ export default function Footer() {
               <a href={`mailto:${company.email}`}
                 className="flex items-center gap-2 text-sm font-medium transition-colors"
                 style={{ color: "var(--c-45)" }}
-                onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C9A86C")}
+                onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#2DD4BF")}
                 onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)")}
               >
-                <Mail size={13} style={{ color: "#C9A86C" }} className="shrink-0" />
+                <Mail size={13} style={{ color: "#2DD4BF" }} className="shrink-0" />
                 {company.email}
               </a>
               <div className="flex items-start gap-2 text-sm" style={{ color: "var(--c-45)" }}>
-                <MapPin size={13} style={{ color: "#C9A86C" }} className="mt-0.5 shrink-0" />
+                <MapPin size={13} style={{ color: "#2DD4BF" }} className="mt-0.5 shrink-0" />
                 {company.address}
               </div>
             </div>
@@ -87,7 +87,7 @@ export default function Footer() {
                     href={l.href}
                     className="text-sm font-medium transition-colors"
                     style={{ color: "var(--c-45)" }}
-                    onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C9A86C")}
+                    onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#2DD4BF")}
                     onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)")}
                   >
                     {l.label}
@@ -113,7 +113,7 @@ export default function Footer() {
                     href="#services"
                     className="mono text-sm font-medium transition-colors"
                     style={{ color: "var(--c-45)" }}
-                    onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C9A86C")}
+                    onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#2DD4BF")}
                     onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)")}
                   >
                     {m}
@@ -149,7 +149,7 @@ export default function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             <div
               className="rounded-2xl p-5 sm:p-6 flex flex-col gap-4"
-              style={{ background: "rgba(201,168,108,0.08)", border: "1px solid rgba(201,168,108,0.18)" }}
+              style={{ background: "rgba(45,212,191,0.08)", border: "1px solid rgba(45,212,191,0.18)" }}
             >
               <div className="text-lg sm:text-xl font-bold leading-tight display" style={{ color: "var(--c-text)" }}>
                 Ready to specify your facade?

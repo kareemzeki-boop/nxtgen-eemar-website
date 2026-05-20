@@ -120,7 +120,7 @@ export default function Projects() {
     <section id="projects" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 60% 40% at 20% 50%, rgba(201,168,108,0.05) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 60% 40% at 20% 50%, rgba(45,212,191,0.05) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -168,9 +168,9 @@ export default function Projects() {
               onClick={() => setFilter(f)}
               style={{
                 padding: "6px 16px", borderRadius: 9999,
-                background: filter === f ? "#C9A86C" : "var(--c-panel)",
+                background: filter === f ? "#2DD4BF" : "var(--c-panel)",
                 color: filter === f ? "#0C0C0B" : "var(--c-55)",
-                border: `1px solid ${filter === f ? "#C9A86C" : "var(--c-border)"}`,
+                border: `1px solid ${filter === f ? "#2DD4BF" : "var(--c-border)"}`,
                 fontSize: 12, fontWeight: 700, letterSpacing: "0.05em",
                 cursor: "pointer", transition: "all 0.2s ease",
                 fontFamily: "'DM Sans', sans-serif",

@@ -24,7 +24,7 @@ export default function ThemeToggle() {
         flexShrink: 0,
       }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLButtonElement).style.background = "var(--c-accent, #C9A86C)";
+        (e.currentTarget as HTMLButtonElement).style.background = "var(--c-accent, #2DD4BF)";
         (e.currentTarget as HTMLButtonElement).style.borderColor = "transparent";
         (e.currentTarget as HTMLButtonElement).style.color = "#0C0C0B";
       }}

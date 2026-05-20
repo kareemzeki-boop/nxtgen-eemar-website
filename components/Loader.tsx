@@ -96,7 +96,7 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(90deg, #C9A86C, #e5be64)",
+            background: "linear-gradient(90deg, #2DD4BF, #e5be64)",
             transform: "scaleX(0)",
             transformOrigin: "left center",
           }}

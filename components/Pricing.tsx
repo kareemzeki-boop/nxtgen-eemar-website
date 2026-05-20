@@ -9,7 +9,7 @@ export default function Pricing() {
   return (
     <section id="pricing" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 50% 40% at 50% 100%, rgba(201,168,108,0.06) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 50% 40% at 50% 100%, rgba(45,212,191,0.06) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">

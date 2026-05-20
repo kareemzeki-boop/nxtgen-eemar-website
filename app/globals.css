@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  /* Primary accent: warm gold → all `indigo-*` Tailwind tokens now resolve to gold */
-  --color-indigo-50:  #fdf8ee;
-  --color-indigo-100: #f7e9c8;
-  --color-indigo-200: #f0d596;
-  --color-indigo-300: #e5be64;
-  --color-indigo-400: #C9A86C;
-  --color-indigo-500: #C9A86C;
-  --color-indigo-600: #b89050;
-  --color-indigo-700: #9a763a;
-  --color-indigo-800: #7d5e28;
-  --color-indigo-900: #5e4418;
-  --color-indigo-950: #3d2b0a;
+  /* Primary accent: teal → all `indigo-*` Tailwind tokens now resolve to teal */
+  --color-indigo-50:  #f0fdfa;
+  --color-indigo-100: #ccfbf1;
+  --color-indigo-200: #99f6e4;
+  --color-indigo-300: #5eead4;
+  --color-indigo-400: #2DD4BF;
+  --color-indigo-500: #2DD4BF;
+  --color-indigo-600: #14B8A6;
+  --color-indigo-700: #0f9689;
+  --color-indigo-800: #0d7a70;
+  --color-indigo-900: #0a5f58;
+  --color-indigo-950: #063d38;
 
   --radius-2xl: 2.5rem;
   --radius-3xl: 3rem;
@@ -20,9 +20,9 @@
 
 :root {
   /* Brand accent — unchanged in both modes */
-  --accent:        #C9A86C;
-  --accent-dark:   #b89050;
-  --accent-muted:  rgba(201,168,108,0.12);
+  --accent:        #2DD4BF;
+  --accent-dark:   #14B8A6;
+  --accent-muted:  rgba(45,212,191,0.12);
   --slate:         #8A9BAE;
 
   /* Semantic color tokens — dark mode defaults */
@@ -112,16 +112,16 @@ h1, h2, h3, .display {
 .mono { font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace; }
 
 ::selection {
-  background: #C9A86C;
+  background: #2DD4BF;
   color: #0C0C0B;
 }
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #111109; }
-::-webkit-scrollbar-thumb { background: #C9A86C; border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: #2DD4BF; border-radius: 3px; }
 
 [data-theme="light"] ::-webkit-scrollbar-track { background: #E8E4DA; }
-[data-theme="light"] ::-webkit-scrollbar-thumb { background: #C9A86C; border-radius: 3px; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: #2DD4BF; border-radius: 3px; }
 
 /* ── Keyframes ───────────────────────────────────────────── */
 @keyframes cube-spin {
@@ -136,8 +136,8 @@ h1, h2, h3, .display {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(201,168,108,0.3); }
-  50%      { box-shadow: 0 0 40px rgba(201,168,108,0.6); }
+  0%, 100% { box-shadow: 0 0 20px rgba(45,212,191,0.3); }
+  50%      { box-shadow: 0 0 40px rgba(45,212,191,0.6); }
 }
 
 @keyframes ken-burns {
@@ -210,7 +210,7 @@ h1, h2, h3, .display {
 .btn-primary:hover::before { transform: scaleX(1); }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 28px rgba(201,168,108,0.35);
+  box-shadow: 0 8px 28px rgba(45,212,191,0.35);
 }
 
 .btn-outline-dark {
@@ -238,14 +238,14 @@ h1, h2, h3, .display {
 
 /* ── Gradient text ───────────────────────────────────────── */
 .gradient-text {
-  background: linear-gradient(135deg, #F0EDE6 0%, #e8c98a 50%, #C9A86C 100%);
+  background: linear-gradient(135deg, #F0EDE6 0%, #5eead4 50%, #2DD4BF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-dark {
-  background: linear-gradient(135deg, #0f0f0f 0%, #5e4418 50%, #C9A86C 100%);
+  background: linear-gradient(135deg, #0f0f0f 0%, #0a5f58 50%, #2DD4BF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -282,13 +282,13 @@ h1, h2, h3, .display {
   gap: 5px;
   padding: 5px 12px;
   border-radius: 9999px;
-  border: 1px solid rgba(201,168,108,0.22);
-  background: rgba(201,168,108,0.08);
+  border: 1px solid rgba(45,212,191,0.22);
+  background: rgba(45,212,191,0.08);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(201,168,108,0.75);
+  color: rgba(45,212,191,0.75);
   font-family: 'DM Sans', sans-serif;
 }
 .cert-badge .cert-dot {
@@ -300,7 +300,7 @@ h1, h2, h3, .display {
 /* ── Footer gradient line ────────────────────────────────── */
 .footer-gradient-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, #C9A86C 25%, #8A9BAE 50%, #C9A86C 75%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #2DD4BF 25%, #8A9BAE 50%, #2DD4BF 75%, transparent 100%);
   background-size: 300% 100%;
   animation: gradient-sweep 5s linear infinite;
 }
@@ -435,4 +435,115 @@ h1, h2, h3, .display {
 @media (min-width: 1440px) {
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-thumb { border-radius: 4px; }
+}
+
+/* ── Section ambient glow overlays (dark olive + teal) ── */
+.section-dark,
+.section-dark-full {
+  position: relative;
+}
+
+/* Hero: teal glow bottom-left, subtle indigo top-right */
+#hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 45% at 15% 75%, rgba(45,212,191,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 35% at 85% 20%, rgba(99,102,241,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Services: teal glow centered behind cube */
+#services::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 55% at 50% 45%, rgba(45,212,191,0.05) 0%, transparent 65%),
+    radial-gradient(ellipse 30% 25% at 80% 80%, rgba(99,102,241,0.04) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Innovations: indigo/purple ambient left, teal right */
+#innovations::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 45% 50% at 10% 50%, rgba(99,102,241,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 40% at 90% 30%, rgba(45,212,191,0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Process: subtle teal bottom-right */
+#process::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 45% 40% at 90% 70%, rgba(45,212,191,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Stats: teal center-top ambient */
+#stats::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(45,212,191,0.05) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Projects: indigo top-left */
+#projects::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 40% 45% at 10% 20%, rgba(99,102,241,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 35% at 85% 75%, rgba(45,212,191,0.04) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Pricing / FAQ: very subtle teal top center */
+#pricing::before,
+#faq::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 35% at 50% 0%, rgba(45,212,191,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Contact: strong teal center glow */
+#contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 50% at 50% 50%, rgba(45,212,191,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 30% 40% at 90% 10%, rgba(99,102,241,0.04) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Section gradient dividers between dark sections */
+.section-divider-teal {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(45,212,191,0.25), rgba(45,212,191,0.4), rgba(45,212,191,0.25), transparent);
+}
+
+/* Tag pills — update border to teal */
+.tag-pill {
+  border-color: rgba(45,212,191,0.2) !important;
 }

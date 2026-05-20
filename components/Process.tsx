@@ -21,7 +21,7 @@ export default function Process() {
           className="mb-14 md:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-8"
         >
           <div>
-            <span className="tag-pill mb-4" style={{ background: "rgba(201,168,108,0.10)", color: "#b89050", border: "1px solid rgba(201,168,108,0.20)" }}>
+            <span className="tag-pill mb-4" style={{ background: "rgba(45,212,191,0.10)", color: "#14B8A6", border: "1px solid rgba(45,212,191,0.20)" }}>
               Our Process
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 max-w-2xl display" style={{ color: "#1C1C18" }}>
@@ -46,7 +46,7 @@ export default function Process() {
               {/* Animated fill */}
               <motion.line
                 x1="1" y1="0%" x2="1" y2="100%"
-                stroke="rgba(201,168,108,0.45)"
+                stroke="rgba(45,212,191,0.45)"
                 strokeWidth="1.5"
                 style={{ pathLength }}
                 strokeLinecap="round"

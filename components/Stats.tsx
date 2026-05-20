@@ -47,7 +47,7 @@ export default function Stats() {
       </div>
       <div
         className="absolute inset-0 pointer-events-none opacity-30"
-        style={{ background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(201,168,108,0.08) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(45,212,191,0.08) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -83,7 +83,7 @@ export default function Stats() {
               transition={{ delay: i * 0.08, duration: 0.5 }}
               className="px-5 sm:px-6 md:px-8 py-6 sm:py-7 md:py-8 group transition-colors duration-300"
               style={{ background: "var(--c-surface)" }}
-              onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "rgba(201,168,108,0.05)")}
+              onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "rgba(45,212,191,0.05)")}
               onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.background = "var(--c-surface)")}
             >
               <div className="mono text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-1.5" style={{ color: "var(--c-text)" }}>
@@ -103,7 +103,7 @@ export default function Stats() {
                   transition={{ delay: i * 0.08 + 0.5, duration: 1.4, ease: [0.4, 0, 0.2, 1] }}
                   style={{
                     height: "100%",
-                    background: "linear-gradient(90deg, rgba(201,168,108,0.6), #C9A86C)",
+                    background: "linear-gradient(90deg, rgba(45,212,191,0.6), #2DD4BF)",
                     borderRadius: 1,
                     transformOrigin: "left",
                   }}
@@ -146,7 +146,7 @@ export default function Stats() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="card-dark rounded-2xl p-6 sm:p-8"
           >
-            <div className="mono text-4xl sm:text-5xl font-bold mb-2" style={{ color: "#C9A86C" }}>
+            <div className="mono text-4xl sm:text-5xl font-bold mb-2" style={{ color: "#2DD4BF" }}>
               {statsCallout.headline}
             </div>
             <div className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 leading-tight display" style={{ color: "var(--c-text)" }}>
@@ -160,7 +160,7 @@ export default function Stats() {
                 <span
                   key={c}
                   className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold"
-                  style={{ color: "#C9A86C", background: "rgba(201,168,108,0.10)", border: "1px solid rgba(201,168,108,0.22)" }}
+                  style={{ color: "#2DD4BF", background: "rgba(45,212,191,0.10)", border: "1px solid rgba(45,212,191,0.22)" }}
                 >
                   {c}
                 </span>

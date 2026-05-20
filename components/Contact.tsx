@@ -44,7 +44,7 @@ export default function Contact() {
     <section id="contact" className="section-dark py-16 md:py-24 lg:py-28 relative overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 60% 50% at 20% 50%, rgba(201,168,108,0.07) 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse 60% 50% at 20% 50%, rgba(45,212,191,0.07) 0%, transparent 70%)" }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -77,14 +77,14 @@ export default function Contact() {
               ].map(({ icon: Icon, label, value, href, sub, isLink }) => (
                 <div key={label} className="flex items-start gap-3 sm:gap-4">
                   <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: "rgba(201,168,108,0.12)" }}>
-                    <Icon size={16} style={{ color: "#C9A86C" }} />
+                    style={{ background: "rgba(45,212,191,0.12)" }}>
+                    <Icon size={16} style={{ color: "#2DD4BF" }} />
                   </div>
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--c-35)" }}>{label}</div>
                     {isLink ? (
                       <a href={href} className="text-sm font-semibold transition-colors" style={{ color: "var(--c-text)" }}
-                        onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C9A86C")}
+                        onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#2DD4BF")}
                         onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-text)")}
                       >{value}</a>
                     ) : (
@@ -132,9 +132,9 @@ export default function Contact() {
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, damping: 14, delay: 0.1 }}
                     className="w-16 h-16 rounded-full flex items-center justify-center"
-                    style={{ background: "rgba(201,168,108,0.15)" }}
+                    style={{ background: "rgba(45,212,191,0.15)" }}
                   >
-                    <CheckCircle2 size={30} style={{ color: "#C9A86C" }} />
+                    <CheckCircle2 size={30} style={{ color: "#2DD4BF" }} />
                   </motion.div>
                   <div>
                     <h3 className="text-2xl font-bold mb-2 display" style={{ color: "var(--c-text)" }}>Message Received</h3>
@@ -182,7 +182,7 @@ export default function Contact() {
                         ["unsure","Not sure – need guidance"],
                       ].map(([v, l]) => <option key={v} value={v} className="bg-zinc-900">{l}</option>)}
                     </select>
-                    <label className="float-label" style={form.material ? { top: 10, transform: "none", fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#C9A86C" } : {}}>
+                    <label className="float-label" style={form.material ? { top: 10, transform: "none", fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#2DD4BF" } : {}}>
                       Material System
                     </label>
                   </div>

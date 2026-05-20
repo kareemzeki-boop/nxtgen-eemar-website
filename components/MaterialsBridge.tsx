@@ -27,7 +27,7 @@ export default function MaterialsBridge() {
                 fontWeight: 900,
                 letterSpacing: "-0.03em",
                 textTransform: "uppercase",
-                color: i % 2 === 0 ? "rgba(201,168,108,0.07)" : "var(--c-border-sm)",
+                color: i % 2 === 0 ? "rgba(45,212,191,0.07)" : "var(--c-border-sm)",
                 marginRight: "clamp(24px, 4vw, 72px)",
                 lineHeight: 1,
                 userSelect: "none",
@@ -61,9 +61,9 @@ export default function MaterialsBridge() {
             fontFamily: "'DM Sans', sans-serif",
           }}
         >
-          <span style={{ color: "#C9A86C" }}>●</span>
+          <span style={{ color: "#2DD4BF" }}>●</span>
           &nbsp; Precision Manufactured &nbsp;·&nbsp; Sharjah, UAE &nbsp;·&nbsp; GCC Standard &nbsp;
-          <span style={{ color: "#C9A86C" }}>●</span>
+          <span style={{ color: "#2DD4BF" }}>●</span>
         </p>
         <div style={{ flex: 1, height: 1, background: "var(--c-border)" }} />
       </div>
@@ -80,7 +80,7 @@ export default function MaterialsBridge() {
                 fontWeight: 800,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                color: i % 2 === 0 ? "var(--c-border-sm)" : "rgba(201,168,108,0.06)",
+                color: i % 2 === 0 ? "var(--c-border-sm)" : "rgba(45,212,191,0.06)",
                 marginRight: "clamp(20px, 3.5vw, 56px)",
                 lineHeight: 1,
                 userSelect: "none",

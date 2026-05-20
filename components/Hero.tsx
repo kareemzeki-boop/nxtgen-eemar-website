@@ -156,7 +156,7 @@ export default function Hero() {
         {/* Gold glow */}
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ zIndex: 4, background: "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,108,0.10) 0%, transparent 70%)" }}
+          style={{ zIndex: 4, background: "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(45,212,191,0.10) 0%, transparent 70%)" }}
         />
 
         {/* Content */}
@@ -262,11 +262,11 @@ export default function Hero() {
               fontSize: "0.8rem",
             }}
           >
-            <MapPin size={13} style={{ color: "#C9A86C" }} />
+            <MapPin size={13} style={{ color: "#2DD4BF" }} />
             <span>{company.address}</span>
             <span className="hidden sm:inline">&nbsp;·&nbsp;</span>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <Zap size={12} style={{ color: "#C9A86C" }} />
+              <Zap size={12} style={{ color: "#2DD4BF" }} />
               {company.certification}
             </span>
           </div>
@@ -331,7 +331,7 @@ export default function Hero() {
               transition: "opacity 0.15s linear",
             }}
           >
-            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.22em", color: "rgba(201,168,108,0.4)", textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif" }}>
+            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.22em", color: "rgba(45,212,191,0.4)", textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif" }}>
               Scroll
             </span>
             <div className="scroll-caret" />

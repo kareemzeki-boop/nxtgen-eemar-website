@@ -67,7 +67,7 @@ export default function CustomCursor() {
             width: 40,
             height: 40,
             borderRadius: "50%",
-            border: "1.5px solid rgba(201,168,108,0.55)",
+            border: "1.5px solid rgba(45,212,191,0.55)",
             transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
           }}
         />
@@ -82,7 +82,7 @@ export default function CustomCursor() {
           width: 6,
           height: 6,
           borderRadius: "50%",
-          background: "#C9A86C",
+          background: "#2DD4BF",
           pointerEvents: "none",
           zIndex: 999999,
           willChange: "transform",

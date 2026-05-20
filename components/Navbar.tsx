@@ -59,7 +59,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center pulse-glow shrink-0" style={{ background: "#C9A86C" }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center pulse-glow shrink-0" style={{ background: "#2DD4BF" }}>
               <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
                 <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                 <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
@@ -80,7 +80,7 @@ export default function Navbar() {
                   key={l.href}
                   href={l.href}
                   className="relative text-sm font-medium transition-colors duration-200 py-1"
-                  style={{ color: isActive ? "#C9A86C" : "var(--c-45)" }}
+                  style={{ color: isActive ? "#2DD4BF" : "var(--c-45)" }}
                   onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "var(--c-text)"; }}
                   onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)"; }}
                 >
@@ -88,7 +88,7 @@ export default function Navbar() {
                   {isActive && (
                     <motion.div
                       layoutId="nav-underline"
-                      style={{ position: "absolute", bottom: -2, left: 0, right: 0, height: 2, background: "#C9A86C", borderRadius: 1 }}
+                      style={{ position: "absolute", bottom: -2, left: 0, right: 0, height: 2, background: "#2DD4BF", borderRadius: 1 }}
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -141,7 +141,7 @@ export default function Navbar() {
           >
             <div className="flex items-center justify-between px-5 sm:px-6" style={{ height: 68 }}>
               <a href="#" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#C9A86C" }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#2DD4BF" }}>
                   <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
                     <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
                     <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
@@ -167,7 +167,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.06 + 0.05 }}
                   className="text-4xl sm:text-5xl font-bold tracking-tight py-2 transition-colors display"
-                  style={{ color: activeSection === l.href.replace("#","") ? "#C9A86C" : "var(--c-55)" }}
+                  style={{ color: activeSection === l.href.replace("#","") ? "#2DD4BF" : "var(--c-55)" }}
                   onClick={() => setOpen(false)}
                 >
                   {l.label}
