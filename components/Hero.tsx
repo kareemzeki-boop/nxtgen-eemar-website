@@ -66,27 +66,71 @@ export default function Hero() {
     const videoId   = hero.backgroundVideo;
     const container = ytRef.current;
     if (!videoId || !container) return;
-    const iframe = document.createElement("iframe");
-    iframe.src = [
-      `https://www.youtube.com/embed/${videoId}`,
-      "?autoplay=1&mute=1&loop=1",
-      `&playlist=${videoId}`,
-      "&controls=0&disablekb=1&modestbranding=1",
-      "&playsinline=1&rel=0&iv_load_policy=3&fs=0",
-      "&start=4&cc_load_policy=0",
-      "&origin=https%3A%2F%2Fkareemzeki-boop.github.io",
-    ].join("");
-    iframe.setAttribute("allow", "autoplay; encrypted-media; fullscreen");
-    iframe.setAttribute("allowfullscreen", "");
-    iframe.style.cssText = [
+
+    const PLAYER_ID = "yt-hero-bg";
+    const playerDiv = document.createElement("div");
+    playerDiv.id = PLAYER_ID;
+    container.appendChild(playerDiv);
+
+    const iframeStyle = [
       "position:absolute;border:none;pointer-events:none;",
       "top:50%;left:50%;",
-      "width:calc(100% + 400px);",
-      "height:calc(100% + 300px);",
+      "width:calc(100% + 480px);",
+      "height:calc(100% + 360px);",
       "transform:translate(-50%,-50%);",
     ].join("");
-    container.appendChild(iframe);
-    return () => { if (container.contains(iframe)) container.removeChild(iframe); };
+
+    const playerDivStyle = [
+      "position:absolute;top:50%;left:50%;",
+      "width:calc(100% + 480px);height:calc(100% + 360px);",
+      "transform:translate(-50%,-50%);pointer-events:none;",
+    ].join("");
+
+    const initPlayer = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const YT = (window as any).YT;
+      new YT.Player(PLAYER_ID, {
+        videoId,
+        playerVars: {
+          autoplay: 1, mute: 1, loop: 1, playlist: videoId,
+          controls: 0, disablekb: 1, modestbranding: 1,
+          playsinline: 1, rel: 0, iv_load_policy: 3, fs: 0,
+          start: 4, cc_load_policy: 0, showinfo: 0,
+          origin: typeof window !== "undefined" ? window.location.origin : "",
+        },
+        events: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onReady: (e: any) => {
+            e.target.setVolume(0);
+            e.target.playVideo();
+            const iframe: HTMLIFrameElement | null = playerDiv.querySelector("iframe");
+            if (iframe) iframe.style.cssText = iframeStyle;
+            playerDiv.style.cssText = playerDivStyle;
+          },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onStateChange: (e: any) => {
+            if (e.data === 2) e.target.playVideo(); // resume if paused
+          },
+        },
+      });
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((window as any).YT?.Player) {
+      initPlayer();
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).onYouTubeIframeAPIReady = initPlayer;
+      if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+        const s = document.createElement("script");
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(s);
+      }
+    }
+
+    return () => {
+      if (container.contains(playerDiv)) container.removeChild(playerDiv);
+    };
   }, []);
 
   const paraOp  = r(prog, 0.10, 0.25);
@@ -148,7 +192,7 @@ export default function Hero() {
             className="absolute inset-0"
             style={{
               zIndex: 3,
-              background: "linear-gradient(110deg,rgba(12,12,11,0.97) 0%,rgba(12,12,11,0.90) 40%,rgba(12,12,11,0.70) 100%)",
+              background: "linear-gradient(110deg,rgba(12,12,11,0.80) 0%,rgba(12,12,11,0.58) 45%,rgba(12,12,11,0.22) 100%)",
             }}
           />
         </div>
