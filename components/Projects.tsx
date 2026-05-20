@@ -39,7 +39,7 @@ function ProjectCard({ project, index, large = false }: { project: typeof projec
       transition={{ delay: index * 0.07, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`group relative rounded-2xl overflow-hidden ${large ? "md:row-span-2" : ""}`}
       style={{
-        minHeight: large ? 520 : 300,
+        minHeight: large ? "clamp(300px, 40vw, 520px)" : "clamp(220px, 28vw, 300px)",
         transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transition: "transform 0.25s ease",
         willChange: "transform",
@@ -183,7 +183,7 @@ export default function Projects() {
 
         {/* Grid */}
         <AnimatePresence mode="popLayout">
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             {featured[0] && (
               <motion.div key={featured[0].title + "-feat0"} layout className="lg:row-span-2 lg:col-span-1">
                 <ProjectCard project={featured[0]} index={0} large />

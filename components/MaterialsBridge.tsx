@@ -23,7 +23,7 @@ export default function MaterialsBridge() {
               key={i}
               style={{
                 display: "inline-block",
-                fontSize: "clamp(56px, 11vw, 140px)",
+                fontSize: "clamp(56px, 11vw, 160px)",
                 fontWeight: 900,
                 letterSpacing: "-0.03em",
                 textTransform: "uppercase",
@@ -76,7 +76,7 @@ export default function MaterialsBridge() {
               key={i}
               style={{
                 display: "inline-block",
-                fontSize: "clamp(28px, 5vw, 64px)",
+                fontSize: "clamp(28px, 5vw, 80px)",
                 fontWeight: 800,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",

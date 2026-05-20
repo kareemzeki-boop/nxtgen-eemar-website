@@ -37,7 +37,7 @@ export default function Pricing() {
 
         {/* Cards — stacked on mobile, 3-col on md+
             On tablet (sm-md): 1 col is cleaner for pricing cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:gap-6">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
@@ -46,7 +46,7 @@ export default function Pricing() {
               whileHover={{ y: -6, transition: { type: "spring", stiffness: 300, damping: 22 } }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
-              className={`relative rounded-2xl p-6 sm:p-8 flex flex-col gap-5 sm:gap-6 ${
+              className={`relative rounded-2xl p-6 sm:p-8 lg:p-10 flex flex-col gap-5 sm:gap-6 ${
                 plan.highlight
                   ? "bg-indigo-600 border border-indigo-500"
                   : "card-dark"

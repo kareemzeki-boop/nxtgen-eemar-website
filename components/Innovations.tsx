@@ -129,7 +129,7 @@ export default function Innovations() {
               <div
                 className="absolute right-0 bottom-0 pointer-events-none select-none hidden md:block"
                 style={{
-                  fontSize: "clamp(160px, 20vw, 260px)",
+                  fontSize: "clamp(120px, 18vw, 240px)",
                   fontWeight: 900,
                   color: item.color,
                   opacity: 0.04,

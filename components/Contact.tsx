@@ -48,7 +48,7 @@ export default function Contact() {
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-10 lg:gap-16 items-start">
 
           {/* Left */}
           <motion.div
@@ -157,7 +157,7 @@ export default function Contact() {
                   exit={{ opacity: 0 }}
                   className="card-dark rounded-2xl p-5 sm:p-8 flex flex-col gap-4 sm:gap-5"
                 >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                     <FloatField id="name"    label="Full Name"   required value={form.name}    onChange={v => setForm({ ...form, name: v })}    />
                     <FloatField id="company" label="Company"             value={form.company} onChange={v => setForm({ ...form, company: v })} />
                   </div>

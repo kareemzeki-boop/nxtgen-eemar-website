@@ -198,7 +198,7 @@ export default function Hero() {
               opacity: paraOp,
               transform: `translateY(${paraY}px)`,
               transition: "opacity 0.05s linear, transform 0.05s linear",
-              marginTop: "clamp(20px, 3vw, 32px)",
+              marginTop: "clamp(20px, 3vw, 48px)",
             }}
           >
             <p className="text-base sm:text-lg md:text-xl max-w-2xl leading-relaxed"
@@ -275,7 +275,7 @@ export default function Hero() {
           <div
             style={{
               position: "absolute",
-              bottom: "clamp(64px, 10vh, 96px)",
+              bottom: "clamp(48px, 8vh, 88px)",
               left: 0, right: 0,
               padding: "0 20px",
               opacity: statsOp,

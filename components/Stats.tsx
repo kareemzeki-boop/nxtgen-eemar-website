@@ -71,7 +71,7 @@ export default function Stats() {
         </motion.div>
 
         {/* Stats grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-px rounded-2xl overflow-hidden mb-12 md:mb-16"
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-px rounded-2xl overflow-hidden mb-12 md:mb-16"
           style={{ background: "var(--c-panel)" }}
         >
           {stats.map((s, i) => (
@@ -120,7 +120,7 @@ export default function Stats() {
             <div className="text-xs font-semibold uppercase tracking-widest mb-5 sm:mb-6 mono" style={{ color: "var(--c-40)" }}>
               m² Produced (Indexed) &middot; 2020–2024
             </div>
-            <div className="flex items-end gap-2 sm:gap-3 h-36 sm:h-44 md:h-48">
+            <div className="flex items-end gap-2 sm:gap-3 h-36 sm:h-44 md:h-52 lg:h-60">
               {BAR_DATA.map((bar, i) => (
                 <div key={bar.label} className="flex-1 flex flex-col items-center gap-2">
                   <motion.div

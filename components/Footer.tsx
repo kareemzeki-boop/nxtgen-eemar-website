@@ -35,7 +35,7 @@ export default function Footer() {
         </motion.div>
 
         {/* Main grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 sm:gap-12 md:gap-10 lg:gap-12">
 
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">

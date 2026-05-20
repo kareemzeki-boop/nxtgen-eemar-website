@@ -430,3 +430,9 @@ h1, h2, h3, .display {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── PC / Tablet layout fixes ── */
+@media (min-width: 1440px) {
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { border-radius: 4px; }
+}
