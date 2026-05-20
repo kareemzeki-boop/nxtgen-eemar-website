@@ -187,12 +187,20 @@ export default function Hero() {
               />
             </div>
           )}
-          <div style={{ position: "absolute", inset: 0, zIndex: 2 }} />
+          {/* Light uniform tint so video reads through everywhere */}
+          <div
+            className="absolute inset-0"
+            style={{
+              zIndex: 2,
+              background: "rgba(12,12,11,0.38)",
+            }}
+          />
+          {/* Bottom-up dark fade for text legibility */}
           <div
             className="absolute inset-0"
             style={{
               zIndex: 3,
-              background: "linear-gradient(110deg,rgba(12,12,11,0.80) 0%,rgba(12,12,11,0.58) 45%,rgba(12,12,11,0.22) 100%)",
+              background: "linear-gradient(to top, rgba(12,12,11,0.75) 0%, rgba(12,12,11,0.30) 45%, transparent 100%)",
             }}
           />
         </div>
@@ -222,7 +230,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Headline — word-by-word reveal */}
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.93] max-w-5xl display">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.93] max-w-5xl display" style={{ textShadow: "0 2px 24px rgba(0,0,0,0.85), 0 1px 6px rgba(0,0,0,0.6)" }}>
             <WordReveal text={hero.headlinePart1} offset={0} style={{ display: "block" }} />
             <WordReveal
               text={hero.headlinePart2}
