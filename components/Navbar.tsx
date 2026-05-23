@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { navLinks as links, company } from "@/lib/content";
-import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [scrolled, setScrolled]         = useState(false);
@@ -99,7 +98,6 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
-            <ThemeToggle />
             <a
               href={`mailto:${company.email}`}
               className="text-xs lg:text-sm font-medium transition-colors hidden lg:block"
