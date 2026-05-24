@@ -262,7 +262,7 @@ export default function Services() {
                           textAlign: "center", lineHeight: `${SIZE}px`,
                           letterSpacing: "0.22em",
                         }}>
-                          ELM
+                          EMR
                         </div>
                       );
                     }

@@ -4,7 +4,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
-  title: "ELM Emaar Facades | GFRC · GFRP · UHPC · GRG",
+  title: "EMR Emaar Facades | GFRC · GFRP · UHPC · GRG",
   description: "Emaar Al Madina — specialists in GFRC, GFRP, UHPC, and GRG architectural facade systems across the GCC.",
 };
 

@@ -9,7 +9,7 @@
 // Used in: Navbar, Footer, Contact
 // ----------------------------------------------------------------
 export const company = {
-  name: "ELM EMAAR FACADES",
+  name: "EMR EMAAR FACADES",
   taglineBy: "EMAAR ALMADINA GFRC - GFRP - UHPC - GRG",
   email: "Emaaralmadinagrc@gmail.com",
   phone: "+971 6 534 1184",

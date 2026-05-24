@@ -62,7 +62,7 @@ function LoginScreen({ onLogin }: { onLogin: (token: string) => void }) {
             <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
               <span className="text-white font-bold text-sm">E</span>
             </div>
-            <span className="text-white font-semibold text-lg tracking-tight">ELM Admin</span>
+            <span className="text-white font-semibold text-lg tracking-tight">EMR Admin</span>
           </div>
           <p className="text-neutral-400 text-sm">Sign in to manage projects</p>
         </div>
@@ -461,7 +461,7 @@ function Dashboard({ token, onLogout }: { token: string; onLogout: () => void })
             <div className="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center">
               <span className="text-white font-bold text-xs">E</span>
             </div>
-            <span className="text-white font-semibold tracking-tight">ELM Admin</span>
+            <span className="text-white font-semibold tracking-tight">EMR Admin</span>
             <span className="text-neutral-600 text-sm">/ Projects</span>
           </div>
           <div className="flex items-center gap-3">

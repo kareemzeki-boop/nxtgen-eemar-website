@@ -79,7 +79,7 @@ export default function Loader({ onComplete }: { onComplete?: () => void }) {
           opacity: 0,
         }}
       >
-        ELM
+        EMR
       </div>
 
       <div
