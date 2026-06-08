@@ -337,7 +337,7 @@ import projectsData from "../data/projects.json";
 export const projects = projectsData as Array<{
   id: string; title: string; location: string; material: string;
   year: string; area: string; description: string;
-  image: string; color: string; featured: boolean;
+  image: string; images?: string[]; color: string; featured: boolean;
 }>;
 
 // Legacy inline array kept only for reference — not used at runtime
