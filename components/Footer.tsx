@@ -85,7 +85,7 @@ export default function Footer() {
                 >
                   <a
                     href={l.href}
-                    className="text-sm font-medium transition-colors"
+                    className="text-sm font-medium transition-colors block py-1.5"
                     style={{ color: "var(--c-45)" }}
                     onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#2DD4BF")}
                     onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)")}
@@ -111,7 +111,7 @@ export default function Footer() {
                 >
                   <a
                     href="#services"
-                    className="mono text-sm font-medium transition-colors"
+                    className="mono text-sm font-medium transition-colors block py-1.5"
                     style={{ color: "var(--c-45)" }}
                     onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#2DD4BF")}
                     onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)")}
@@ -133,7 +133,7 @@ export default function Footer() {
                 >
                   <a
                     href="#innovations"
-                    className="text-sm font-medium transition-colors"
+                    className="text-sm font-medium transition-colors block py-1.5"
                     style={{ color: "var(--c-45)" }}
                     onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-text)")}
                     onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)")}
@@ -157,11 +157,11 @@ export default function Footer() {
               <p className="text-sm leading-relaxed" style={{ color: "var(--c-45)" }}>
                 Our engineering team responds to all enquiries within one business day.
               </p>
-              <a href="#contact" className="btn-primary py-3 text-sm flex items-center justify-center gap-2">
+              <a href="#contact" className="btn-primary py-4 text-sm flex items-center justify-center gap-2">
                 <span>Start a Project</span>
                 <ArrowUpRight size={14} />
               </a>
-              <a href={`mailto:${company.email}`} className="btn-outline-dark py-3 text-sm flex items-center justify-center gap-2">
+              <a href={`mailto:${company.email}`} className="btn-outline-dark py-4 text-sm flex items-center justify-center gap-2">
                 {company.email} <Mail size={13} />
               </a>
             </div>

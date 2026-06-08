@@ -84,7 +84,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+          className="absolute top-3 right-3 z-20 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
           style={{ background: "var(--c-border)", color: "var(--c-55)" }}
         >
           <X size={14} />
@@ -116,14 +116,14 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                 <>
                   <button
                     onClick={prev}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
                     style={{ background: "rgba(0,0,0,0.5)" }}
                   >
                     <ChevronLeft size={16} className="text-white" />
                   </button>
                   <button
                     onClick={next}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
                     style={{ background: "rgba(0,0,0,0.5)" }}
                   >
                     <ChevronRight size={16} className="text-white" />
@@ -236,12 +236,12 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
 // ── Parallax column ───────────────────────────────────────────────
 
-type ColProps = { items: Project[]; y: MotionValue<number>; topOffset: string; onSelect: (p: Project) => void };
+type ColProps = { items: Project[]; y: MotionValue<number>; topOffset: string; onSelect: (p: Project) => void; className?: string };
 
-const Column = memo(function Column({ items, y, topOffset, onSelect }: ColProps) {
+const Column = memo(function Column({ items, y, topOffset, onSelect, className }: ColProps) {
   return (
     <motion.div
-      className="relative flex w-1/4 min-w-[180px] flex-col gap-[1.5vw]"
+      className={`relative flex w-1/2 md:w-1/4 min-w-0 md:min-w-[180px] flex-col gap-[1.5vw] ${className ?? ""}`}
       style={{ y, top: topOffset, willChange: "transform" }}
     >
       {items.map((p, i) => {
@@ -250,7 +250,7 @@ const Column = memo(function Column({ items, y, topOffset, onSelect }: ColProps)
           <div
             key={`${p.id ?? p.title}-${i}`}
             className="group relative overflow-hidden rounded-2xl flex-shrink-0 cursor-pointer"
-            style={{ height: "clamp(200px, 30vh, 420px)" }}
+            style={{ height: "clamp(180px, 28vh, 420px)" }}
             onClick={() => onSelect(p)}
           >
             <img
@@ -308,11 +308,15 @@ const Column = memo(function Column({ items, y, topOffset, onSelect }: ColProps)
 export default function Projects() {
   const [filter, setFilter] = useState("All");
   const [vh, setVh] = useState(800);
+  const [narrow, setNarrow] = useState(false);
   const [selected, setSelected] = useState<Project | null>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const update = () => setVh(window.innerHeight);
+    const update = () => {
+      setVh(window.innerHeight);
+      setNarrow(window.innerWidth < 768);
+    };
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -324,10 +328,10 @@ export default function Projects() {
   });
 
   // Reduced multipliers for smooth performance (was 2x, 3.3x, 1.25x, 3x)
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, vh * 0.45]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, vh * 0.75]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [0, vh * 0.28]);
-  const y4 = useTransform(scrollYProgress, [0, 1], [0, vh * 0.65]);
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.22 : 0.45)]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.35 : 0.75)]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.14 : 0.28)]);
+  const y4 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.28 : 0.65)]);
 
   const handleClose = useCallback(() => setSelected(null), []);
 
@@ -395,7 +399,7 @@ export default function Projects() {
               key={f}
               onClick={() => setFilter(f)}
               style={{
-                padding: "6px 16px", borderRadius: 9999,
+                padding: "10px 16px", borderRadius: 9999,
                 background: filter === f ? "#2DD4BF" : "var(--c-panel)",
                 color: filter === f ? "#0C0C0B" : "var(--c-55)",
                 border: `1px solid ${filter === f ? "#2DD4BF" : "var(--c-border)"}`,
@@ -413,8 +417,7 @@ export default function Projects() {
       {/* Parallax gallery */}
       <div
         ref={galleryRef}
-        className="relative box-border overflow-hidden"
-        style={{ height: "140vh" }}
+        className="relative box-border overflow-hidden h-[110vh] md:h-[140vh]"
       >
         <motion.div
           key={filter}
@@ -425,9 +428,9 @@ export default function Projects() {
           style={{ gap: "1.5vw", padding: "1.5vw" }}
         >
           <Column items={c1} y={y1} topOffset="-18%" onSelect={setSelected} />
-          <Column items={c2} y={y2} topOffset="-38%" onSelect={setSelected} />
+          <Column items={c2} y={y2} topOffset="-38%" onSelect={setSelected} className="hidden md:flex" />
           <Column items={c3} y={y3} topOffset="-12%" onSelect={setSelected} />
-          <Column items={c4} y={y4} topOffset="-28%" onSelect={setSelected} />
+          <Column items={c4} y={y4} topOffset="-28%" onSelect={setSelected} className="hidden md:flex" />
         </motion.div>
       </div>
 

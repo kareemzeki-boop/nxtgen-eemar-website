@@ -338,7 +338,7 @@ export default function Services() {
                   key={s.id}
                   onClick={() => goTo(i)}
                   style={{
-                    padding: "6px 14px",
+                    padding: "10px 14px",
                     borderRadius: 999,
                     fontSize: 10, fontWeight: 700, letterSpacing: "0.08em",
                     cursor: "pointer", border: "none",
@@ -416,7 +416,7 @@ export default function Services() {
                     {[{ icon: <ChevronLeft size={13} />, fn: prev }, { icon: <ChevronRight size={13} />, fn: next }, { icon: <X size={13} />, fn: deselect }]
                       .map(({ icon, fn }, k) => (
                         <button key={k} onClick={fn} style={{
-                          width: 30, height: 30, borderRadius: "50%",
+                          width: 40, height: 40, borderRadius: "50%",
                           background: "rgba(255,255,255,0.06)",
                           border: "1px solid rgba(255,255,255,0.10)",
                           cursor: "pointer", display: "flex",
@@ -468,7 +468,7 @@ export default function Services() {
                   onClick={ctaClick}
                   style={{
                     display: "inline-flex", alignItems: "center", gap: 7,
-                    padding: "11px 22px", borderRadius: 9999,
+                    padding: "14px 22px", borderRadius: 9999,
                     background: svc.accentColor, color: "#000",
                     fontSize: 12, fontWeight: 800,
                     textDecoration: "none", letterSpacing: "0.04em",
