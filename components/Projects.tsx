@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo, memo } from "react";
 import { motion, MotionValue, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { MapPin, ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { projects } from "@/lib/content";
@@ -223,7 +223,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
 type ColProps = { items: Project[]; y: MotionValue<number>; topOffset: string; onSelect: (p: Project) => void };
 
-function Column({ items, y, topOffset, onSelect }: ColProps) {
+const Column = memo(function Column({ items, y, topOffset, onSelect }: ColProps) {
   return (
     <motion.div
       className="relative flex w-1/4 min-w-[180px] flex-col gap-[1.5vw]"
@@ -286,7 +286,7 @@ function Column({ items, y, topOffset, onSelect }: ColProps) {
       })}
     </motion.div>
   );
-}
+});
 
 // ── Main section ──────────────────────────────────────────────────
 
@@ -316,14 +316,16 @@ export default function Projects() {
 
   const handleClose = useCallback(() => setSelected(null), []);
 
-  const filtered = filter === "All" ? projects : projects.filter(p => p.material === filter);
-  const filled   = fillTo(filtered.length ? filtered : projects, 12);
-  const [c1, c2, c3, c4] = [
-    filled.slice(0, 3),
-    filled.slice(3, 6),
-    filled.slice(6, 9),
-    filled.slice(9, 12),
-  ];
+  const { c1, c2, c3, c4 } = useMemo(() => {
+    const filtered = filter === "All" ? projects : projects.filter(p => p.material === filter);
+    const filled   = fillTo(filtered.length ? filtered : projects, 12);
+    return {
+      c1: filled.slice(0, 3),
+      c2: filled.slice(3, 6),
+      c3: filled.slice(6, 9),
+      c4: filled.slice(9, 12),
+    };
+  }, [filter]);
 
   return (
     <section id="projects" className="section-dark py-16 md:py-24 relative overflow-hidden">
@@ -396,13 +398,22 @@ export default function Projects() {
       {/* Parallax gallery */}
       <div
         ref={galleryRef}
-        className="relative box-border flex overflow-hidden"
-        style={{ height: "140vh", gap: "1.5vw", padding: "1.5vw" }}
+        className="relative box-border overflow-hidden"
+        style={{ height: "140vh" }}
       >
-        <Column items={c1} y={y1} topOffset="-18%" onSelect={setSelected} />
-        <Column items={c2} y={y2} topOffset="-38%" onSelect={setSelected} />
-        <Column items={c3} y={y3} topOffset="-12%" onSelect={setSelected} />
-        <Column items={c4} y={y4} topOffset="-28%" onSelect={setSelected} />
+        <motion.div
+          key={filter}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25 }}
+          className="flex w-full h-full"
+          style={{ gap: "1.5vw", padding: "1.5vw" }}
+        >
+          <Column items={c1} y={y1} topOffset="-18%" onSelect={setSelected} />
+          <Column items={c2} y={y2} topOffset="-38%" onSelect={setSelected} />
+          <Column items={c3} y={y3} topOffset="-12%" onSelect={setSelected} />
+          <Column items={c4} y={y4} topOffset="-28%" onSelect={setSelected} />
+        </motion.div>
       </div>
 
       {/* CTA */}

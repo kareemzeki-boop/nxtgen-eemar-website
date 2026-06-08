@@ -1,8 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { navLinks as links, company } from "@/lib/content";
+
+function scrollTo(href: string) {
+  const lenis = (window as unknown as Record<string, unknown>).__lenis as { scrollTo: (t: string, o: object) => void } | undefined;
+  if (lenis) {
+    lenis.scrollTo(href, { duration: 0.9, offset: -68 });
+  } else {
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  }
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled]         = useState(false);
@@ -82,6 +91,7 @@ export default function Navbar() {
                   style={{ color: isActive ? "#2DD4BF" : "var(--c-45)" }}
                   onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "var(--c-text)"; }}
                   onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "var(--c-45)"; }}
+                  onClick={e => { e.preventDefault(); scrollTo(l.href); }}
                 >
                   {l.label}
                   {isActive && (
@@ -166,7 +176,7 @@ export default function Navbar() {
                   transition={{ delay: i * 0.06 + 0.05 }}
                   className="text-4xl sm:text-5xl font-bold tracking-tight py-2 transition-colors display"
                   style={{ color: activeSection === l.href.replace("#","") ? "#2DD4BF" : "var(--c-55)" }}
-                  onClick={() => setOpen(false)}
+                  onClick={e => { e.preventDefault(); setOpen(false); setTimeout(() => scrollTo(l.href), 350); }}
                 >
                   {l.label}
                 </motion.a>
