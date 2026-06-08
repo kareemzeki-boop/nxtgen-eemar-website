@@ -52,7 +52,7 @@ export const hero = {
     { num: "6",    label: "GCC Countries"      },
     { num: "100%", label: "Custom Engineered"  },
   ],
-  backgroundImage: "/nxtgen-eemar-website/images/hero-facade.png",
+  backgroundImage: "/images/hero-facade.png",
   backgroundVideo: "6h0kNAtRqI4",
 };
 
@@ -82,7 +82,7 @@ export const services = [
       "NXTGEN's GFRC panels transformed our tower facade — the texture consistency across 4,200 units was flawless.",
     quoteBy: "Lead Architect, Dubai Iconic Tower Project",
     accentColor: "#5DC39B",
-    image:    "/nxtgen-eemar-website/images/service-gfrc.png",
+    image:    "/images/service-gfrc.png",
     imageAlt: "Cultural centre with circular GFRC facade opening and luminous mesh panels",
   },
   {
@@ -126,7 +126,7 @@ export const services = [
       "We specified UHPC for the cantilevered brise-soleil blades — NXTGEN delivered tolerances we didn't think possible in the region.",
     quoteBy: "Structural Engineer, Riyadh Cultural Centre",
     accentColor: "#06b6d4",
-    image:    "/nxtgen-eemar-website/images/service-uhpc.jpg",
+    image:    "/images/service-uhpc.jpg",
     imageAlt: "Brutalist UHPC concrete facade with deep reveals and angular volumes",
   },
   {
@@ -323,11 +323,11 @@ export const statsCallout = {
 
 // Background photo for the Stats section
 export const statsBackgroundImage =
-  "/nxtgen-eemar-website/images/stats-bg.png";
+  "/images/stats-bg.png";
 
 // Background texture for the Innovations section
 export const innovationsBackgroundImage =
-  "/nxtgen-eemar-website/images/innovations-bg.jpg";
+  "/images/innovations-bg.jpg";
 
 // ----------------------------------------------------------------
 // PROJECTS — managed via Admin Panel (admin/)

@@ -117,7 +117,7 @@ export default function Hero() {
               pointerEvents: "none",
             }}
           >
-            <source src="/nxtgen-eemar-website/images/hero-video.mp4" type="video/mp4" />
+            <source src="/images/hero-video.mp4" type="video/mp4" />
           </video>
           {/* Light uniform tint so video reads through everywhere */}
           <div
