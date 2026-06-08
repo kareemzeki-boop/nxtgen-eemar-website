@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState, useEffect, useCallback, useMemo, memo } from "react";
+import { createPortal } from "react-dom";
 import { motion, MotionValue, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { MapPin, ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { projects } from "@/lib/content";
@@ -54,7 +55,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
     };
   }, [onClose, gallery.length]);
 
-  return (
+  // Portal renders directly into document.body — escapes section overflow:hidden and any
+  // stacking/containing-block side-effects from ancestor transforms or will-change.
+  return createPortal(
     <motion.div
       className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
       initial={{ opacity: 0 }}
@@ -64,7 +67,8 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
     >
       {/* Backdrop — no blur to avoid GPU overdraw on top of parallax layers */}
       <div
-        className="absolute inset-0 bg-black/88"
+        className="absolute inset-0"
+        style={{ background: "rgba(0,0,0,0.88)" }}
         onClick={onClose}
       />
 
@@ -225,7 +229,8 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 }
 
