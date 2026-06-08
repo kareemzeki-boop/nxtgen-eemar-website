@@ -31,18 +31,28 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   const gallery = project.images?.length ? project.images : [project.image];
   const [imgIdx, setImgIdx] = useState(0);
 
-  const prev = () => setImgIdx(i => (i - 1 + gallery.length) % gallery.length);
-  const next = () => setImgIdx(i => (i + 1) % gallery.length);
+  const prev = useCallback(() => setImgIdx(i => (i - 1 + gallery.length) % gallery.length), [gallery.length]);
+  const next = useCallback(() => setImgIdx(i => (i + 1) % gallery.length), [gallery.length]);
 
   useEffect(() => {
+    // Pause smooth scroll so it doesn't compete with modal rendering
+    const lenis = (window as unknown as Record<string, unknown>).__lenis as { stop?: () => void; start?: () => void } | undefined;
+    lenis?.stop?.();
+    document.body.style.overflow = "hidden";
+
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") setImgIdx(i => (i - 1 + gallery.length) % gallery.length);
+      if (e.key === "ArrowRight") setImgIdx(i => (i + 1) % gallery.length);
     };
     window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [onClose]);
+
+    return () => {
+      window.removeEventListener("keydown", handler);
+      lenis?.start?.();
+      document.body.style.overflow = "";
+    };
+  }, [onClose, gallery.length]);
 
   return (
     <motion.div
@@ -50,22 +60,22 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.18 }}
     >
-      {/* Backdrop */}
+      {/* Backdrop — no blur to avoid GPU overdraw on top of parallax layers */}
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+        className="absolute inset-0 bg-black/88"
         onClick={onClose}
       />
 
       {/* Card */}
       <motion.div
         className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl"
-        style={{ background: "var(--c-panel)", border: "1px solid var(--c-border)" }}
-        initial={{ scale: 0.94, opacity: 0, y: 16 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.94, opacity: 0, y: 16 }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        style={{ background: "var(--c-panel)", border: "1px solid var(--c-border)", willChange: "transform" }}
+        initial={{ scale: 0.96, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.96, opacity: 0 }}
+        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
         {/* Close */}
         <button
