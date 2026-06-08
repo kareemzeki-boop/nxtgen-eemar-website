@@ -35,12 +35,21 @@ jobs:
       - name: Add .htaccess for clean routing
         run: |
           cat > out/.htaccess << 'EOF'
-          Options -MultiViews
-          RewriteEngine On
-          RewriteCond %{REQUEST_FILENAME} !-f
-          RewriteCond %{REQUEST_FILENAME} !-d
-          RewriteRule ^(.*)$ /index.html [L,QSA]
-          EOF
+Options -MultiViews
+DirectoryIndex index.html
+RewriteEngine On
+
+# Serve real files as-is
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Serve real directories (serves their index.html)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Fallback to root index.html for client-side routing
+RewriteRule ^ /index.html [L]
+EOF
 
       - name: Deploy to GoDaddy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
