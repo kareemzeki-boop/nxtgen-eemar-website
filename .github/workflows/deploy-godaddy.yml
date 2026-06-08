@@ -1,0 +1,55 @@
+name: Deploy to GoDaddy (emr-grc.ae)
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Patch config for GoDaddy (remove basePath)
+        run: sed -i '/basePath:/d' next.config.ts
+
+      - name: Fix image paths for GoDaddy
+        run: |
+          sed -i 's|/nxtgen-eemar-website/images/|/images/|g' components/Hero.tsx
+          sed -i 's|/nxtgen-eemar-website/images/|/images/|g' lib/content.ts
+
+      - name: Build static export
+        run: npm run build
+
+      - name: Add .htaccess for clean routing
+        run: |
+          cat > out/.htaccess << 'EOF'
+          Options -MultiViews
+          RewriteEngine On
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule ^(.*)$ /index.html [L,QSA]
+          EOF
+
+      - name: Deploy to GoDaddy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./out/
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
