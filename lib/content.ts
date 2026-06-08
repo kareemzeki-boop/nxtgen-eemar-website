@@ -11,7 +11,7 @@
 export const company = {
   name: "EMR EMAAR FACADES",
   taglineBy: "EMAAR ALMADINA GFRC - GFRP - UHPC - GRG",
-  email: "Emaaralmadinagrc@gmail.com",
+  email: "info@emr-grc.ae",
   phone: "+971 6 534 1184",
   phoneHours: "Sun-Thu, 8am-6pm GST",
   address: "Sharjah Industrial District 17, UAE",
