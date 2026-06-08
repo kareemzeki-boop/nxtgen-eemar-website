@@ -9,6 +9,7 @@ export type Project = {
   area: string;
   description: string;
   image: string;
+  images?: string[];
   color: string;
   featured: boolean;
 };

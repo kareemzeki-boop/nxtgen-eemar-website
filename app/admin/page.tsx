@@ -28,6 +28,7 @@ const EMPTY_FORM = (): Omit<Project, "id"> => ({
   area: "",
   description: "",
   image: "",
+  images: [],
   color: MATERIAL_COLORS.GFRC,
   featured: false,
 });
@@ -110,13 +111,22 @@ type ModalProps = {
   onClose: () => void;
 };
 
+const MAX_IMAGES = 6;
+
 function ProjectModal({ token, project, onSave, onClose }: ModalProps) {
   const isEdit = project !== null;
-  const [form, setForm] = useState<Omit<Project, "id">>(
-    isEdit ? { ...project } : EMPTY_FORM()
-  );
+  const [form, setForm] = useState<Omit<Project, "id">>(() => {
+    if (!isEdit) return EMPTY_FORM();
+    const imgs = project.images?.length
+      ? project.images
+      : project.image
+      ? [project.image]
+      : [];
+    return { ...project, images: imgs };
+  });
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [uploadingSlot, setUploadingSlot] = useState<number | null>(null);
+  const [activeSlot, setActiveSlot] = useState(0);
   const [error, setError] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -127,22 +137,42 @@ function ProjectModal({ token, project, onSave, onClose }: ModalProps) {
     }
   }
 
+  function openSlot(slot: number) {
+    setActiveSlot(slot);
+    fileRef.current?.click();
+  }
+
   async function handleImageFile(file: File) {
-    setUploading(true);
+    setUploadingSlot(activeSlot);
     setError("");
     try {
       const url = await uploadImage(token, file);
-      setForm((f) => ({ ...f, image: url }));
+      setForm((f) => {
+        const imgs = [...(f.images ?? [])];
+        imgs[activeSlot] = url;
+        return { ...f, images: imgs, image: imgs[0] ?? "" };
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
     } finally {
-      setUploading(false);
+      setUploadingSlot(null);
     }
+  }
+
+  function removeImage(slot: number) {
+    setForm((f) => {
+      const imgs = [...(f.images ?? [])];
+      imgs.splice(slot, 1);
+      return { ...f, images: imgs, image: imgs[0] ?? "" };
+    });
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.image) { setError("Please upload an image first"); return; }
+    if (!form.image && !(form.images?.length)) {
+      setError("Please upload at least one image first");
+      return;
+    }
     setSaving(true);
     setError("");
     try {
@@ -159,6 +189,8 @@ function ProjectModal({ token, project, onSave, onClose }: ModalProps) {
     }
   }
 
+  const imageCount = form.images?.filter(Boolean).length ?? 0;
+
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-end">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
@@ -173,45 +205,86 @@ function ProjectModal({ token, project, onSave, onClose }: ModalProps) {
 
         {/* Form */}
         <form id="project-form" onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
-          {/* Image */}
+          {/* Images */}
           <div>
-            <label className="block text-sm text-neutral-300 mb-2">Image</label>
-            <div
-              className="relative h-44 rounded-xl overflow-hidden border-2 border-dashed border-neutral-700 hover:border-emerald-500/60 transition-colors cursor-pointer group"
-              onClick={() => fileRef.current?.click()}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                e.preventDefault();
-                const file = e.dataTransfer.files[0];
-                if (file) handleImageFile(file);
-              }}
-            >
-              {form.image ? (
-                <Image src={form.image} alt="preview" fill className="object-cover" unoptimized />
-              ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-neutral-500">
-                  <Upload size={24} />
-                  <span className="text-sm">Click or drag image here</span>
-                </div>
-              )}
-              {form.image && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="flex items-center gap-2 text-white text-sm font-medium">
-                    <Upload size={16} /> Replace image
-                  </div>
-                </div>
-              )}
-              {uploading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/70">
-                  <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                </div>
-              )}
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm text-neutral-300">Images</label>
+              <span className="text-xs text-neutral-500">
+                {imageCount}/{MAX_IMAGES} · first is cover
+              </span>
             </div>
-            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) handleImageFile(file);
-              e.target.value = "";
-            }} />
+            <div className="grid grid-cols-3 gap-2">
+              {Array.from({ length: MAX_IMAGES }).map((_, i) => {
+                const url = form.images?.[i] ?? "";
+                const isUploading = uploadingSlot === i;
+                const canAdd = !url && (i === 0 || !!(form.images?.[i - 1]));
+                return (
+                  <div
+                    key={i}
+                    className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-colors group
+                      ${url
+                        ? "border-transparent"
+                        : canAdd
+                          ? "border-dashed border-neutral-700 hover:border-emerald-500/60 cursor-pointer"
+                          : "border-dashed border-neutral-800 opacity-40"}
+                      ${i === 0 ? "ring-1 ring-emerald-500/30" : ""}
+                    `}
+                    onClick={() => canAdd && openSlot(i)}
+                  >
+                    {url ? (
+                      <>
+                        <Image src={url} alt={`Image ${i + 1}`} fill className="object-cover" unoptimized />
+                        {i === 0 && (
+                          <span className="absolute top-1.5 left-1.5 text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-semibold leading-none">
+                            COVER
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); removeImage(i); }}
+                          className="absolute top-1 right-1 w-5 h-5 bg-black/70 hover:bg-red-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X size={10} className="text-white" />
+                        </button>
+                        <div
+                          className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                          onClick={(e) => { e.stopPropagation(); openSlot(i); }}
+                        >
+                          <Upload size={14} className="text-white" />
+                        </div>
+                      </>
+                    ) : canAdd ? (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-neutral-600">
+                        {i === 0 ? (
+                          <>
+                            <Upload size={18} />
+                            <span className="text-[10px] mt-1 font-medium">COVER</span>
+                          </>
+                        ) : (
+                          <span className="text-2xl font-light leading-none">+</span>
+                        )}
+                      </div>
+                    ) : null}
+                    {isUploading && (
+                      <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+                        <div className="w-5 h-5 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleImageFile(file);
+                e.target.value = "";
+              }}
+            />
           </div>
 
           {/* Title */}
@@ -324,7 +397,7 @@ function ProjectModal({ token, project, onSave, onClose }: ModalProps) {
           <button
             type="submit"
             form="project-form"
-            disabled={saving || uploading}
+            disabled={saving || uploadingSlot !== null}
             className="flex items-center gap-2 px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
           >
             <Save size={14} />
@@ -376,7 +449,14 @@ function ProjectCard({
       <div className="p-4">
         <h3 className="font-semibold text-white text-sm leading-snug mb-1">{project.title}</h3>
         <p className="text-xs text-neutral-400">{project.location} · {project.year}</p>
-        <p className="text-xs text-neutral-500 mt-0.5">{project.area}</p>
+        <div className="flex items-center gap-2 mt-0.5">
+          <p className="text-xs text-neutral-500">{project.area}</p>
+          {(project.images?.length ?? 0) > 1 && (
+            <span className="text-xs text-neutral-600 bg-neutral-800 px-1.5 py-0.5 rounded-md">
+              {project.images!.length} photos
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="px-4 pb-4 flex items-center gap-2">
