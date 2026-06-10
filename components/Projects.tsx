@@ -2,7 +2,7 @@
 import { useRef, useState, useEffect, useCallback, useMemo, memo } from "react";
 import { createPortal } from "react-dom";
 import { motion, MotionValue, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { MapPin, ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { MapPin, ArrowUpRight, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { projects } from "@/lib/content";
 import { ctaClick } from "@/lib/cta";
 
@@ -25,23 +25,166 @@ function fillTo(items: Project[], n: number): Project[] {
   return out.slice(0, n);
 }
 
+// ── Fullscreen lightbox ───────────────────────────────────────────
+
+function Lightbox({
+  images,
+  startIdx,
+  onClose,
+}: {
+  images: string[];
+  startIdx: number;
+  onClose: () => void;
+}) {
+  const [idx, setIdx] = useState(startIdx);
+  const touchStartX = useRef(0);
+
+  const prev = useCallback(
+    () => setIdx(i => (i - 1 + images.length) % images.length),
+    [images.length],
+  );
+  const next = useCallback(
+    () => setIdx(i => (i + 1) % images.length),
+    [images.length],
+  );
+
+  // Keyboard — capture phase so this fires before the modal's handler
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      e.stopImmediatePropagation();
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") setIdx(i => (i - 1 + images.length) % images.length);
+      if (e.key === "ArrowRight") setIdx(i => (i + 1) % images.length);
+    };
+    window.addEventListener("keydown", handler, true);
+    return () => window.removeEventListener("keydown", handler, true);
+  }, [onClose, images.length]);
+
+  return createPortal(
+    <motion.div
+      className="fixed inset-0 z-[300] flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.97)" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.15 }}
+      onClick={onClose}
+      onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+      onTouchEnd={e => {
+        const dx = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(dx) > 50) dx < 0 ? next() : prev();
+      }}
+    >
+      {/* Close */}
+      <button
+        onClick={e => { e.stopPropagation(); onClose(); }}
+        className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
+        style={{ background: "rgba(255,255,255,0.12)" }}
+      >
+        <X size={18} className="text-white" />
+      </button>
+
+      {/* Counter */}
+      {images.length > 1 && (
+        <div
+          className="absolute top-4 left-1/2 -translate-x-1/2 text-sm font-mono px-3 py-1 rounded-full pointer-events-none"
+          style={{ color: "rgba(255,255,255,0.65)", background: "rgba(0,0,0,0.45)" }}
+        >
+          {idx + 1} / {images.length}
+        </div>
+      )}
+
+      {/* Main image */}
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={idx}
+          src={images[idx]}
+          alt=""
+          className="object-contain select-none"
+          style={{ maxWidth: "calc(100vw - 80px)", maxHeight: "calc(100vh - 130px)" }}
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.97 }}
+          transition={{ duration: 0.18 }}
+          onClick={e => e.stopPropagation()}
+          draggable={false}
+        />
+      </AnimatePresence>
+
+      {/* Prev / Next */}
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={e => { e.stopPropagation(); prev(); }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
+            style={{ background: "rgba(255,255,255,0.12)" }}
+          >
+            <ChevronLeft size={22} className="text-white" />
+          </button>
+          <button
+            onClick={e => { e.stopPropagation(); next(); }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
+            style={{ background: "rgba(255,255,255,0.12)" }}
+          >
+            <ChevronRight size={22} className="text-white" />
+          </button>
+        </>
+      )}
+
+      {/* Dot / pill indicators */}
+      {images.length > 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={e => { e.stopPropagation(); setIdx(i); }}
+              className="rounded-full transition-all duration-200"
+              style={{
+                width: i === idx ? 20 : 8,
+                height: 8,
+                background: i === idx ? "#fff" : "rgba(255,255,255,0.32)",
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </motion.div>,
+    document.body,
+  );
+}
+
 // ── Project detail modal ──────────────────────────────────────────
 
-function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+function ProjectModal({
+  project,
+  onClose,
+}: {
+  project: Project;
+  onClose: () => void;
+}) {
   const color = MATERIAL_COLORS[project.material] ?? "#2DD4BF";
   const gallery = project.images?.length ? project.images : [project.image];
   const [imgIdx, setImgIdx] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const prev = useCallback(() => setImgIdx(i => (i - 1 + gallery.length) % gallery.length), [gallery.length]);
-  const next = useCallback(() => setImgIdx(i => (i + 1) % gallery.length), [gallery.length]);
+  const prev = useCallback(
+    () => setImgIdx(i => (i - 1 + gallery.length) % gallery.length),
+    [gallery.length],
+  );
+  const next = useCallback(
+    () => setImgIdx(i => (i + 1) % gallery.length),
+    [gallery.length],
+  );
 
   useEffect(() => {
-    // Pause smooth scroll so it doesn't compete with modal rendering
-    const lenis = (window as unknown as Record<string, unknown>).__lenis as { stop?: () => void; start?: () => void } | undefined;
+    const lenis = (window as unknown as Record<string, unknown>).__lenis as
+      | { stop?: () => void; start?: () => void }
+      | undefined;
     lenis?.stop?.();
     document.body.style.overflow = "hidden";
 
     const handler = (e: KeyboardEvent) => {
+      if (lightboxOpen) return; // lightbox handles keys when open
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowLeft") setImgIdx(i => (i - 1 + gallery.length) % gallery.length);
       if (e.key === "ArrowRight") setImgIdx(i => (i + 1) % gallery.length);
@@ -53,192 +196,289 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       lenis?.start?.();
       document.body.style.overflow = "";
     };
-  }, [onClose, gallery.length]);
+  }, [onClose, gallery.length, lightboxOpen]);
 
-  // Portal renders directly into document.body — escapes section overflow:hidden and any
-  // stacking/containing-block side-effects from ancestor transforms or will-change.
   return createPortal(
-    <motion.div
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.18 }}
-    >
-      {/* Backdrop — no blur to avoid GPU overdraw on top of parallax layers */}
-      <div
-        className="absolute inset-0"
-        style={{ background: "rgba(0,0,0,0.88)" }}
-        onClick={onClose}
-      />
-
-      {/* Card */}
+    <>
       <motion.div
-        className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl"
-        style={{ background: "var(--c-panel)", border: "1px solid var(--c-border)", willChange: "transform" }}
-        initial={{ scale: 0.96, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.96, opacity: 0 }}
-        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.18 }}
       >
-        {/* Close */}
-        <button
+        {/* Backdrop */}
+        <div
+          className="absolute inset-0"
+          style={{ background: "rgba(0,0,0,0.88)" }}
           onClick={onClose}
-          className="absolute top-3 right-3 z-20 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
-          style={{ background: "var(--c-border)", color: "var(--c-55)" }}
+        />
+
+        {/* Card */}
+        <motion.div
+          className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl"
+          style={{
+            background: "var(--c-panel)",
+            border: "1px solid var(--c-border)",
+            willChange: "transform",
+          }}
+          initial={{ scale: 0.96, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.96, opacity: 0 }}
+          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <X size={14} />
-        </button>
+          {/* Close */}
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 z-20 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
+            style={{ background: "var(--c-border)", color: "var(--c-55)" }}
+          >
+            <X size={14} />
+          </button>
 
-        <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr]">
-          {/* Image section */}
-          <div className="relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-tl-2xl rounded-tr-2xl md:rounded-tr-none md:rounded-bl-2xl">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={imgIdx}
-                  src={gallery[imgIdx]}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  loading="lazy"
-                />
-              </AnimatePresence>
+          <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr]">
+            {/* ── Image section ── */}
+            <div className="relative">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-tl-2xl rounded-tr-2xl md:rounded-tr-none md:rounded-bl-2xl group/img">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={imgIdx}
+                    src={gallery[imgIdx]}
+                    alt={project.title}
+                    className="w-full h-full object-cover cursor-zoom-in"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    loading="lazy"
+                    onClick={() => setLightboxOpen(true)}
+                  />
+                </AnimatePresence>
 
-              {/* Gradient */}
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)" }} />
-
-              {/* Nav arrows */}
-              {gallery.length > 1 && (
-                <>
-                  <button
-                    onClick={prev}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
-                    style={{ background: "rgba(0,0,0,0.5)" }}
-                  >
-                    <ChevronLeft size={16} className="text-white" />
-                  </button>
-                  <button
-                    onClick={next}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
-                    style={{ background: "rgba(0,0,0,0.5)" }}
-                  >
-                    <ChevronRight size={16} className="text-white" />
-                  </button>
-                </>
-              )}
-
-              {/* Counter */}
-              {gallery.length > 1 && (
-                <span
-                  className="absolute bottom-3 right-3 text-xs font-mono px-2 py-1 rounded-md"
-                  style={{ background: "rgba(0,0,0,0.6)", color: "rgba(255,255,255,0.7)" }}
+                {/* Zoom hint — desktop hover */}
+                <div
+                  className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity pointer-events-none"
+                  style={{
+                    background: "rgba(0,0,0,0.6)",
+                    color: "rgba(255,255,255,0.85)",
+                  }}
                 >
-                  {imgIdx + 1} / {gallery.length}
-                </span>
-              )}
-            </div>
+                  <ZoomIn size={11} />
+                  <span className="text-[10px] font-semibold tracking-wide">
+                    Full screen
+                  </span>
+                </div>
 
-            {/* Thumbnails */}
-            {gallery.length > 1 && (
-              <div className="flex gap-1.5 p-3 overflow-x-auto">
-                {gallery.map((src, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setImgIdx(i)}
-                    className="relative flex-shrink-0 w-14 h-14 rounded-lg overflow-hidden transition-all"
+                {/* Gradient */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)",
+                  }}
+                />
+
+                {/* Nav arrows */}
+                {gallery.length > 1 && (
+                  <>
+                    <button
+                      onClick={e => { e.stopPropagation(); prev(); }}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center"
+                      style={{ background: "rgba(0,0,0,0.5)" }}
+                    >
+                      <ChevronLeft size={16} className="text-white" />
+                    </button>
+                    <button
+                      onClick={e => { e.stopPropagation(); next(); }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center"
+                      style={{ background: "rgba(0,0,0,0.5)" }}
+                    >
+                      <ChevronRight size={16} className="text-white" />
+                    </button>
+                  </>
+                )}
+
+                {/* Counter */}
+                {gallery.length > 1 && (
+                  <span
+                    className="absolute bottom-3 right-3 text-xs font-mono px-2 py-1 rounded-md pointer-events-none"
                     style={{
-                      opacity: i === imgIdx ? 1 : 0.5,
-                      outline: i === imgIdx ? `2px solid ${color}` : "2px solid transparent",
-                      outlineOffset: "1px",
+                      background: "rgba(0,0,0,0.6)",
+                      color: "rgba(255,255,255,0.7)",
                     }}
                   >
-                    <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
-                  </button>
-                ))}
+                    {imgIdx + 1} / {gallery.length}
+                  </span>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Details */}
-          <div className="p-6 flex flex-col gap-5">
-            {/* Material badge */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <span
-                className="text-xs font-bold px-3 py-1 rounded-full tracking-wider uppercase"
-                style={{ background: `${color}22`, color, border: `1px solid ${color}44` }}
-              >
-                {project.material}
-              </span>
-              {project.featured && (
-                <span className="text-xs font-bold px-3 py-1 rounded-full tracking-wider uppercase bg-amber-400/15 text-amber-400 border border-amber-400/30">
-                  Featured
-                </span>
+              {/* Thumbnails row + expand button */}
+              {gallery.length > 1 ? (
+                <div className="flex items-center gap-1.5 p-3 overflow-x-auto">
+                  {gallery.map((src, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setImgIdx(i)}
+                      className="relative flex-shrink-0 w-14 h-14 rounded-lg overflow-hidden transition-all"
+                      style={{
+                        opacity: i === imgIdx ? 1 : 0.5,
+                        outline:
+                          i === imgIdx
+                            ? `2px solid ${color}`
+                            : "2px solid transparent",
+                        outlineOffset: "1px",
+                      }}
+                    >
+                      <img
+                        src={src}
+                        alt=""
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </button>
+                  ))}
+                  {/* Expand all */}
+                  <button
+                    onClick={() => setLightboxOpen(true)}
+                    className="flex-shrink-0 w-14 h-14 rounded-lg flex flex-col items-center justify-center gap-1 transition-colors"
+                    style={{
+                      background: "var(--c-border)",
+                      color: "var(--c-45)",
+                      border: "2px dashed var(--c-border)",
+                    }}
+                    title="View fullscreen"
+                  >
+                    <ZoomIn size={16} />
+                    <span className="text-[9px] font-bold tracking-wide">EXPAND</span>
+                  </button>
+                </div>
+              ) : (
+                /* Single image — just the expand button */
+                <div className="flex justify-end px-3 pt-2 pb-1">
+                  <button
+                    onClick={() => setLightboxOpen(true)}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors"
+                    style={{ background: "var(--c-border)", color: "var(--c-45)" }}
+                  >
+                    <ZoomIn size={13} /> Full screen
+                  </button>
+                </div>
               )}
             </div>
 
-            {/* Title */}
-            <h2
-              className="text-2xl sm:text-3xl font-bold leading-tight"
-              style={{ color: "var(--c-text)", fontFamily: "'Cormorant Garamond', serif" }}
-            >
-              {project.title}
-            </h2>
+            {/* ── Details ── */}
+            <div className="p-5 sm:p-6 flex flex-col gap-4 sm:gap-5">
+              {/* Material badge */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <span
+                  className="text-xs font-bold px-3 py-1 rounded-full tracking-wider uppercase"
+                  style={{
+                    background: `${color}22`,
+                    color,
+                    border: `1px solid ${color}44`,
+                  }}
+                >
+                  {project.material}
+                </span>
+                {project.featured && (
+                  <span className="text-xs font-bold px-3 py-1 rounded-full tracking-wider uppercase bg-amber-400/15 text-amber-400 border border-amber-400/30">
+                    Featured
+                  </span>
+                )}
+              </div>
 
-            {/* Meta */}
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { label: "Location", value: project.location, icon: <MapPin size={12} /> },
-                { label: "Year", value: project.year },
-                { label: "Area", value: project.area },
-                { label: "Material", value: project.material },
-              ].map(({ label, value, icon }) => (
-                <div key={label}>
-                  <p className="text-xs uppercase tracking-widest mb-1 font-semibold" style={{ color: "var(--c-35)" }}>
-                    {label}
-                  </p>
-                  <p className="text-sm flex items-center gap-1" style={{ color: "var(--c-text)" }}>
-                    {icon}{value}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Divider */}
-            <div style={{ height: 1, background: "var(--c-border)" }} />
-
-            {/* Description */}
-            <p className="text-sm leading-relaxed" style={{ color: "var(--c-55)" }}>
-              {project.description}
-            </p>
-
-            {/* CTA */}
-            <div className="mt-auto pt-2">
-              <a
-                href="#contact"
-                onClick={(e) => { ctaClick(e); onClose(); }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-80"
-                style={{ background: color, color: "#0C0C0B" }}
+              {/* Title */}
+              <h2
+                className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight"
+                style={{
+                  color: "var(--c-text)",
+                  fontFamily: "'Cormorant Garamond', serif",
+                }}
               >
-                Enquire about this project <ArrowUpRight size={14} />
-              </a>
+                {project.title}
+              </h2>
+
+              {/* Meta */}
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { label: "Location", value: project.location, icon: <MapPin size={12} /> },
+                  { label: "Year",     value: project.year },
+                  { label: "Area",     value: project.area },
+                  { label: "Material", value: project.material },
+                ].map(({ label, value, icon }) => (
+                  <div key={label}>
+                    <p
+                      className="text-xs uppercase tracking-widest mb-1 font-semibold"
+                      style={{ color: "var(--c-35)" }}
+                    >
+                      {label}
+                    </p>
+                    <p
+                      className="text-sm flex items-center gap-1"
+                      style={{ color: "var(--c-text)" }}
+                    >
+                      {icon}{value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <div style={{ height: 1, background: "var(--c-border)" }} />
+
+              {/* Description */}
+              <p className="text-sm leading-relaxed" style={{ color: "var(--c-55)" }}>
+                {project.description}
+              </p>
+
+              {/* CTA */}
+              <div className="mt-auto pt-1">
+                <a
+                  href="#contact"
+                  onClick={e => { ctaClick(e); onClose(); }}
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-80"
+                  style={{ background: color, color: "#0C0C0B" }}
+                >
+                  Enquire about this project <ArrowUpRight size={14} />
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
-    </motion.div>,
-    document.body
+
+      {/* Lightbox sits above the modal (z-300) */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <Lightbox
+            images={gallery}
+            startIdx={imgIdx}
+            onClose={() => setLightboxOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+    </>,
+    document.body,
   );
 }
 
 // ── Parallax column ───────────────────────────────────────────────
 
-type ColProps = { items: Project[]; y: MotionValue<number>; topOffset: string; onSelect: (p: Project) => void; className?: string };
+type ColProps = {
+  items: Project[];
+  y: MotionValue<number>;
+  topOffset: string;
+  onSelect: (p: Project) => void;
+  className?: string;
+};
 
-const Column = memo(function Column({ items, y, topOffset, onSelect, className }: ColProps) {
+const Column = memo(function Column({
+  items,
+  y,
+  topOffset,
+  onSelect,
+  className,
+}: ColProps) {
   return (
     <motion.div
       className={`relative flex w-1/2 md:w-1/4 min-w-0 md:min-w-[180px] flex-col gap-[1.5vw] ${className ?? ""}`}
@@ -262,34 +502,46 @@ const Column = memo(function Column({ items, y, topOffset, onSelect, className }
             {/* Bottom gradient */}
             <div
               className="absolute inset-0"
-              style={{ background: "linear-gradient(to top, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.1) 55%, transparent 100%)" }}
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.1) 55%, transparent 100%)",
+              }}
             />
-            {/* Hover tint */}
+            {/* Hover tint — desktop only */}
             <div
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
               style={{ background: `${color}14` }}
             />
-            {/* Top accent */}
+            {/* Top accent bar — desktop only */}
             <div
               className="absolute top-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-400"
               style={{ background: color }}
             />
-            {/* Content */}
-            <div className="absolute inset-0 p-4 flex flex-col justify-between pointer-events-none">
+            {/* Card text — always visible on mobile, hover-reveal on desktop */}
+            <div className="absolute inset-0 p-3 sm:p-4 flex flex-col justify-between pointer-events-none">
               <span
-                className="self-start px-2.5 py-0.5 rounded-full text-[9px] font-bold tracking-widest uppercase"
-                style={{ background: `${color}28`, color, border: `1px solid ${color}45` }}
+                className="self-start px-2 py-0.5 rounded-full text-[9px] font-bold tracking-widest uppercase"
+                style={{
+                  background: `${color}28`,
+                  color,
+                  border: `1px solid ${color}45`,
+                }}
               >
                 {p.material}
               </span>
-              <div className="translate-y-1.5 group-hover:translate-y-0 opacity-70 group-hover:opacity-100 transition-all duration-300">
-                <h3 className="text-sm font-bold leading-tight text-white mb-1 line-clamp-2">{p.title}</h3>
-                <div className="flex items-center gap-1 text-[10px]" style={{ color: "rgba(255,255,255,0.50)" }}>
-                  <MapPin size={9} /> {p.location}
+              <div className="opacity-100 md:opacity-70 md:translate-y-1.5 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300">
+                <h3 className="text-xs sm:text-sm font-bold leading-tight text-white mb-1 line-clamp-2">
+                  {p.title}
+                </h3>
+                <div
+                  className="flex items-center gap-1 text-[9px] sm:text-[10px]"
+                  style={{ color: "rgba(255,255,255,0.55)" }}
+                >
+                  <MapPin size={8} /> {p.location}
                 </div>
               </div>
             </div>
-            {/* Click hint */}
+            {/* Click hint arrow — desktop hover only */}
             <div
               className="absolute bottom-3 right-3 w-7 h-7 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0"
               style={{ background: color }}
@@ -327,17 +579,17 @@ export default function Projects() {
     offset: ["start end", "end start"],
   });
 
-  // Reduced multipliers for smooth performance (was 2x, 3.3x, 1.25x, 3x)
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.22 : 0.45)]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.35 : 0.75)]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.14 : 0.28)]);
-  const y4 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.28 : 0.65)]);
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.20 : 0.45)]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.33 : 0.75)]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.12 : 0.28)]);
+  const y4 = useTransform(scrollYProgress, [0, 1], [0, vh * (narrow ? 0.26 : 0.65)]);
 
   const handleClose = useCallback(() => setSelected(null), []);
 
   const { c1, c2, c3, c4 } = useMemo(() => {
-    const filtered = filter === "All" ? projects : projects.filter(p => p.material === filter);
-    const filled   = fillTo(filtered.length ? filtered : projects, 12);
+    const filtered =
+      filter === "All" ? projects : projects.filter(p => p.material === filter);
+    const filled = fillTo(filtered.length ? filtered : projects, 12);
     return {
       c1: filled.slice(0, 3),
       c2: filled.slice(3, 6),
@@ -347,10 +599,16 @@ export default function Projects() {
   }, [filter]);
 
   return (
-    <section id="projects" className="section-dark py-16 md:py-24 relative overflow-hidden">
+    <section
+      id="projects"
+      className="section-dark py-16 md:py-24 relative overflow-hidden"
+    >
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 60% 40% at 20% 50%, rgba(45,212,191,0.05) 0%, transparent 70%)" }}
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 40% at 20% 50%, rgba(45,212,191,0.05) 0%, transparent 70%)",
+        }}
       />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10">
@@ -366,23 +624,55 @@ export default function Projects() {
             <span className="tag-pill bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-4">
               Featured Projects
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 display" style={{ color: "var(--c-text)" }}>
+            <h2
+              className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mt-4 display"
+              style={{ color: "var(--c-text)" }}
+            >
               Built to last.
               <br />
               <span style={{ color: "var(--c-22)" }}>Across the GCC.</span>
             </h2>
           </div>
           <div className="flex items-center gap-5 shrink-0">
-            {[{ n: "80+", l: "Projects" }, { n: "6", l: "Countries" }, { n: "100K+", l: "m² Installed" }]
+            {[
+              { n: "80+",   l: "Projects" },
+              { n: "6",     l: "Countries" },
+              { n: "100K+", l: "m² Installed" },
+            ]
               .map((s, i) => (
                 <div key={i} className="text-center">
-                  <div className="mono text-3xl sm:text-4xl font-bold" style={{ color: "var(--c-text)" }}>{s.n}</div>
-                  <div className="text-xs sm:text-sm mt-1" style={{ color: "var(--c-35)" }}>{s.l}</div>
+                  <div
+                    className="mono text-3xl sm:text-4xl font-bold"
+                    style={{ color: "var(--c-text)" }}
+                  >
+                    {s.n}
+                  </div>
+                  <div
+                    className="text-xs sm:text-sm mt-1"
+                    style={{ color: "var(--c-35)" }}
+                  >
+                    {s.l}
+                  </div>
                 </div>
               ))
-              .reduce((acc: React.ReactNode[], el, i) =>
-                i === 0 ? [el] : [...acc, <div key={`d${i}`} style={{ width: 1, height: 40, background: "var(--c-border)" }} />, el],
-              [])}
+              .reduce(
+                (acc: React.ReactNode[], el, i) =>
+                  i === 0
+                    ? [el]
+                    : [
+                        ...acc,
+                        <div
+                          key={`d${i}`}
+                          style={{
+                            width: 1,
+                            height: 40,
+                            background: "var(--c-border)",
+                          }}
+                        />,
+                        el,
+                      ],
+                [],
+              )}
           </div>
         </motion.div>
 
@@ -399,12 +689,16 @@ export default function Projects() {
               key={f}
               onClick={() => setFilter(f)}
               style={{
-                padding: "10px 16px", borderRadius: 9999,
+                padding: "10px 16px",
+                borderRadius: 9999,
                 background: filter === f ? "#2DD4BF" : "var(--c-panel)",
                 color: filter === f ? "#0C0C0B" : "var(--c-55)",
                 border: `1px solid ${filter === f ? "#2DD4BF" : "var(--c-border)"}`,
-                fontSize: 12, fontWeight: 700, letterSpacing: "0.05em",
-                cursor: "pointer", transition: "all 0.2s ease",
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: "0.05em",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
                 fontFamily: "'DM Sans', sans-serif",
               }}
             >
@@ -414,10 +708,10 @@ export default function Projects() {
         </motion.div>
       </div>
 
-      {/* Parallax gallery */}
+      {/* Parallax gallery — taller on mobile so more cards stay in view */}
       <div
         ref={galleryRef}
-        className="relative box-border overflow-hidden h-[110vh] md:h-[140vh]"
+        className="relative box-border overflow-hidden h-[130vh] md:h-[140vh]"
       >
         <motion.div
           key={filter}
@@ -427,10 +721,33 @@ export default function Projects() {
           className="flex w-full h-full"
           style={{ gap: "1.5vw", padding: "1.5vw" }}
         >
-          <Column items={c1} y={y1} topOffset="-18%" onSelect={setSelected} />
-          <Column items={c2} y={y2} topOffset="-38%" onSelect={setSelected} className="hidden md:flex" />
-          <Column items={c3} y={y3} topOffset="-12%" onSelect={setSelected} />
-          <Column items={c4} y={y4} topOffset="-28%" onSelect={setSelected} className="hidden md:flex" />
+          {/* On mobile only c1 + c3 show (hidden md:flex hides c2/c4) */}
+          <Column
+            items={c1}
+            y={y1}
+            topOffset={narrow ? "-8%" : "-18%"}
+            onSelect={setSelected}
+          />
+          <Column
+            items={c2}
+            y={y2}
+            topOffset="-38%"
+            onSelect={setSelected}
+            className="hidden md:flex"
+          />
+          <Column
+            items={c3}
+            y={y3}
+            topOffset={narrow ? "-4%" : "-12%"}
+            onSelect={setSelected}
+          />
+          <Column
+            items={c4}
+            y={y4}
+            topOffset="-28%"
+            onSelect={setSelected}
+            className="hidden md:flex"
+          />
         </motion.div>
       </div>
 
@@ -443,7 +760,11 @@ export default function Projects() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="mt-12 flex justify-center"
         >
-          <a href="#contact" onClick={ctaClick} className="btn-primary flex items-center gap-2 px-8 py-4 text-sm sm:text-base">
+          <a
+            href="#contact"
+            onClick={ctaClick}
+            className="btn-primary flex items-center gap-2 px-8 py-4 text-sm sm:text-base"
+          >
             <span>Start Your Project</span>
             <ArrowUpRight size={15} />
           </a>
