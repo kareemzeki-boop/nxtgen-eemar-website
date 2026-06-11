@@ -126,7 +126,7 @@ export default function Services() {
     <section
       id="services"
       className="relative overflow-hidden"
-      style={{ background: "#0a0a0a", paddingTop: "clamp(40px,6vw,100px)", paddingBottom: "clamp(40px,6vw,100px)" }}
+      style={{ background: "var(--c-bg)", paddingTop: "clamp(40px,6vw,100px)", paddingBottom: "clamp(40px,6vw,100px)" }}
     >
       {/* ambient glow behind cube */}
       <div
@@ -167,14 +167,14 @@ export default function Services() {
             style={{
               fontSize: "clamp(32px,5vw,64px)",
               fontWeight: 900, letterSpacing: "-0.035em",
-              color: "#fff", lineHeight: 1.05,
+              color: "var(--c-text)", lineHeight: 1.05,
               marginBottom: 16,
             }}
           >
             Five systems.<br />
-            <span style={{ color: "rgba(255,255,255,0.35)" }}>One engineered standard.</span>
+            <span style={{ color: "var(--c-35)" }}>One engineered standard.</span>
           </h2>
-          <p style={{ fontSize: "clamp(14px,1.5vw,17px)", color: "rgba(255,255,255,0.45)", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
+          <p style={{ fontSize: "clamp(14px,1.5vw,17px)", color: "var(--c-45)", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
             Every material we produce is engineered for GCC climate extremes — UV, salinity, seismic loads, and the relentless demand for architectural precision.
           </p>
         </motion.div>
@@ -318,7 +318,7 @@ export default function Services() {
 
             {/* hint text */}
             <p style={{
-              fontSize: 11, color: "rgba(255,255,255,0.28)",
+              fontSize: 11, color: "var(--c-28)",
               letterSpacing: "0.06em", textAlign: "center",
               marginTop: 4,
             }}>
@@ -343,9 +343,9 @@ export default function Services() {
                     fontSize: 10, fontWeight: 700, letterSpacing: "0.08em",
                     cursor: "pointer", border: "none",
                     transition: "all 0.25s",
-                    background: selected === i ? s.accentColor : "rgba(255,255,255,0.06)",
-                    color: selected === i ? "#000" : "rgba(255,255,255,0.45)",
-                    outline: selected === i ? "none" : "1px solid rgba(255,255,255,0.10)",
+                    background: selected === i ? s.accentColor : "var(--c-panel-h)",
+                    color: selected === i ? "#000" : "var(--c-45)",
+                    outline: selected === i ? "none" : "1px solid var(--c-border-md)",
                     transform: selected === i ? "scale(1.06)" : "scale(1)",
                   }}
                 >
@@ -369,8 +369,8 @@ export default function Services() {
                 style={{
                   flex: 1,
                   width: "100%",
-                  background: "rgba(255,255,255,0.03)",
-                  border: `1px solid rgba(255,255,255,0.08)`,
+                  background: "var(--c-surface)",
+                  border: `1px solid var(--c-border)`,
                   borderRadius: 20,
                   padding: "clamp(20px,3vw,36px)",
                   position: "relative",
@@ -399,7 +399,7 @@ export default function Services() {
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <span style={{
                       fontSize: 10, fontWeight: 800, letterSpacing: "0.2em",
-                      color: "rgba(255,255,255,0.2)",
+                      color: "var(--c-20)",
                     }}>
                       {svc.number}
                     </span>
@@ -417,11 +417,11 @@ export default function Services() {
                       .map(({ icon, fn }, k) => (
                         <button key={k} onClick={fn} style={{
                           width: 40, height: 40, borderRadius: "50%",
-                          background: "rgba(255,255,255,0.06)",
-                          border: "1px solid rgba(255,255,255,0.10)",
+                          background: "var(--c-panel-h)",
+                          border: "1px solid var(--c-border-md)",
                           cursor: "pointer", display: "flex",
                           alignItems: "center", justifyContent: "center",
-                          color: "rgba(255,255,255,0.5)",
+                          color: "var(--c-45)",
                         }}>
                           {icon}
                         </button>
@@ -431,7 +431,7 @@ export default function Services() {
 
                 <h3 style={{
                   fontSize: "clamp(20px,2.4vw,30px)", fontWeight: 900,
-                  color: "#fff", letterSpacing: "-0.03em",
+                  color: "var(--c-text)", letterSpacing: "-0.03em",
                   lineHeight: 1.1, marginBottom: 8,
                 }}>
                   {svc.full}
@@ -439,13 +439,13 @@ export default function Services() {
                 <p style={{ fontSize: 13, color: svc.accentColor, fontWeight: 600, marginBottom: 18, opacity: 0.9 }}>
                   {svc.tagline}
                 </p>
-                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.75, marginBottom: 20 }}>
+                <p style={{ fontSize: 13, color: "var(--c-55)", lineHeight: 1.75, marginBottom: 20 }}>
                   {svc.description}
                 </p>
 
                 <ul style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 22 }}>
                   {svc.features.slice(0, 4).map((f) => (
-                    <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 9, fontSize: 12, color: "rgba(255,255,255,0.7)" }}>
+                    <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 9, fontSize: 12, color: "var(--c-55)" }}>
                       <CheckCircle2 size={13} style={{ color: svc.accentColor, marginTop: 1, flexShrink: 0 }} />
                       {f}
                     </li>
@@ -454,7 +454,7 @@ export default function Services() {
 
                 {svc.quote && (
                   <p style={{
-                    fontSize: 11, color: "rgba(255,255,255,0.35)",
+                    fontSize: 11, color: "var(--c-35)",
                     fontStyle: "italic", marginBottom: 22,
                     borderLeft: `2px solid ${svc.accentColor}40`,
                     paddingLeft: 12, lineHeight: 1.7,
@@ -489,7 +489,7 @@ export default function Services() {
                 transition={{ duration: 0.3 }}
                 style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 200 }}
               >
-                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.22)", textAlign: "center", maxWidth: 220, lineHeight: 1.6 }}>
+                <p style={{ fontSize: 13, color: "var(--c-22)", textAlign: "center", maxWidth: 220, lineHeight: 1.6 }}>
                   Tap a face or select a material below to explore the system
                 </p>
               </motion.div>

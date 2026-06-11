@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "EMR Emaar Facades | GFRC · GFRP · UHPC · GRG",
@@ -24,11 +25,13 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full antialiased overflow-x-hidden">
-        <div className="noise-overlay" />
-        <CustomCursor />
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        <ThemeProvider>
+          <div className="noise-overlay" />
+          <CustomCursor />
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
+        </ThemeProvider>
       </body>
     </html>
   );
