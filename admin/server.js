@@ -11,7 +11,6 @@ const GH_OWNER   = process.env.GITHUB_OWNER   || "kareemzeki-boop";
 const GH_REPO    = process.env.GITHUB_REPO    || "nxtgen-eemar-website";
 const GH_BRANCH  = process.env.GITHUB_BRANCH  || "master";
 const GH_FILE    = "data/projects.json";
-const IMGBB_KEY  = process.env.IMGBB_API_KEY  || "";
 const ADMIN_PASS = process.env.ADMIN_PASSWORD || "admin";
 
 app.use(express.json());
@@ -110,19 +109,33 @@ app.delete("/api/projects/:id", async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-// ── Image upload → ImgBB ──────────────────────────────────────────
+// ── Image upload → GitHub repo ────────────────────────────────────
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 app.post("/api/upload", upload.single("image"), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-  if (!IMGBB_KEY) return res.status(400).json({ error: "IMGBB_API_KEY not configured" });
+  if (!GH_TOKEN) return res.status(400).json({ error: "GITHUB_TOKEN not configured" });
   try {
-    const base64 = req.file.buffer.toString("base64");
-    const body   = new URLSearchParams({ key: IMGBB_KEY, image: base64 });
-    const r = await fetch("https://api.imgbb.com/1/upload", { method: "POST", body });
-    const data = await r.json();
-    if (!data.success) throw new Error(data.error?.message || "ImgBB upload failed");
-    res.json({ url: data.data.url });
+    const ext      = (req.file.originalname.split(".").pop() || "jpg").toLowerCase();
+    const filename = `upload-${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`;
+    const base64   = req.file.buffer.toString("base64");
+
+    const r = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/public/images/uploads/${filename}`,
+      {
+        method: "PUT",
+        headers: GH_HEADERS,
+        body: JSON.stringify({
+          message: `Admin: upload ${filename}`,
+          content: base64,
+          branch: GH_BRANCH,
+        }),
+      }
+    );
+    if (!r.ok) throw new Error(`GitHub upload failed: ${await r.text()}`);
+
+    const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/public/images/uploads/${filename}`;
+    res.json({ url });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
