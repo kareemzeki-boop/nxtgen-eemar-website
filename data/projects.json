@@ -17,15 +17,20 @@
   },
   {
     "id": "diriyah",
-    "title": "Diriyah Heritage District",
-    "location": "Riyadh, Saudi Arabia",
-    "material": "UHPC",
-    "year": "2023",
+    "title": "Belresheed Tower",
+    "location": "Abu Shagara, Sharjah",
+    "material": "GFRC",
+    "year": "2026",
     "area": "9,200 m²",
-    "description": "Najdi-inspired UHPC cladding with hand-carved desert textures across 14 cultural heritage buildings in the UNESCO World Heritage site.",
-    "image": "https://i.ibb.co/8g3c0zKk/40a2af9dbc8f240759388ce20e488f27.jpg",
-    "color": "#f59e0b",
-    "featured": false
+    "description": "Supply and installation of GRC Pigmented Stone Finish Cladding, comprising factory-produced GRC panels with integral color pigmentation and stone-textured finish, including all necessary fixing systems, accessories, and complete installation.\n",
+    "image": "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781266092158-rcyud.jpg",
+    "color": "#5DC39B",
+    "featured": false,
+    "images": [
+      "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781266092158-rcyud.jpg",
+      "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781266105720-n8n9u.jpg",
+      "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781266144901-5i93w.jpg"
+    ]
   },
   {
     "id": "lusail",
