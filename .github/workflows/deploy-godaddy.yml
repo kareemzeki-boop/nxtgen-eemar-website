@@ -27,6 +27,7 @@ jobs:
       - name: Fix image paths for GoDaddy
         run: |
           sed -i 's|/nxtgen-eemar-website/images/|/images/|g' components/Hero.tsx
+          sed -i 's|/nxtgen-eemar-website/images/|/images/|g' components/Navbar.tsx
           sed -i 's|/nxtgen-eemar-website/images/|/images/|g' lib/content.ts
 
       - name: Build static export

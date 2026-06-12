@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import { navLinks as links, company } from "@/lib/content";
 
 function scrollTo(href: string) {
@@ -67,12 +68,14 @@ export default function Navbar() {
 
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center pulse-glow shrink-0" style={{ background: "#2DD4BF" }}>
-              <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
-                <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
-                <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
-              </svg>
-            </div>
+            <Image
+              src="/nxtgen-eemar-website/images/logo.png"
+              alt="EMR Logo"
+              width={40}
+              height={40}
+              className="shrink-0"
+              unoptimized
+            />
             <div>
               <div className="font-bold text-sm sm:text-base tracking-tight leading-none" style={{ color: "var(--c-text)" }}>{company.name}</div>
               <div className="text-[10px] sm:text-xs tracking-wider leading-none mt-0.5" style={{ color: "var(--c-40)" }}>{company.taglineBy}</div>
@@ -149,12 +152,14 @@ export default function Navbar() {
           >
             <div className="flex items-center justify-between px-5 sm:px-6" style={{ height: 68 }}>
               <a href="#" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#2DD4BF" }}>
-                  <svg width="17" height="17" viewBox="0 0 18 18" fill="none">
-                    <path d="M9 1L17 5V13L9 17L1 13V5L9 1Z" stroke="white" strokeWidth="1.5" fill="none" />
-                    <path d="M9 5L13 7V11L9 13L5 11V7L9 5Z" fill="white" fillOpacity="0.9" />
-                  </svg>
-                </div>
+                <Image
+                  src="/nxtgen-eemar-website/images/logo.png"
+                  alt="EMR Logo"
+                  width={40}
+                  height={40}
+                  className="shrink-0"
+                  unoptimized
+                />
                 <div className="font-bold text-sm tracking-tight" style={{ color: "#F0EDE6" }}>{company.name}</div>
               </a>
               <button
