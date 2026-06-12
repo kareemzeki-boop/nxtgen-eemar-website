@@ -51,23 +51,35 @@ export default function Services() {
     startRotX: number; startRotY: number;
   } | null>(null);
 
+  // Refs for idle spin — bypasses React state so RAF never triggers re-renders
+  const innerDivRef = useRef<HTMLDivElement>(null);
+  const idleRef     = useRef(true);
+  const draggingRef = useRef(false);
+  const spinX = useRef(-15);
+  const spinY = useRef(20);
+  const spinZ = useRef(0);
+
   useAnimationFrame((_, delta) => {
-    if (idle && !dragging) {
-      const s = delta * 0.018;
-      setRotX(v => v + s * 0.7);
-      setRotY(v => v + s);
-      setRotZ(v => v + s * 0.4);
-    }
+    if (!idleRef.current || draggingRef.current || !innerDivRef.current) return;
+    const s = delta * 0.018;
+    spinX.current += s * 0.7;
+    spinY.current += s;
+    spinZ.current += s * 0.4;
+    innerDivRef.current.style.transform =
+      `rotateX(${spinX.current}deg) rotateY(${spinY.current}deg) rotateZ(${spinZ.current}deg)`;
   });
 
   const goTo = (i: number) => {
+    idleRef.current = false;
+    draggingRef.current = false;
+    // Clear the RAF-written inline transform so React state takes over
+    if (innerDivRef.current) innerDivRef.current.style.transform = "";
     setIdle(false);
     setDragging(false);
     setSelected(i);
     setRotX(FACE_ROT[i].x);
     setRotY(FACE_ROT[i].y);
     setRotZ(0);
-    // on mobile, scroll detail panel into view after animation settles
     if (typeof window !== "undefined" && window.innerWidth < 768) {
       setTimeout(() => detailRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 420);
     }
@@ -77,15 +89,22 @@ export default function Services() {
   const next = () => goTo(selected === null ? 0 : (selected + 1) % services.length);
 
   const deselect = () => {
+    // Sync spin refs from current face so idle animation continues from here
+    spinX.current = rotX;
+    spinY.current = rotY;
+    spinZ.current = rotZ;
     setSelected(null);
-    setRotX(-15); setRotY(20); setRotZ(0);
     setIdle(true);
+    idleRef.current = true;
   };
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
     (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
     dragRef.current = { startX: e.clientX, startY: e.clientY, startRotX: rotX, startRotY: rotY };
+    idleRef.current = false;
+    draggingRef.current = true;
+    if (innerDivRef.current) innerDivRef.current.style.transform = "";
     setIdle(false);
     setDragging(true);
   };
@@ -103,6 +122,7 @@ export default function Services() {
     const finalRotX = dragRef.current.startRotX - dy * 0.35;
     const finalRotY = dragRef.current.startRotY + dx * 0.6;
     dragRef.current = null;
+    draggingRef.current = false;
     setDragging(false);
     goTo(nearestFace(finalRotX, finalRotY));
   };
@@ -241,10 +261,12 @@ export default function Services() {
                 onPointerCancel={onPointerUp}
               >
                 <div
+                  ref={innerDivRef}
                   style={{
                     position: "relative", width: "100%", height: "100%",
                     transformStyle: "preserve-3d",
-                    transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)`,
+                    // When idle, RAF writes transform directly — keep undefined so React doesn't fight it
+                    transform: idle ? undefined : `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg)`,
                     transition: dragging || idle ? "none" : "transform 0.65s cubic-bezier(0.34,1.56,0.64,1)",
                     userSelect: "none",
                   }}
