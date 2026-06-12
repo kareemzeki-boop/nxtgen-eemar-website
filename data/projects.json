@@ -9,7 +9,11 @@
     "description": "Modern luxury villa façade featuring clean white GRC cladding panels with minimalist architectural lines and large full-height glazing. The project highlights precision installation, seamless joint finishing, and contemporary exterior detailing, creating a sleek and elegant waterfront residence aesthetic.\n",
     "image": "https://i.ibb.co/MyXm80KT/4077b91a6e23.png",
     "color": "#5DC39B",
-    "featured": true
+    "featured": true,
+    "images": [
+      "https://i.ibb.co/MyXm80KT/4077b91a6e23.png",
+      "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781263039253-fvzid.jpg"
+    ]
   },
   {
     "id": "diriyah",
