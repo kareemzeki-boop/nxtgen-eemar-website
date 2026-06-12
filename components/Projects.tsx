@@ -216,9 +216,9 @@ function ProjectModal({
 
         {/* Card */}
         <motion.div
-          className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl"
+          className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto md:overflow-hidden rounded-2xl"
           style={{
-            background: "var(--c-panel)",
+            background: "var(--c-surface)",
             border: "1px solid var(--c-border)",
             willChange: "transform",
           }}
@@ -482,7 +482,7 @@ const Column = memo(function Column({
   return (
     <motion.div
       className={`relative flex w-1/2 md:w-1/4 min-w-0 md:min-w-[180px] flex-col gap-[1.5vw] ${className ?? ""}`}
-      style={{ y, top: topOffset, willChange: "transform" }}
+      style={{ y, top: topOffset }}
     >
       {items.map((p, i) => {
         const color = MATERIAL_COLORS[p.material] ?? "#2DD4BF";
@@ -712,6 +712,7 @@ export default function Projects() {
       <div
         ref={galleryRef}
         className="relative box-border overflow-hidden h-[130vh] md:h-[140vh]"
+        style={selected ? { pointerEvents: "none" } : undefined}
       >
         <motion.div
           key={filter}
