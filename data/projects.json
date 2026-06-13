@@ -34,15 +34,18 @@
   },
   {
     "id": "lusail",
-    "title": "Lusail Marina Residences",
-    "location": "Doha, Qatar",
+    "title": "Masdar City Square Project (MC2)",
+    "location": "ABU DHBAI ",
     "material": "GFRP",
-    "year": "2022",
-    "area": "11,600 m²",
-    "description": "Marine-grade GFRP rainscreen cladding for three waterfront residential towers in Qatar's Lusail City — zero metallic reinforcement for coastal exposure.",
+    "year": "2026",
+    "area": "7000",
+    "description": "GRP BANCH ",
     "image": "https://i.ibb.co/kVxm8vhH/ba9242eb53bc9b1b32c991cf9f24eb0f.jpg",
     "color": "#06b6d4",
-    "featured": false
+    "featured": false,
+    "images": [
+      "https://i.ibb.co/kVxm8vhH/ba9242eb53bc9b1b32c991cf9f24eb0f.jpg"
+    ]
   },
   {
     "id": "dubai-design",
