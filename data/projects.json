@@ -70,7 +70,10 @@
     "description": "Structural UHPC facade panels for a 72-storey commercial tower — panels span 5.4 m with no secondary steel frame, cutting programme time by 6 weeks.",
     "image": "https://i.ibb.co/3yVSKj27/f67bfac99d60e2fd9235b5f2c52380b8.jpg",
     "color": "#ef4444",
-    "featured": true
+    "featured": false,
+    "images": [
+      "https://i.ibb.co/3yVSKj27/f67bfac99d60e2fd9235b5f2c52380b8.jpg"
+    ]
   },
   {
     "id": "bahrain-bay",
