@@ -89,7 +89,7 @@
   },
   {
     "id": "proj-1778829348600",
-    "featured": false,
+    "featured": true,
     "title": "YS2 C27 - Mayyas at the Bay ",
     "location": "ABU DHABI ",
     "material": "GFRC",
@@ -101,7 +101,9 @@
     "images": [
       "https://i.ibb.co/fVZ0qFwC/75a1e0e97fcb.jpg",
       "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781265814121-o5q8t.jpg",
-      "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781265836691-4fq1a.jpg"
+      "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781265836691-4fq1a.jpg",
+      "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781608345245-4jx51.png",
+      "https://raw.githubusercontent.com/kareemzeki-boop/nxtgen-eemar-website/master/public/images/uploads/upload-1781608364429-qt02v.png"
     ]
   },
   {
